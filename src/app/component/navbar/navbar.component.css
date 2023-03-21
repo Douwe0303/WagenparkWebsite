@@ -1,0 +1,46 @@
+.brick-red {
+  color: #c13350 !important;
+}
+
+.logo-width-small {
+  width: 40px;
+}
+
+.logo-zoom {
+  overflow: hidden;
+  transform-origin: top left;
+  backface-visibility: hidden;
+  transition: transform 0.5s ease;
+  -webkit-transition: transform 0.5s;
+  -ms-transition: transform 0.5s;
+  -o-transition: transform 0.5s;
+  -moz-transition: transform 0.5s;
+}
+
+.logo-zoom:hover {
+  cursor: pointer;
+  transform: scale(1.02);
+}
+
+.underline-brick-red {
+  text-decoration: underline;
+  text-decoration-color: #c13350 !important;
+}
+
+.nav-hover {
+  display: inline-block;
+  position: relative;
+  text-decoration-style: unset;
+}
+
+.nav-hover:hover {
+  text-decoration: underline;
+  text-decoration-color: #c13350 !important;
+  text-underline-offset: 3px;
+}
+
+@media(max-width: 991px) {
+  .hide_logout {
+    display: none;
+  }
+}

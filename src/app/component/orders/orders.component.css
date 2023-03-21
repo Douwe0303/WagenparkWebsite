@@ -1,0 +1,72 @@
+table {
+  border-spacing: 0 10px;
+  border-collapse: collapse;
+
+}
+
+.prompt {
+  display: none;
+}
+
+.table-header {
+  border-bottom: solid;
+}
+
+.font-small {
+  font-size: 20px;
+}
+
+.font-very-small {
+  font-size: 15px;
+}
+
+.border-color-secondary {
+  border-color: #ced4da;
+}
+
+.display-flex {
+  display: flex;
+}
+
+.plus-color {
+  color: green;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.license-plate-blue {
+  background-color: blue;
+}
+
+.table-header-height {
+  height: 30px;
+}
+
+tr {
+  line-height: 50px;
+  min-height: 50px;
+  height: 50px;
+  background-color: white;
+}
+
+tr:active {
+  cursor: pointer;
+}
+
+.pointer-hover:hover {
+  cursor: pointer;
+}
+
+.shadow-all {
+  box-shadow: 1px 1px 6px 3px lightgray;
+}
+
+.pencil_color {
+  color: #ffb605;
+}
+
+.trash_color {
+  color: #ff6048;
+}

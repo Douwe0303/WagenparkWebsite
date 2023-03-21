@@ -1,0 +1,85 @@
+.card-zoom {
+  overflow: hidden;
+  backface-visibility: hidden;
+  transition: transform 0.5s;
+  -webkit-transition: transform 0.5s;
+  -ms-transition: transform 0.5s;
+  -o-transition: transform 0.5s;
+  -moz-transition: transform 0.5s;
+}
+
+.card-zoom:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+}
+
+.image-zoom {
+  overflow: hidden;
+  transition: transform 0.5s;
+  -webkit-transition: transform 0.5s;
+  -ms-transition: transform 0.5s;
+  -o-transition: transform 0.5s;
+  -moz-transition: transform 0.5s;
+}
+
+.image-zoom:hover {
+  transform: scale(1.1);
+}
+
+.dashboard-height {
+  max-height: 300px;
+  width: 100%;
+}
+
+/* Fade In keyframes for all web browsers */
+
+@keyframes fadeIn {
+  to {
+    visibility: visible;
+  }
+
+  0% {opacity: 0}
+  100% { opacity: 1}
+}
+
+@-moz-keyframes fadeIn {
+  to {
+    visibility: visible;
+  }
+
+  0% {opacity: 0}
+  100% { opacity: 1}
+}
+
+@-ms-keyframes fadeIn {
+  to {
+    visibility: visible;
+  }
+
+  0% {opacity: 0}
+  100% { opacity: 1}
+}
+
+@-webkit-keyframes fadeIn {
+  to {
+    visibility: visible;
+  }
+
+  0% {opacity: 0}
+  100% { opacity: 1}
+}
+
+@-o-keyframes fadeIn {
+  to {
+    visibility: visible;
+  }
+
+  0% {opacity: 0}
+  100% { opacity: 1}
+}
+
+.fadeIn {
+  opacity: 0;
+  animation: fadeIn 1.5s ease-in alternate;
+  animation-fill-mode: forwards;
+}

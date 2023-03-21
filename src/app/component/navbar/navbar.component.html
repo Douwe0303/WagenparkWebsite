@@ -1,0 +1,66 @@
+<header>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a href="/"><img class="img-thumbnail me-2 logo-width-small" src="../../../assets/image/header/quintor_logo.webp" alt="Quintor Logo"></a>
+      <a class="navbar-brand fw-bold brick-red logo-zoom" title="Het beheerportaal voor leaseauto's en bestellingen" href="/">Q-Lease</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0 ms-lg-5">
+          <li class="nav-item">
+            <a
+             class="nav-link nav-hover"
+             title="Klik hier voor het dashboard"
+             [routerLinkActive]="['active', 'fw-bold']"
+             [routerLink]="['/']"
+             [routerLinkActiveOptions]="{ exact: true }"
+            >Dashboard</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle nav-hover"
+              title="Klik hier voor het overzicht"
+              data-bs-target="#"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              [routerLinkActive]="['active', 'fw-bold']"
+              [ngClass]="{'active': leasecars.isActive || orders.isActive }"
+              [routerLinkActiveOptions]="{ exact: true }"
+            >Overzicht</a>
+            <ul class="dropdown-menu shadow-lg">
+              <li>
+                <a class="dropdown-item nav-hover"
+                   [routerLinkActive]="['fw-bold', 'underline-brick-red']"
+                   #leasecars="routerLinkActive"
+                   [routerLink]="['/leasecars']"
+                >Leaseauto's</a>
+              </li>
+              <li>
+                <a class="dropdown-item nav-hover"
+                   #orders="routerLinkActive"
+                   [routerLinkActive]="['fw-bold', 'underline-brick-red']"
+                   [routerLink]="['/orders']"
+                >Bestellingen</a>
+              </li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li>
+                <a class="dropdown-item nav-hover"
+                   [routerLinkActive]="['fw-bold', 'underline-brick-red']"
+                   [routerLink]="['/account']"
+                >Account</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <a class="nav-link text-white nav-hover hide_logout" title="Klik hier om uit te loggen"
+         [routerLinkActive]="['active', 'fw-bold', 'underline']"
+         [routerLink]="['/login']"
+      >Uitloggen</a>
+    </div>
+  </nav>
+</header>
