@@ -1,9 +1,19 @@
 import { Injectable } from '@angular/core';
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
 
-  constructor() { }
+  ORDER_URL: string = '/orders/';
+
+  constructor(private http: HttpClient) { }
+
+  async fetchOrders(): Promise<any> {
+    let headers = new HttpHeaders({
+      'Access-Control-Allow-Origin': '*',
+    })
+    return this.http.get(this.ORDER_URL, {headers: headers});
+  }
 }

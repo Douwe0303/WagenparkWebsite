@@ -28,72 +28,139 @@
             </div>
           </th>
           <th scope="col">
-            <div class="d-flex align-items-center">
-              <img alt="driver" src="assets/image/tableheaders/manager.png" class="me-1 table-header-height">
-              <span>Besteller</span>
+            <div>
+              Besteller
+            </div>
+          </th>
+          <th scope="col">
+            <div>
+              Bestuurder
             </div>
           </th>
           <th scope="col">
             <div class="d-flex align-items-center">
-              <img alt="driver" src="assets/image/tableheaders/driver.png" class="me-1 table-header-height">
-              <span>Bestuurder</span>
+              Automerk
             </div>
           </th>
           <th scope="col">
-            <div class="d-flex align-items-center">
-              <img alt="trademark" src="assets/image/tableheaders/trademark.png" class="me-1 table-header-height">
-              <span>Automerk</span>
-            </div>
-          </th>
-          <th scope="col">
-          <div class="d-flex align-items-center">
-            <img alt="license plate" src="assets/image/tableheaders/license-plate.png" class="me-1 table-header-height">
-            <span>Besteldatum</span>
+          <div>
+            Besteldatum
           </div>
         </th>
           <th scope="col">
-            <div class="d-flex align-items-center">
-              <img alt="stopwatch" src="assets/image/tableheaders/stopwatch.png" class="me-1 table-header-height">
-              <span>Status</span>
+            <div>
+              Status
             </div>
           </th>
           <th scope="col">
-            <div class="d-flex align-items-center">
-              <img alt="engine" src="assets/image/tableheaders/engine.png" class="me-1 table-header-height">
-              <span>Actie</span>
+            <div>
+              Actie
             </div>
+          </th>
+          <th scope="col">
           </th>
         </tr>
       </thead>
-      <tbody>
-        <tr (click)="this.open(1)">
-          <th scope="row">1</th>
-          <td>
-            <span class="badge bg-secondary fw-light fw-bold font-very-small">Marrit</span>
-          </td>
-          <td>
-            <span class="badge bg-secondary fw-light fw-bold font-very-small">Bart</span>
-          </td>
-          <td>
-            <span class="text-nowrap font-small">
-              <span class="badge rounded-0 license-plate-blue">NL</span>
-              <span class="badge bg-warning rounded-0 text-black">EF-34-GH</span>
-            </span>
-          </td>
-          <td class="fw-bold">Volkswagen</td>
-          <td class="fw-bold">60 dagen</td>
-          <td class="text-start align-middle">
-            <span class="align-items-center display-flex" id="actions_1">
-              <mat-icon aria-hidden="false" title="Aanpassen" class="pencil_color pointer-hover me-3" aria-label="edit" fontIcon="edit"></mat-icon>
-              <mat-icon aria-hidden="false" title="Verwijderen" class="trash_color pointer-hover" aria-label="trash" fontIcon="delete" (click)="this.prompt(true, 1);$event.stopPropagation()"></mat-icon>
-            </span>
-            <span class="text-nowrap prompt" id="delete_prompt_1">
-              <mat-icon aria-hidden="false" title="Definitief verwijderen" class="trash_color pointer-hover me-3" aria-label="delete forever" fontIcon="delete_forever" (click)="this.delete(1);$event.stopPropagation()"></mat-icon>
-              <mat-icon aria-hidden="false" title="Ongedaan maken" class="pencil_color pointer-hover" aria-label="undo" fontIcon="undo" (click)="this.prompt(false, 1);$event.stopPropagation()"></mat-icon>
-            </span>
-          </td>
-        </tr>
-      </tbody>
+        <tbody>
+          <ng-container *ngFor="let order of this.orders | async">
+            <tr (click)="rotate(order.id)" class="fw-bold" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse'+order.id" aria-expanded="false">
+              <th scope="row">{{ order.id }}</th>
+              <td>
+                {{ order.orderer }}
+              </td>
+              <td>
+                {{ 'dummy' }}
+              </td>
+              <td>
+                {{ 'dummy' }}
+              </td>
+              <td>{{ order.orderDate }}</td>
+              <td><span class="badge bg-success">{{ this.translateStatus(order.leaseOrderStatus) }}</span></td>
+              <td class="text-start align-middle">
+                <span class="align-items-center display-flex" id="actions_{{ order.id }}">
+                  <a routerLink="/orders/{{ order.id }}" target="_blank" class="align-items-center display-flex"><mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Bekijken" class="eye-color pointer-hover me-3" aria-label="view" fontIcon="visibility" (click)="$event.stopPropagation()"></mat-icon></a>
+                  <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Aanpassen" class="pencil-color pointer-hover me-3" aria-label="edit" fontIcon="edit" (click)="$event.stopPropagation()"></mat-icon>
+                  <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Verwijderen" class="trash-color pointer-hover" aria-label="trash" fontIcon="delete" (click)="this.prompt(true, 1);$event.stopPropagation()"></mat-icon>
+                </span>
+                <span class="text-nowrap prompt" id="delete_prompt_{{ order.id }}">
+                  <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Verwijderen" class="trash-color pointer-hover hidden me-3" aria-label="trash" fontIcon="delete"></mat-icon>
+                  <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Definitief verwijderen" class="trash-color pointer-hover me-3" aria-label="delete forever" fontIcon="delete_forever" (click)="this.delete(1);$event.stopPropagation()"></mat-icon>
+                  <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Ongedaan maken" class="pencil-color pointer-hover" aria-label="undo" fontIcon="undo" (click)="this.prompt(false, 1);$event.stopPropagation()"></mat-icon>
+                </span>
+              </td>
+              <td class="text-start align-middle">
+                <span class="align-items-center display-flex">
+                  <mat-icon id="arrow{{ order.id }}" title="Open" aria-hidden="false" class="trash-color pointer-hover close-arrow" aria-label="arrow_down" fontIcon="keyboard_arrow_down"></mat-icon>
+                </span>
+              </td>
+            </tr>
+            <tr class="collapseContainingDiv">
+              <td colspan="8">
+                <div class="collapse border-top border-bottom" id="{{'collapse' + order.id }}">
+                  <div class="row p-3">
+                    <div class="col-12 col-lg-3">
+                      <div class="list-group">
+                        <a class="list-group-item list-group-item-action bg-dark fw-bold" style="color: #c13350;" aria-current="true">
+                          Informatie
+                        </a>
+                        <a class="list-group-item list-group-item-action"><b>Besteldatum: </b>{{ order.orderDate }}</a>
+                        <a class="list-group-item list-group-item-action"><b>Bestel door: </b>{{ order.orderer }}</a>
+                        <a class="list-group-item list-group-item-action"><b>Offerte: </b>{{ order.quotationPath }}</a>
+                        <a class="list-group-item list-group-item-action"><b>Leaseplan: </b>{{ order.leasePlanPath }}</a>
+                        <a class="list-group-item list-group-item-action"><b>Verwachte leverweek: </b>{{ order.weekOfDelivery }}</a>
+                        <a class="list-group-item list-group-item-action"><b>Leverdatum: </b>{{ order.deliveryDate }}</a>
+                        <a class="list-group-item list-group-item-action"><b>Status: </b>{{ this.translateStatus(order.leaseOrderStatus) }}</a>
+                      </div>
+                    </div>
+                    <div class="col-12 col-lg-3">
+                      <div class="list-group">
+                        <a class="list-group-item list-group-item-action bg-dark fw-bold" style="color: #c13350;" aria-current="true">
+                          Bestelling voor
+                        </a>
+                        <a class="list-group-item list-group-item-action"><b>Geslacht: </b>Man</a>
+                        <a class="list-group-item list-group-item-action"><b>Naam: </b>Douwe</a>
+                        <a class="list-group-item list-group-item-action"><b>Achternaam: </b>Leeuw</a>
+                        <a class="list-group-item list-group-item-action"><b>tussenvoegsel: </b>de</a>
+                        <a class="list-group-item list-group-item-action"><b>E-mailadres: </b>ddleeuw@quintor.nl</a>
+                        <a class="list-group-item list-group-item-action"><b>Telefoonnummer: </b>+31 6 27 61 23 12</a>
+                        <a class="list-group-item list-group-item-action"><b>Functie: </b>Software Developer</a>
+                        <a class="list-group-item list-group-item-action"><b>Rijbewijs: </b>B</a>
+                        <a class="list-group-item list-group-item-action"><b>Parttime: </b>80%</a>
+                      </div>
+                    </div>
+                    <div class="col-12 col-lg-3">
+                      <div class="list-group">
+                        <a class="list-group-item list-group-item-action bg-dark fw-bold" style="color: #c13350;" aria-current="true">
+                          Contract
+                        </a>
+                        <a class="list-group-item list-group-item-action"><b>Regeling: </b>A2</a>
+                        <a class="list-group-item list-group-item-action"><b>Ondertekend: </b>Ja</a>
+                        <a class="list-group-item list-group-item-action"><b>Looptijd: </b>36 maanden</a>
+                        <a class="list-group-item list-group-item-action"><b>Leasemaatschappij: </b>LeasePlan</a>
+                        <a class="list-group-item list-group-item-action"><b>Fiscale bijtelling: </b>22%</a>
+                        <a class="list-group-item list-group-item-action"><b>Eigen bijdrage: </b>57.04 (10% parttime)</a>
+                      </div>
+                    </div>
+                    <div class="col-12 col-lg-3">
+                      <div class="list-group">
+                        <a class="list-group-item list-group-item-action bg-dark fw-bold" style="color: #c13350;" aria-current="true">
+                          Leaseauto
+                        </a>
+                        <a class="list-group-item list-group-item-action"><b>Merk: </b>Audi</a>
+                        <a class="list-group-item list-group-item-action"><b>Model: </b>A4 Avant</a>
+                        <a class="list-group-item list-group-item-action"><b>Extra/kleur: </b>Agate Black</a>
+                        <a class="list-group-item list-group-item-action"><b>Verbrandingsmotor: </b>Benzine</a>
+                        <a class="list-group-item list-group-item-action"><b>Huidige kilometrage: </b>12500 km</a>
+                        <a class="list-group-item list-group-item-action"><b>Fiscale waarde (incl. btw): </b>€21.225,55</a>
+                        <a class="list-group-item list-group-item-action"><b>Bijzonderheden: </b>Trekhaak</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
     </table>
   </div>
 </div>

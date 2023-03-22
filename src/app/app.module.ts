@@ -11,6 +11,7 @@ import { NavbarComponent } from './component/navbar/navbar.component';
 import { LeasecarsComponent } from './component/leasecars/leasecars.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from "@angular/material/icon";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { MatIconModule } from "@angular/material/icon";
         RouterOutlet,
         NgbModule,
         BrowserAnimationsModule,
-        MatIconModule
+        MatIconModule,
+        HttpClientModule
     ],
   providers: [],
   bootstrap: [AppComponent]

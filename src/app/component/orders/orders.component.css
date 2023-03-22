@@ -1,7 +1,10 @@
+.collapseContainingDiv td {
+  padding: 0 !important;
+}
+
 table {
   border-spacing: 0 10px;
   border-collapse: collapse;
-
 }
 
 .prompt {
@@ -32,6 +35,16 @@ table {
   color: green;
 }
 
+.open-arrow {
+  transform: rotate(180deg);
+  transition: transform 0.2s linear;
+}
+
+.close-arrow {
+  transform: rotate(0deg);
+  transition: transform 0.2s linear;
+}
+
 .hidden {
   visibility: hidden;
 }
@@ -47,7 +60,6 @@ table {
 tr {
   line-height: 50px;
   min-height: 50px;
-  height: 50px;
   background-color: white;
 }
 
@@ -63,10 +75,18 @@ tr:active {
   box-shadow: 1px 1px 6px 3px lightgray;
 }
 
-.pencil_color {
+.pencil-color {
   color: #ffb605;
 }
 
-.trash_color {
-  color: #ff6048;
+.eye-color {
+  color: dodgerblue;
+}
+
+.trash-color {
+  color: red;
+}
+
+.arrow-color {
+  color: #c13350;
 }
