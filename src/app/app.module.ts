@@ -11,7 +11,10 @@ import { NavbarComponent } from './component/navbar/navbar.component';
 import { LeasecarsComponent } from './component/leasecars/leasecars.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from "@angular/material/icon";
-import {HttpClientModule} from "@angular/common/http";
+import { HttpClientModule } from "@angular/common/http";
+import { AddOrderComponent } from './component/add-order/add-order.component';
+import { OrderCollapseDataComponent } from "./component/order-collapse-data/order-collapse-data.component";
+import { DataToolsComponent } from './component/data-tools/data-tools.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +23,10 @@ import {HttpClientModule} from "@angular/common/http";
     OrderComponent,
     DashboardComponent,
     NavbarComponent,
-    LeasecarsComponent
+    LeasecarsComponent,
+    AddOrderComponent,
+    OrderCollapseDataComponent,
+    DataToolsComponent
   ],
     imports: [
         BrowserModule,

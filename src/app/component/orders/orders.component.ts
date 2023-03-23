@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
-import {OrderService} from "../../service/order.service";
-import {Observable} from "rxjs";
-import {Order} from "../../interface/order";
+import { Component, OnInit } from '@angular/core';
+import { Router } from "@angular/router";
+import { OrderService } from "../../service/order.service";
+import { first, Observable } from "rxjs";
+import { Order } from "../../interface/order";
 
 @Component({
   selector: 'app-tableheaders',
@@ -11,16 +11,17 @@ import {Order} from "../../interface/order";
 })
 export class OrdersComponent implements OnInit {
 
-  orders: Observable<Order[]> | undefined;
+  orders: Order[] | undefined;
 
   constructor(private router: Router, private _orderService: OrderService) {
-
   }
 
   ngOnInit(): void {
     this._orderService.fetchOrders().then((orders: Observable<any>) => {
-      this.orders = orders;
-    })
+      orders.pipe(first()).subscribe((orders) => {
+        this.orders = orders;
+      });
+    });
   }
 
   translateStatus(status: string): string {
@@ -39,32 +40,30 @@ export class OrdersComponent implements OnInit {
   rotate(id: number): void {
 
     // @ts-ignore
-    let arrow: HTMLElement = document.getElementById('arrow'+id);
+   let expanded: string = document.getElementById('row'+id).getAttribute('aria-expanded');
 
     // @ts-ignore
-    let title: string = arrow.title;
+    let arrow: HTMLElement = document.getElementById('arrow'+id);
 
-    if(title == 'Open') {
+    if(expanded == 'true') {
       arrow.classList.replace('close-arrow', 'open-arrow');
-      arrow.title = 'Close';
+      arrow.title = 'Sluit';
     }
-    else if(title == 'Close') {
+    else if(expanded == 'false') {
       arrow.classList.replace('open-arrow', 'close-arrow');
       arrow.title = 'Open';
     }
   }
 
   delete(id: number): void {
-  }
-
-  open(id: number): void {
-    this.router.navigate(['/orders/' + id]);
+    // @ts-ignore
+    this.orders = this.orders.filter(order => order.id !== id);
   }
 
   prompt(show: boolean, id: number): void {
     if(show) {
       // @ts-ignore
-      document.getElementById('actions_'+id).style.display = 'none';
+      let span = document.getElementById('actions_'+id).style.display = 'none';
 
       // @ts-ignore
       document.getElementById('delete_prompt_'+id).style.display = 'flex';
@@ -74,6 +73,8 @@ export class OrdersComponent implements OnInit {
 
       // @ts-ignore
       document.getElementById('actions_'+id).style.display = 'flex';
+
+      console.log("Show");
     }
   }
 }

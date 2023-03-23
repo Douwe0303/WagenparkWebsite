@@ -2,9 +2,17 @@
   padding: 0 !important;
 }
 
+.display-flex {
+  display: flex;
+}
+
 table {
   border-spacing: 0 10px;
   border-collapse: collapse;
+}
+
+.plus-color {
+  color: green;
 }
 
 .prompt {
@@ -25,14 +33,6 @@ table {
 
 .border-color-secondary {
   border-color: #ced4da;
-}
-
-.display-flex {
-  display: flex;
-}
-
-.plus-color {
-  color: green;
 }
 
 .open-arrow {

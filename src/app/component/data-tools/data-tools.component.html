@@ -1,0 +1,15 @@
+<div class="row">
+  <div class="col-12 col-md-6 col-xxl-4 mt-3">
+    <button type="button" class="btn btn-light border-color-secondary align-items-center display-flex text-nowrap mx-auto mx-md-0" title="Klik hier om een nieuwe bestelling toe te voegen">
+      <mat-icon aria-hidden="false" class="plus-color pointer-hover" aria-label="add_box" fontIcon="add_box"></mat-icon>{{ this.addText }}
+    </button>
+  </div>
+  <div class="col-12 col-md-6 col-xxl-4 mt-3">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="{{ this.searchText }}" [attr.aria-label]="this.ariaLabel" aria-describedby="button-addon2">
+      <button class="btn btn-outline-dark align-items-center display-flex" type="button" id="button-addon2">
+        <mat-icon aria-hidden="false" class="pointer-hover ms-0 ps-0" aria-label="search" fontIcon="search"></mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

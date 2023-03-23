@@ -16,7 +16,8 @@ const routes: Routes = [
   },
   {
     path: 'orders/:id',
-    component: OrderComponent,
+    title: 'View Order',
+    component: OrderComponent
   },
   {
     path: 'leasecars',

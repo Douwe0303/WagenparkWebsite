@@ -7,4 +7,14 @@ import { Component } from '@angular/core';
 })
 export class NavbarComponent {
 
+  audio: HTMLAudioElement = new Audio();
+
+  constructor() {
+    this.audio.src = "assets/audio/car/VincentToetToet.mp4";
+    this.audio.load();
+  }
+
+  playSound(): void {
+    this.audio.play();
+  }
 }

@@ -24,10 +24,6 @@ table {
  border-color: #ced4da;
 }
 
-.display-flex {
-  display: flex;
-}
-
 .plus-color {
   color: green;
 }
