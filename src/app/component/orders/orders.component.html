@@ -17,9 +17,8 @@
     </div>
   </div>
   <div>
-    <app-add-order></app-add-order>
+    <app-add-order (newOrderEvent)="this.addOrder($event)"></app-add-order>
   </div>
-<!--  <app-data-tools [addText]="'bestelling toevoegen'" [searchText]="'Zoek op bestuurder..'" [ariaLabel]="'Zoek bestelling'"></app-data-tools>-->
   <table class="table table-hover table-borderless mt-4 shadow-all bg-light">
       <thead>
         <tr class="table-header">

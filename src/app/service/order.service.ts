@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {Order} from "../interface/order";
 
 @Injectable({
   providedIn: 'root'
@@ -11,16 +12,14 @@ export class OrderService {
   constructor(private http: HttpClient) { }
 
   async fetchOrders(): Promise<any> {
-    let headers = new HttpHeaders({
-      'Access-Control-Allow-Origin': '*',
-    })
-    return this.http.get(this.ORDER_URL, {headers: headers});
+    return this.http.get(this.ORDER_URL);
   }
 
-  async deleteOrder(id: number): Promise<any> {
-    let headers = new HttpHeaders({
-      'Access-Control-Allow-Origin': '*',
-    })
-    return this.http.delete(this.ORDER_URL+id, {headers: headers});
+  async createOrder(order: Order): Promise<any> {
+    return this.http.post(this.ORDER_URL, order)
+  }
+
+  async deleteOrder(id: number | undefined): Promise<any> {
+    return this.http.delete(this.ORDER_URL+id);
   }
 }

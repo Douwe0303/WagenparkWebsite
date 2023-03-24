@@ -5,9 +5,9 @@ export class DummyOrder implements Order {
   supplier: string = "";
   orderer: string = "";
   leaseOrderStatus: string = "";
-  orderDate: Date = new Date();
-  deliveryDate: Date = new Date();
-  weekOfDelivery: string = "";
+  orderDate: string = "";
+  deliveryDate: string = "";
+  weekOfDelivery: number = 0;
   quotationPath: string = "";
   leasePlanPath: string = "";
 }

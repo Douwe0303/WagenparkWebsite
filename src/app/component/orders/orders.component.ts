@@ -37,7 +37,7 @@ export class OrdersComponent implements OnInit {
     }
   }
 
-  rotate(id: number): void {
+  rotate(id: number | undefined): void {
 
     // @ts-ignore
    let expanded: string = document.getElementById('row'+id).getAttribute('aria-expanded');
@@ -55,12 +55,24 @@ export class OrdersComponent implements OnInit {
     }
   }
 
-  delete(id: number): void {
-    // @ts-ignore
-    this.orders = this.orders.filter(order => order.id !== id);
+  delete(id: number | undefined): void {
+    this._orderService.deleteOrder(id).then((call) => {
+      call.pipe(first()).subscribe(() => {
+        // @ts-ignore
+        this.orders = this.orders.filter(order => order.id !== id);
+      })
+      //TODO: catch error and show error to client
+    }).catch((error) => {
+      console.log(error);
+    })
   }
 
-  prompt(show: boolean, id: number): void {
+  addOrder(order: Order): void {
+    // @ts-ignore
+    this.orders.push(order);
+  }
+
+  prompt(show: boolean, id: number | undefined): void {
     if(show) {
       // @ts-ignore
       let span = document.getElementById('actions_'+id).style.display = 'none';

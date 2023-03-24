@@ -15,6 +15,8 @@ import { HttpClientModule } from "@angular/common/http";
 import { AddOrderComponent } from './component/add-order/add-order.component';
 import { OrderCollapseDataComponent } from "./component/order-collapse-data/order-collapse-data.component";
 import { DataToolsComponent } from './component/data-tools/data-tools.component';
+import {FormsModule} from "@angular/forms";
+import {DatePipe} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -26,18 +28,19 @@ import { DataToolsComponent } from './component/data-tools/data-tools.component'
     LeasecarsComponent,
     AddOrderComponent,
     OrderCollapseDataComponent,
-    DataToolsComponent
+    DataToolsComponent,
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        RouterOutlet,
-        NgbModule,
-        BrowserAnimationsModule,
-        MatIconModule,
-        HttpClientModule
-    ],
-  providers: [],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    RouterOutlet,
+    NgbModule,
+    BrowserAnimationsModule,
+    MatIconModule,
+    HttpClientModule,
+    FormsModule
+  ],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
