@@ -6,7 +6,7 @@ import {Sorting} from "../enum/sorting";
   name: 'orderSort'
 })
 export class OrderSortPipe implements PipeTransform {
-  transform(array: Order[], field: string, sorting: Sorting): any[] {
+  transform(array: Order[], field: string, sorting: Sorting, reload: boolean): any[] {
     if (!Array.isArray(array)) {
       //@ts-ignore
       return;

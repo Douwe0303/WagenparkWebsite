@@ -13,8 +13,11 @@ import {Sorting} from "../../enum/sorting";
 export class OrdersComponent implements OnInit {
 
   orders: Order[] = [];
-  sorting: Sorting = Sorting.DESC;
+  sorting: Sorting = Sorting.ASC;
   sortingField: string = "id";
+  searchText: string = "";
+  reload: boolean = false;
+  show = true;
 
   constructor(private router: Router, private _orderService: OrderService) {
   }
@@ -117,10 +120,14 @@ export class OrdersComponent implements OnInit {
     this.orders.push(order);
   }
 
+  reloadOrders(): void {
+    this.reload = !this.reload;
+  }
+
   prompt(show: boolean, id: number | undefined): void {
     if(show) {
       // @ts-ignore
-      let span = document.getElementById('actions_'+id).style.display = 'none';
+      document.getElementById('actions_'+id).style.display = 'none';
 
       // @ts-ignore
       document.getElementById('delete_prompt_'+id).style.display = 'flex';

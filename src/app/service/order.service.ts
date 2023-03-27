@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {Order} from "../interface/order";
 
 @Injectable({
@@ -15,7 +15,7 @@ export class OrderService {
     return this.http.get(this.ORDER_URL);
   }
 
-  async createOrder(order: Order): Promise<any> {
+  async createOrder(order: Order | null): Promise<any> {
     return this.http.post(this.ORDER_URL, order);
   }
 

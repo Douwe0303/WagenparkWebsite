@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Injectable, Output, ViewChild} from '@angular/core';
+import { Component, EventEmitter, Injectable, Output } from '@angular/core';
 import { NgbDateParserFormatter, NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
 import { OrderService } from "../../service/order.service";
 import { Order } from "../../interface/order";
@@ -50,31 +50,30 @@ export class AddOrderComponent {
   quotationPath: string = "";
 
   @Output() newOrderEvent = new EventEmitter<Order>();
-  isValid(id: string): void {
 
+  async loading(): Promise<void> {
+    await new Promise(f => setTimeout(f, 1000));
+  }
+
+  close(): void {
+    // @ts-ignore
+    document.getElementById('open-add-order').click();
   }
 
   create(): void {
     this.displayElement('add-order-button', 'none');
     this.displayElement('add-loading-spinner', 'flex');
 
-    if(this.status == undefined) {
-      return;
-    }
-
     let order: Order | null = this.getOrder();
 
-    if(!order) {
-      this.displayElement('add-loading-spinner', 'none');
-      this.displayElement('add-order-button', 'flex')
-      return;
-    }
-
-    this._orderService.createOrder(order).then((call) => {
-      call.pipe(first()).subscribe((order: Order) => {
-        this.newOrderEvent.emit(order);
-        this.displayElement('add-loading-spinner', 'none');
-        this.displayElement('add-order-button', 'flex');
+    this.loading().then(() => {
+      this._orderService.createOrder(order).then((call) => {
+        call.pipe(first()).subscribe((order: Order) => {
+          this.newOrderEvent.emit(order);
+          this.displayElement('add-loading-spinner', 'none');
+          this.displayElement('add-order-button', 'flex');
+          this.close();
+        })
       })
     })
   }

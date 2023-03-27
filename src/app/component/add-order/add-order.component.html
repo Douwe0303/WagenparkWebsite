@@ -2,11 +2,12 @@
   <div class="accordion mt-4" id="accordionExample">
     <div class="accordion-item">
       <h2 class="accordion-header" id="headingOne">
-        <button class="accordion-button bg-dark brick-red rounded-top" aria-expanded="false" aria-controls="collapseOne">
-          Bestellingsformulier <a data-bs-toggle="offcanvas" href="#bestellingsinformatie" role="button" aria-controls="offcanvasExample">
-          <mat-icon title="info" aria-hidden="false" class="ms-2 text-white pointer-hover" aria-label="info" fontIcon="info"></mat-icon>
+        <a class="accordion-button text-decoration-none bg-dark brick-red rounded-top" aria-expanded="true" aria-controls="collapseOne">
+          Bestellingsformulier
+          <a class="d-flex align-items-center" data-bs-toggle="offcanvas" href="#bestellingsinformatie" role="button" aria-controls="offcanvasExample">
+          <mat-icon title="info" aria-hidden="false" class="ms-2 pointer-hover info-button" aria-label="info" fontIcon="info"></mat-icon>
+          </a>
         </a>
-        </button>
       </h2>
       <div id="collapseOne" class="accordion-collapse collapse show">
         <form id="addForm" #addOrderForm="ngForm" class="needs-validation" novalidate>
@@ -104,7 +105,7 @@
             <button [disabled]="addOrderForm.form.invalid" type="submit" id="add-order-button" aria-expanded="false" aria-controls="collapseExample" (click)="this.create();" class="btn btn-light border-dark align-items-center display-flex text-nowrap mt-5 mx-auto mx-md-0" title="Klik hier om een nieuwe bestelling toe te voegen">
               <mat-icon aria-hidden="false" class="me-2 plus-color pointer-hover" aria-label="add_box" fontIcon="add_box"></mat-icon>Nieuwe bestelling toevoegen
             </button>
-            <div id="add-loading-spinner" class="spinner-border text-danger display-none" role="status">
+            <div id="add-loading-spinner" class="spinner-border brick-red display-none" role="status">
               <span class="sr-only"></span>
             </div>
           </div>
