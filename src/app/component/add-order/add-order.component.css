@@ -2,6 +2,10 @@
   display: flex;
 }
 
+.display-none {
+  display: none;
+}
+
 .plus-color {
   color: green;
 }

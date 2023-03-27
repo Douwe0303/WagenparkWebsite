@@ -16,7 +16,7 @@ export class OrderService {
   }
 
   async createOrder(order: Order): Promise<any> {
-    return this.http.post(this.ORDER_URL, order)
+    return this.http.post(this.ORDER_URL, order);
   }
 
   async deleteOrder(id: number | undefined): Promise<any> {

@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import { OrderService } from "../../service/order.service";
 import { first, Observable } from "rxjs";
 import { Order } from "../../interface/order";
+import {Sorting} from "../../enum/sorting";
 
 @Component({
   selector: 'app-tableheaders',
@@ -11,7 +12,9 @@ import { Order } from "../../interface/order";
 })
 export class OrdersComponent implements OnInit {
 
-  orders: Order[] | undefined;
+  orders: Order[] = [];
+  sorting: Sorting = Sorting.DESC;
+  sortingField: string = "id";
 
   constructor(private router: Router, private _orderService: OrderService) {
   }
@@ -24,20 +27,62 @@ export class OrdersComponent implements OnInit {
     });
   }
 
-  translateStatus(status: string): string {
+  translateStatus(status: string, id: number | undefined): string {
     switch(status) {
       case 'ORDERED':
+        // @ts-ignore
+        document.getElementById('status'+id).classList.add('bg-primary');
         return "besteld";
       case 'DELIVERED':
+        // @ts-ignore
+        document.getElementById('status'+id).classList.add('bg-success');
         return "geleverd";
       case 'DELAYED':
+        // @ts-ignore
+        document.getElementById('status'+id).classList.add('bg-warning');
         return "vertraagd";
+      case 'SHIPPED':
+        // @ts-ignore
+        document.getElementById('status'+id).classList.add('bg-secondary');
+        return "onderweg";
+      case 'UKNOWN':
+        return "onbekend";
+      case 'CANCELED':
+        // @ts-ignore
+        document.getElementById('status'+id).classList.add('bg-danger');
+        return "geannuleerd";
+      case 'PROCESSED':
+        // @ts-ignore
+        document.getElementById('status'+id).classList.add('bg-dark');
+        return "verwerkt";
       default:
         return "dummy";
     }
   }
 
-  rotate(id: number | undefined): void {
+  setSorting(field: string): void {
+    // @ts-ignore
+    let toSort: HTMLElement = document.getElementById('sorting-'+field);
+
+    if(field != this.sortingField) {
+      // @ts-ignore
+      document.getElementById('sorting-'+this.sortingField).classList.replace('opacity-100', 'opacity-25')
+      // @ts-ignore
+      toSort.classList.replace('opacity-25', 'opacity-100');
+    }
+
+    this.sortingField = field;
+
+    if(toSort.classList.contains('rotate-to-180')) {
+      this.sorting = Sorting.ASC;
+      toSort.classList.replace('rotate-to-180', 'rotate-to-0');
+    } else {
+      this.sorting = Sorting.DESC;
+      toSort.classList.replace('rotate-to-0', 'rotate-to-180');
+    }
+  }
+
+  rotateArrow(id: number | undefined): void {
 
     // @ts-ignore
    let expanded: string = document.getElementById('row'+id).getAttribute('aria-expanded');
@@ -46,11 +91,11 @@ export class OrdersComponent implements OnInit {
     let arrow: HTMLElement = document.getElementById('arrow'+id);
 
     if(expanded == 'true') {
-      arrow.classList.replace('close-arrow', 'open-arrow');
+      arrow.classList.replace('rotate-to-0', 'rotate-to-180');
       arrow.title = 'Sluit';
     }
     else if(expanded == 'false') {
-      arrow.classList.replace('open-arrow', 'close-arrow');
+      arrow.classList.replace('rotate-to-180', 'rotate-to-0');
       arrow.title = 'Open';
     }
   }

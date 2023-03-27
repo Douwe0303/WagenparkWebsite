@@ -22,30 +22,56 @@
   <table class="table table-hover table-borderless mt-4 shadow-all bg-light">
       <thead>
         <tr class="table-header">
-          <th scope="col">
+          <th scope="col" class="pointer-hover" (click)="this.setSorting('id');">
             <div class="d-flex align-items-center">
               <img alt="driver" src="assets/image/tableheaders/counter.png" class="me-1 table-header-height">
               <span class="hidden">#</span>
+              <mat-icon id="sorting-id" title="sorteer besteller" aria-hidden="false" class="ms-2 pointer-hover rotate-to-0 brick-red opacity-100" aria-label="sort_by_alpha" fontIcon="arrow_drop_up"></mat-icon>
             </div>
           </th>
-          <th scope="col">Besteller</th>
-          <th scope="col">Bestuurder</th>
-          <th scope="col">Automerk</th>
-          <th scope="col">Besteldatum</th>
-          <th scope="col">Status</th>
+          <th scope="col" class="pointer-hover" (click)="this.setSorting('orderer');">
+            <div class="d-flex align-items-center">
+              Besteller
+              <mat-icon id="sorting-orderer" title="sorteer besteller" aria-hidden="false" class="ms-2 pointer-hover rotate-to-0 brick-red opacity-25" aria-label="sort_by_alpha" fontIcon="arrow_drop_up"></mat-icon>
+            </div>
+          </th>
+          <th scope="col" class="pointer-hover" (click)="this.setSorting('driver');">
+            <div class="d-flex align-items-center">
+              Bestuurder
+              <mat-icon id="sorting-driver"  title="sorteer Bestuurder" aria-hidden="false" class="ms-2 pointer-hover rotate-to-0 brick-red opacity-25" aria-label="sort_by_alpha" fontIcon="arrow_drop_up"></mat-icon>
+            </div>
+          </th>
+          <th scope="col" class="pointer-hover" (click)="this.setSorting('carbrand');">
+            <div class="d-flex align-items-center">
+              Automerk
+              <mat-icon id="sorting-carbrand" title="sorteer automerk" aria-hidden="false" class="ms-2 pointer-hover rotate-to-0 brick-red opacity-25" aria-label="sort_by_alpha" fontIcon="arrow_drop_up"></mat-icon>
+            </div>
+          </th>
+          <th scope="col" class="pointer-hover" (click)="this.setSorting('orderDate');">
+            <div class="d-flex align-items-center">
+              Besteldatum
+              <mat-icon id="sorting-orderDate" title="sorteer besteldatum" aria-hidden="false" class="ms-2 pointer-hover rotate-to-0 brick-red opacity-25" aria-label="sort_by_alpha" fontIcon="arrow_drop_up"></mat-icon>
+            </div>
+          </th>
+          <th scope="col" class="pointer-hover" (click)="this.setSorting('leaseOrderStatus');">
+            <div class="d-flex align-items-center">
+              Status
+              <mat-icon id="sorting-leaseOrderStatus" title="sorteer status" aria-hidden="false" class="ms-2 pointer-hover rotate-to-0 brick-red opacity-25" aria-label="sort_by_alpha" fontIcon="arrow_drop_up"></mat-icon>
+            </div>
+          </th>
           <th scope="col">Actie</th>
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
-        <ng-container *ngFor="let order of this.orders">
-          <tr id="row{{ order.id }}" (click)="rotate(order.id)" class="fw-bold" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse'+order.id" aria-expanded="false">
+        <ng-container *ngFor="let order of this.orders | orderSort: this.sortingField: this.sorting ">
+          <tr id="row{{ order.id }}" (click)="rotateArrow(order.id)" class="fw-bold" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse'+order.id" aria-expanded="false">
             <th scope="row">{{ order.id }}</th>
             <td>{{ order.orderer }}</td>
             <td>{{ 'dummy' }}</td>
             <td>{{ 'dummy' }}</td>
             <td>{{ order.orderDate }}</td>
-            <td><span class="badge bg-success">{{ this.translateStatus(order.leaseOrderStatus) }}</span></td>
+            <td><span id="status{{order.id}}" class="badge" style="font-size: 0.9em">{{ this.translateStatus(order.leaseOrderStatus, order.id) }}</span></td>
             <td class="text-start align-middle">
               <span class="align-items-center display-flex" id="actions_{{ order.id }}">
                 <a routerLink="/orders/{{ order.id }}" target="_blank" class="align-items-center display-flex"><mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Bekijken" class="eye-color pointer-hover me-3" aria-label="view" fontIcon="visibility"></mat-icon></a>
@@ -60,13 +86,13 @@
             </td>
             <td class="text-start align-middle">
               <span class="align-items-center display-flex">
-                <mat-icon id="arrow{{ order.id }}" title="Open" aria-hidden="false" class="trash-color pointer-hover close-arrow" aria-label="arrow_down" fontIcon="keyboard_arrow_down"></mat-icon>
+                <mat-icon id="arrow{{ order.id }}" title="Open" aria-hidden="false" class="trash-color pointer-hover rotate-to-0" aria-label="arrow_down" fontIcon="keyboard_arrow_down"></mat-icon>
               </span>
             </td>
           </tr>
           <tr class="collapseContainingDiv">
             <td colspan="8">
-              <app-order-collapse-data [order]="order" [orderStatus]="translateStatus(order.leaseOrderStatus)"></app-order-collapse-data>
+              <app-order-collapse-data [order]="order" [orderStatus]="translateStatus(order.leaseOrderStatus, order.id)"></app-order-collapse-data>
             </td>
           </tr>
         </ng-container>

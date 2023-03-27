@@ -4,8 +4,8 @@ export interface Order {
   orderer: string;
   leaseOrderStatus: string;
   orderDate: string;
-  deliveryDate: string;
-  weekOfDelivery: number;
-  quotationPath: string;
-  leasePlanPath: string;
+  deliveryDate: string | null;
+  weekOfDelivery: number | null;
+  quotationPath: string | null;
+  leasePlanPath: string | null;
 }

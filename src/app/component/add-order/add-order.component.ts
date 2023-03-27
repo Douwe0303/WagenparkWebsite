@@ -1,8 +1,8 @@
-import {Component, EventEmitter, Injectable, Output} from '@angular/core';
-import {NgbDateParserFormatter, NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
-import {OrderService} from "../../service/order.service";
-import {Order} from "../../interface/order";
-import {DatePipe} from "@angular/common";
+import {Component, EventEmitter, Injectable, Output, ViewChild} from '@angular/core';
+import { NgbDateParserFormatter, NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
+import { OrderService } from "../../service/order.service";
+import { Order } from "../../interface/order";
+import { first } from "rxjs";
 
 @Injectable()
 export class CustomDateParserFormatter extends NgbDateParserFormatter {
@@ -35,7 +35,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 })
 export class AddOrderComponent {
 
-  constructor(private _orderService: OrderService, private datePipe: DatePipe) {}
+  constructor(private _orderService: OrderService) {}
 
   dateOfOrder: NgbDateStruct | undefined;
   dateOfDelivery: NgbDateStruct | undefined;
@@ -44,38 +44,59 @@ export class AddOrderComponent {
   driver: string = "";
   supplier: string = "";
   carBrand: string = "";
-  status: string = "Status";
+  status: string | undefined;
   expectedWeek: number = 0;
   leaseplanPath: string = "";
   quotationPath: string = "";
 
   @Output() newOrderEvent = new EventEmitter<Order>();
+  isValid(id: string): void {
+
+  }
 
   create(): void {
+    this.displayElement('add-order-button', 'none');
+    this.displayElement('add-loading-spinner', 'flex');
+
+    if(this.status == undefined) {
+      return;
+    }
+
     let order: Order | null = this.getOrder();
 
     if(!order) {
+      this.displayElement('add-loading-spinner', 'none');
+      this.displayElement('add-order-button', 'flex')
       return;
     }
 
     this._orderService.createOrder(order).then((call) => {
-      call.subscribe((order: Order) => {
+      call.pipe(first()).subscribe((order: Order) => {
         this.newOrderEvent.emit(order);
+        this.displayElement('add-loading-spinner', 'none');
+        this.displayElement('add-order-button', 'flex');
       })
     })
   }
 
-  getOrder(): Order | null {
-    if(!this.dateOfOrder || !this.dateOfDelivery) {
-      return null;
-    }
+  displayElement(element: string, display: string): void {
+    // @ts-ignore
+    document.getElementById(element).style.display = display;
+  }
 
+  getOrder(): Order | null {
+    // @ts-ignore
     let orderDate = this.dateOfOrder.day + "-" + this.dateOfOrder.month + "-" + this.dateOfOrder.year;
-    let deliveryDate = this.dateOfDelivery.day + "-" + this.dateOfDelivery.month + "-" + this.dateOfDelivery.year;
+    let deliveryDate = null;
+
+    if(this.dateOfDelivery != null) {
+      deliveryDate = this.dateOfDelivery.day + "-" + this.dateOfDelivery.month + "-" + this.dateOfDelivery.year;
+    }
 
     return {
       supplier: this.supplier,
       orderer: this.orderer,
+      //@ts-ignore
       leaseOrderStatus: this.status,
       orderDate: orderDate,
       deliveryDate: deliveryDate,

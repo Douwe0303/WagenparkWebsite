@@ -15,9 +15,8 @@ import { HttpClientModule } from "@angular/common/http";
 import { AddOrderComponent } from './component/add-order/add-order.component';
 import { OrderCollapseDataComponent } from "./component/order-collapse-data/order-collapse-data.component";
 import { DataToolsComponent } from './component/data-tools/data-tools.component';
-import {FormsModule} from "@angular/forms";
-import {DatePipe} from "@angular/common";
-
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { OrderSortPipe } from './pipe/order-sort.pipe';
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,6 +28,7 @@ import {DatePipe} from "@angular/common";
     AddOrderComponent,
     OrderCollapseDataComponent,
     DataToolsComponent,
+    OrderSortPipe,
   ],
   imports: [
     BrowserModule,
@@ -38,9 +38,8 @@ import {DatePipe} from "@angular/common";
     BrowserAnimationsModule,
     MatIconModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
   ],
-  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
