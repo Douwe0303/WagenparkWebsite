@@ -1,5 +1,21 @@
 <app-navbar></app-navbar>
 
+<!-- Flexbox container for aligning the toasts -->
+<div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center w-100">
+
+  <!-- Then put toasts within -->
+  <div id="toastOrder" class="toast bg-light position-fixed" [ngClass]="{show: this.show}" style="z-index: 10;" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <strong id="toastTitle" class="me-auto">Bestelling toegevoegd!</strong>
+      <small id="toastId">ID: 20</small>
+      <button type="button" class="btn-close" (click)="this.show = false;" aria-label="Close"></button>
+    </div>
+    <div id="toastBody" class="toast-body fw-bold">
+      Er is een nieuwe bestelling toegevoegd!
+    </div>
+  </div>
+</div>
+
 <div class="container mt-3 table-responsive">
   <div class="row">
     <div class="col-12 col-md-6 col-xxl-4 mt-3">
@@ -17,7 +33,7 @@
     </div>
   </div>
   <div>
-    <app-add-order (newOrderEvent)="this.addOrder($event);this.reloadOrders();"></app-add-order>
+    <app-add-order (newOrderEvent)="this.addOrder($event);this.reloadOrders();this.showToast('Bestelling toegevoegd!', $event.id, 'De bestelling is toegevoegd!', 'green')"></app-add-order>
   </div>
   <table class="table table-hover table-borderless mt-4 shadow-all bg-light">
     <thead>
@@ -80,7 +96,7 @@
             </span>
             <span class="text-nowrap prompt" id="delete_prompt_{{ order.id }}">
               <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Verwijderen" class="trash-color pointer-hover hidden me-3" aria-label="trash" fontIcon="delete"></mat-icon>
-              <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Definitief verwijderen" class="trash-color pointer-hover me-3" aria-label="delete forever" fontIcon="delete_forever" (click)="this.delete(order.id);$event.stopPropagation()"></mat-icon>
+              <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Definitief verwijderen" class="trash-color pointer-hover me-3" aria-label="delete forever" fontIcon="delete_forever" (click)="this.delete(order.id);this.showToast('Bestelling verwijderd!', order.id, 'De bestelling is verwijderd!', 'red');$event.stopPropagation()"></mat-icon>
               <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Ongedaan maken" class="pencil-color pointer-hover" aria-label="undo" fontIcon="undo" (click)="this.prompt(false, order.id);$event.stopPropagation()"></mat-icon>
             </span>
           </td>

@@ -17,7 +17,7 @@ export class OrdersComponent implements OnInit {
   sortingField: string = "id";
   searchText: string = "";
   reload: boolean = false;
-  show = true;
+  show = false;
 
   constructor(private router: Router, private _orderService: OrderService) {
   }
@@ -28,6 +28,22 @@ export class OrdersComponent implements OnInit {
         this.orders = orders;
       });
     });
+  }
+
+  showToast(toastTitle: string, toastId: number | undefined, toastBody: string, color: string): void {
+    // @ts-ignore
+    let title: HTMLElement = document.getElementById('toastTitle');
+
+    title.innerText = toastTitle;
+    title.style.color = color;
+
+     // @ts-ignore
+    document.getElementById('toastId').innerText = "ID: " + toastId;
+
+    // @ts-ignore
+    document.getElementById('toastBody').innerText = toastBody;
+
+    this.show = true;
   }
 
   translateStatus(status: string, id: number | undefined): string {
