@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Injectable, Output } from '@angular/core';
 import { NgbDateParserFormatter, NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
-import { OrderService } from "../../service/order.service";
-import { Order } from "../../interface/order";
+import { OrderService } from "../../../service/order.service";
+import { Order } from "../../../interface/order";
 import { first } from "rxjs";
 
 @Injectable()

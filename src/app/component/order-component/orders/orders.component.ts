@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from "@angular/router";
-import { OrderService } from "../../service/order.service";
+import { OrderService } from "../../../service/order.service";
 import { first, Observable } from "rxjs";
-import { Order } from "../../interface/order";
-import { Sorting } from "../../enum/sorting";
+import { Order } from "../../../interface/order";
+import { Sorting } from "../../../enum/sorting";
 import { NgbDropdown } from "@ng-bootstrap/ng-bootstrap";
-import { OrderStatus } from "../../class/order-status";
+import { OrderStatus } from "../../../class/order-status";
 
 @Component({
   selector: 'app-tableheaders',
@@ -132,6 +132,10 @@ export class OrdersComponent implements OnInit {
 
     let oldStatus: any = this.getOrderStatus(order.leaseOrderStatus);
     let newStatus: any = this.getOrderStatus(status.code);
+
+    if(oldStatus == newStatus) {
+      return;
+    }
 
     order.leaseOrderStatus = status.code;
 

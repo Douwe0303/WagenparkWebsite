@@ -40,7 +40,7 @@
       <tr class="table-header">
         <th scope="col" class="pointer-hover" (click)="this.setSorting('id');">
           <div class="d-flex align-items-center">
-            <img alt="driver" src="assets/image/tableheaders/counter.png" class="me-1 table-header-height">
+            <img alt="driver" src="../../../../assets/image/tableheaders/counter.png" class="me-1 table-header-height">
             <span class="hidden">#</span>
             <mat-icon id="sorting-id" title="sorteer besteller" aria-hidden="false" class="ms-2 pointer-hover rotate-to-0 brick-red opacity-100" aria-label="sort_by_alpha" fontIcon="arrow_drop_up"></mat-icon>
           </div>
@@ -83,23 +83,23 @@
       <ng-container *ngFor="let order of this.orders | orderFilter: this.searchText: this.reload | orderSort: this.sortingField: this.sorting: this.reload;">
         <tr id="row{{ order.id }}" (click)="rotateArrow(order.id);" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse'+order.id" aria-expanded="false">
           <th scope="row">{{ order.id }}</th>
-          <td class="pe-5">{{ order.orderer }}</td>
-          <td class="pe-5">{{ 'Dummy' }}</td>
+          <td>{{ order.orderer }}</td>
+          <td>{{ 'Dummy' }}</td>
           <td class="pe-5">{{ 'Dummy' }}</td>
           <td class="pe-5">{{ order.orderDate }}</td>
-          <td class="pe-5">
+          <td class="pe-5" style="width: 15%">
             <div ngbDropdown #dropdown class="btn-group w-100">
               <button ngbDropdownToggle id="status{{order.id}}" (click)="openStatusMenu();" class="btn btn-sm btn-group-sm dropdown-toggle btn-primary" data-bs-toggle="collapse" data-bs-target="" aria-expanded="false">
                 {{ this.translateStatus(order.leaseOrderStatus, order.id) }}
               </button>
               <ul ngbDropdownMenu class="dropdown-menu" data-bs-toggle="collapse" data-bs-target="" [attr.aria-labelledby]="'status'+order.id">
-                <li><a class="dropdown-item" (click)="this.editStatus(order.id, this.OrderStatus.unknown);">Onbekend</a></li>
-                <li><a class="dropdown-item" (click)="this.editStatus(order.id, this.OrderStatus.ordered);">Besteld</a></li>
-                <li><a class="dropdown-item" (click)="this.editStatus(order.id, this.OrderStatus.processed);">Verwerkt</a></li>
-                <li><a class="dropdown-item" (click)="this.editStatus(order.id, this.OrderStatus.delayed);">Vertraagd</a></li>
-                <li><a class="dropdown-item" (click)="this.editStatus(order.id, this.OrderStatus.canceled);">Geannuleerd</a></li>
-                <li><a class="dropdown-item" (click)="this.editStatus(order.id, this.OrderStatus.shipped);">Onderweg</a></li>
-                <li><a class="dropdown-item" (click)="this.editStatus(order.id, this.OrderStatus.delivered);">Geleverd</a></li>
+                <li><a class="dropdown-item {{ this.getOrderStatus(order.leaseOrderStatus).code == this.OrderStatus.unknown.code ? 'd-none' : '' }}" (click)="this.editStatus(order.id, this.OrderStatus.unknown);">Onbekend</a></li>
+                <li><a class="dropdown-item {{ this.getOrderStatus(order.leaseOrderStatus).code == this.OrderStatus.ordered.code ? 'd-none' : '' }}" (click)="this.editStatus(order.id, this.OrderStatus.ordered);">Besteld</a></li>
+                <li><a class="dropdown-item {{ this.getOrderStatus(order.leaseOrderStatus).code == this.OrderStatus.processed.code ? 'd-none' : '' }}" (click)="this.editStatus(order.id, this.OrderStatus.processed);">Verwerkt</a></li>
+                <li><a class="dropdown-item {{ this.getOrderStatus(order.leaseOrderStatus).code == this.OrderStatus.delayed.code ? 'd-none' : '' }}" (click)="this.editStatus(order.id, this.OrderStatus.delayed);">Vertraagd</a></li>
+                <li><a class="dropdown-item {{ this.getOrderStatus(order.leaseOrderStatus).code == this.OrderStatus.canceled.code ? 'd-none' : '' }}" (click)="this.editStatus(order.id, this.OrderStatus.canceled);">Geannuleerd</a></li>
+                <li><a class="dropdown-item {{ this.getOrderStatus(order.leaseOrderStatus).code == this.OrderStatus.shipped.code ? 'd-none' : '' }}" (click)="this.editStatus(order.id, this.OrderStatus.shipped);">Onderweg</a></li>
+                <li><a class="dropdown-item {{ this.getOrderStatus(order.leaseOrderStatus).code == this.OrderStatus.delivered.code ? 'd-none' : '' }}" (click)="this.editStatus(order.id, this.OrderStatus.delivered);">Geleverd</a></li>
               </ul>
             </div>
           </td>

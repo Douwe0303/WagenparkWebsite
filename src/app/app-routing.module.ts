@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from "@angular/router";
-import { OrdersComponent } from "./component/orders/orders.component";
+import { OrdersComponent } from "./component/order-component/orders/orders.component";
 import { DashboardComponent } from "./component/dashboard/dashboard.component";
-import { OrderComponent } from "./component/order/order.component";
+import { OrderComponent } from "./component/order-component/order/order.component";
 import { LeasecarsComponent } from "./component/leasecars/leasecars.component";
 
 const routes: Routes = [
