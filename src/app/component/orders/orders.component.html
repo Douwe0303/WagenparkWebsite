@@ -80,14 +80,29 @@
       </tr>
     </thead>
     <tbody>
-      <ng-container *ngFor="let order of this.orders | orderFilter: this.searchText: this.reload | orderSort: this.sortingField: this.sorting: this.reload">
-        <tr id="row{{ order.id }}" (click)="rotateArrow(order.id)" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse'+order.id" aria-expanded="false">
+      <ng-container *ngFor="let order of this.orders | orderFilter: this.searchText: this.reload | orderSort: this.sortingField: this.sorting: this.reload;">
+        <tr id="row{{ order.id }}" (click)="rotateArrow(order.id);" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse'+order.id" aria-expanded="false">
           <th scope="row">{{ order.id }}</th>
-          <td>{{ order.orderer }}</td>
-          <td>{{ 'Dummy' }}</td>
-          <td>{{ 'Dummy' }}</td>
-          <td>{{ order.orderDate }}</td>
-          <td><span id="status{{order.id}}" class="badge" style="font-size: 0.9em">{{ this.translateStatus(order.leaseOrderStatus, order.id) }}</span></td>
+          <td class="pe-5">{{ order.orderer }}</td>
+          <td class="pe-5">{{ 'Dummy' }}</td>
+          <td class="pe-5">{{ 'Dummy' }}</td>
+          <td class="pe-5">{{ order.orderDate }}</td>
+          <td class="pe-5">
+            <div ngbDropdown #dropdown class="btn-group w-100">
+              <button ngbDropdownToggle id="status{{order.id}}" (click)="openStatusMenu();" class="btn btn-sm btn-group-sm dropdown-toggle btn-primary" data-bs-toggle="collapse" data-bs-target="" aria-expanded="false">
+                {{ this.translateStatus(order.leaseOrderStatus, order.id) }}
+              </button>
+              <ul ngbDropdownMenu class="dropdown-menu" data-bs-toggle="collapse" data-bs-target="" [attr.aria-labelledby]="'status'+order.id">
+                <li><a class="dropdown-item" (click)="this.editStatus(order.id, this.OrderStatus.unknown);">Onbekend</a></li>
+                <li><a class="dropdown-item" (click)="this.editStatus(order.id, this.OrderStatus.ordered);">Besteld</a></li>
+                <li><a class="dropdown-item" (click)="this.editStatus(order.id, this.OrderStatus.processed);">Verwerkt</a></li>
+                <li><a class="dropdown-item" (click)="this.editStatus(order.id, this.OrderStatus.delayed);">Vertraagd</a></li>
+                <li><a class="dropdown-item" (click)="this.editStatus(order.id, this.OrderStatus.canceled);">Geannuleerd</a></li>
+                <li><a class="dropdown-item" (click)="this.editStatus(order.id, this.OrderStatus.shipped);">Onderweg</a></li>
+                <li><a class="dropdown-item" (click)="this.editStatus(order.id, this.OrderStatus.delivered);">Geleverd</a></li>
+              </ul>
+            </div>
+          </td>
           <td class="text-start align-middle">
             <span class="align-items-center display-flex" id="actions_{{ order.id }}">
               <a routerLink="/orders/{{ order.id }}" target="_blank" class="align-items-center display-flex"><mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Bekijken" class="eye-color pointer-hover me-3" aria-label="view" fontIcon="visibility"></mat-icon></a>
@@ -108,7 +123,7 @@
         </tr>
         <tr class="collapseContainingDiv">
           <td colspan="8">
-            <app-order-collapse-data [order]="order" [orderStatus]="translateStatus(order.leaseOrderStatus, order.id)"></app-order-collapse-data>
+            <app-order-collapse-data [order]="order" [orderStatus]="getOrderStatus(order.leaseOrderStatus).text"></app-order-collapse-data>
           </td>
         </tr>
       </ng-container>

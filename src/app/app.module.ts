@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {NgbDropdown, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { OrdersComponent } from './component/orders/orders.component';
 import { OrderComponent } from './component/order/order.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -41,6 +41,7 @@ import { OrderFilterPipe } from './pipe/order-filter.pipe';
     MatIconModule,
     HttpClientModule,
     FormsModule,
+    NgbDropdown
   ],
   bootstrap: [AppComponent]
 })

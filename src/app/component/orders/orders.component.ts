@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from "@angular/router";
 import { OrderService } from "../../service/order.service";
 import { first, Observable } from "rxjs";
 import { Order } from "../../interface/order";
-import {Sorting} from "../../enum/sorting";
+import { Sorting } from "../../enum/sorting";
+import { NgbDropdown } from "@ng-bootstrap/ng-bootstrap";
+import { OrderStatus } from "../../class/order-status";
 
 @Component({
   selector: 'app-tableheaders',
@@ -19,8 +21,12 @@ export class OrdersComponent implements OnInit {
   reload: boolean = false;
   show = false;
 
-  constructor(private router: Router, private _orderService: OrderService) {
-  }
+  @ViewChild(NgbDropdown, { static: true })
+  public dropdown: NgbDropdown | undefined;
+
+  readonly OrderStatus = OrderStatus;
+
+  constructor(private router: Router, private _orderService: OrderService) {}
 
   ngOnInit(): void {
     this._orderService.fetchOrders().then((orders: Observable<any>) => {
@@ -28,6 +34,10 @@ export class OrdersComponent implements OnInit {
         this.orders = orders;
       });
     });
+  }
+
+  openStatusMenu(): void {
+    this.dropdown?.open();
   }
 
   showToast(toastTitle: string, toastId: number | undefined, toastBody: string, color: string): void {
@@ -47,36 +57,13 @@ export class OrdersComponent implements OnInit {
   }
 
   translateStatus(status: string, id: number | undefined): string {
-    switch(status) {
-      case 'ORDERED':
-        // @ts-ignore
-        document.getElementById('status'+id).classList.add('bg-primary');
-        return "besteld";
-      case 'DELIVERED':
-        // @ts-ignore
-        document.getElementById('status'+id).classList.add('bg-success');
-        return "geleverd";
-      case 'DELAYED':
-        // @ts-ignore
-        document.getElementById('status'+id).classList.add('bg-warning');
-        return "vertraagd";
-      case 'SHIPPED':
-        // @ts-ignore
-        document.getElementById('status'+id).classList.add('bg-secondary');
-        return "onderweg";
-      case 'UKNOWN':
-        return "onbekend";
-      case 'CANCELED':
-        // @ts-ignore
-        document.getElementById('status'+id).classList.add('bg-danger');
-        return "geannuleerd";
-      case 'PROCESSED':
-        // @ts-ignore
-        document.getElementById('status'+id).classList.add('bg-dark');
-        return "verwerkt";
-      default:
-        return "dummy";
-    }
+    let statusId: string = 'status'+id;
+    let defaultClass: string = 'btn-primary';
+    let orderStatus: any = this.getOrderStatus(status);
+
+    this.replaceClass(statusId, defaultClass, 'btn-'+orderStatus.color);
+
+    return orderStatus.text;
   }
 
   setSorting(field: string): void {
@@ -132,8 +119,51 @@ export class OrdersComponent implements OnInit {
   }
 
   addOrder(order: Order): void {
-    // @ts-ignore
     this.orders.push(order);
+  }
+
+  replaceClass(id: string, oldClass: string, newClass: string): void {
+    document.getElementById(id)?.classList.replace(oldClass, newClass);
+  }
+
+  editStatus(id: number, status: any): void {
+    let index: number = this.orders.findIndex(order => order.id == id);
+    let order: Order = this.orders[index];
+
+    let oldStatus: any = this.getOrderStatus(order.leaseOrderStatus);
+    let newStatus: any = this.getOrderStatus(status.code);
+
+    order.leaseOrderStatus = status.code;
+
+    this._orderService.editOrder(order).then(r => r.pipe(first()).subscribe(() => {
+      this.showToast('Bestelstatus gewijzigd!', id, 'De status van de bestelling is gewijzigd.', 'orange');
+      this.replaceClass('status'+id, 'btn-'+oldStatus.color, 'btn-'+newStatus.color);
+    }));
+  }
+
+  getOrderStatus(status: string): any {
+    switch(status) {
+      case OrderStatus.ordered.code:
+        return OrderStatus.ordered;
+
+      case OrderStatus.delivered.code:
+        return OrderStatus.delivered;
+
+      case OrderStatus.delayed.code:
+        return OrderStatus.delayed;
+
+      case OrderStatus.shipped.code:
+        return OrderStatus.shipped;
+
+      case OrderStatus.unknown.code:
+        return OrderStatus.unknown;
+
+      case OrderStatus.canceled.code:
+        return OrderStatus.canceled;
+
+      case OrderStatus.processed.code:
+        return OrderStatus.processed;
+    }
   }
 
   reloadOrders(): void {
@@ -153,8 +183,6 @@ export class OrdersComponent implements OnInit {
 
       // @ts-ignore
       document.getElementById('actions_'+id).style.display = 'flex';
-
-      console.log("Show");
     }
   }
 }

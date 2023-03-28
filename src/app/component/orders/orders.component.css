@@ -2,6 +2,14 @@
   padding: 0 !important;
 }
 
+.dropdown-item {
+  height: 30px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+
 .display-flex {
   display: flex;
 }

@@ -22,4 +22,8 @@ export class OrderService {
   async deleteOrder(id: number | undefined): Promise<any> {
     return this.http.delete(this.ORDER_URL+id);
   }
+
+  async editOrder(order: Order | null): Promise<any> {
+    return this.http.put(this.ORDER_URL+order?.id, order);
+  }
 }

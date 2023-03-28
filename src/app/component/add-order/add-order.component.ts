@@ -6,7 +6,7 @@ import { first } from "rxjs";
 
 @Injectable()
 export class CustomDateParserFormatter extends NgbDateParserFormatter {
-  readonly DELIMITER = '/';
+  readonly DELIMITER = '-';
 
   parse(value: string): NgbDateStruct | null {
     if (value) {
