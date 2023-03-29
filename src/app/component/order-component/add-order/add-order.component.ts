@@ -48,6 +48,12 @@ export class AddOrderComponent {
   expectedWeek: number = 0;
   leaseplanPath: string = "";
   quotationPath: string = "";
+  carModel: string = "";
+  carExtra: string = "";
+  carEngine: string = "";
+  carKilometers: number = 0;
+  carPrice: number = 0;
+  carParticularities: string = "";
 
   @Output() newOrderEvent = new EventEmitter<Order>();
 
@@ -102,6 +108,17 @@ export class AddOrderComponent {
       weekOfDelivery: this.expectedWeek,
       quotationPath: this.quotationPath,
       leasePlanPath: this.leaseplanPath,
+      leaseCar: {
+        id: 0,
+        brand: this.carBrand,
+        driver: this.driver,
+        model: this.carModel,
+        extra: this.carExtra,
+        engine: this.carEngine,
+        kilometers: this.carKilometers,
+        price: this.carPrice,
+        particularities: this.carParticularities
+      }
     }
   }
 }

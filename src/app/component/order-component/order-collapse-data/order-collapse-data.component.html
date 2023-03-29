@@ -48,13 +48,13 @@
         <a class="list-group-item list-group-item-action bg-dark fw-bold" style="color: #c13350;" aria-current="true">
           Leaseauto
         </a>
-        <a class="list-group-item list-group-item-action"><b>Merk: </b>Audi</a>
-        <a class="list-group-item list-group-item-action"><b>Model: </b>A4 Avant</a>
-        <a class="list-group-item list-group-item-action"><b>Extra/kleur: </b>Agate Black</a>
-        <a class="list-group-item list-group-item-action"><b>Verbrandingsmotor: </b>Benzine</a>
-        <a class="list-group-item list-group-item-action"><b>Huidige kilometrage: </b>12500 km</a>
-        <a class="list-group-item list-group-item-action"><b>Fiscale waarde (incl. btw): </b>€21.225,55</a>
-        <a class="list-group-item list-group-item-action"><b>Bijzonderheden: </b>Trekhaak</a>
+        <a class="list-group-item list-group-item-action"><b>Merk: </b>{{ order.leaseCar.brand }}</a>
+        <a class="list-group-item list-group-item-action"><b>Model: </b>{{ order.leaseCar.model }}</a>
+        <a class="list-group-item list-group-item-action"><b>Extra/kleur: </b>{{ order.leaseCar.extra }}</a>
+        <a class="list-group-item list-group-item-action"><b>Verbrandingsmotor: </b>{{ order.leaseCar.engine }}</a>
+        <a class="list-group-item list-group-item-action"><b>Huidige kilometrage: </b>{{ order.leaseCar.kilometers }} km</a>
+        <a class="list-group-item list-group-item-action"><b>Fiscale waarde (incl. btw): </b>€{{ order.leaseCar.price }}</a>
+        <a class="list-group-item list-group-item-action"><b>Bijzonderheden: </b>{{ order.leaseCar.particularities }}</a>
       </div>
     </div>
   </div>

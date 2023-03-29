@@ -5,6 +5,7 @@ import { first, Observable } from "rxjs";
 import { Order } from "../../../interface/order";
 import { Sorting } from "../../../enum/sorting";
 import { NgbDropdown } from "@ng-bootstrap/ng-bootstrap";
+import { ToastOrderComponent } from "../toast-order/toast-order.component";
 import { OrderStatus } from "../../../class/order-status";
 
 @Component({
@@ -14,21 +15,35 @@ import { OrderStatus } from "../../../class/order-status";
 })
 export class OrdersComponent implements OnInit {
 
-  orders: Order[] = [];
-  sorting: Sorting = Sorting.ASC;
-  sortingField: string = "id";
-  searchText: string = "";
-  reload: boolean = false;
-  show = false;
+  public orders: Order[] = [];
+  public sorting: Sorting = Sorting.ASC;
+  public sortingField: string = "id";
+  public searchText: string = "";
+  public reload: boolean = false;
+  private opened: boolean = false;
 
   @ViewChild(NgbDropdown, { static: true })
   public dropdown: NgbDropdown | undefined;
 
-  readonly OrderStatus = OrderStatus;
+  @ViewChild(ToastOrderComponent)
+  public toastOrder: ToastOrderComponent = new ToastOrderComponent();
+
+  public ORDERSTATUS = OrderStatus;
 
   constructor(private router: Router, private _orderService: OrderService) {}
 
   ngOnInit(): void {
+    this.fetchOrders();
+  }
+
+  scroll(el: any) {
+    if(!this.opened) {
+      el.scrollIntoView()
+    }
+    this.opened = !this.opened;
+  }
+
+  fetchOrders(): void {
     this._orderService.fetchOrders().then((orders: Observable<any>) => {
       orders.pipe(first()).subscribe((orders) => {
         this.orders = orders;
@@ -40,26 +55,10 @@ export class OrdersComponent implements OnInit {
     this.dropdown?.open();
   }
 
-  showToast(toastTitle: string, toastId: number | undefined, toastBody: string, color: string): void {
-    // @ts-ignore
-    let title: HTMLElement = document.getElementById('toastTitle');
-
-    title.innerText = toastTitle;
-    title.style.color = color;
-
-     // @ts-ignore
-    document.getElementById('toastId').innerText = "ID: " + toastId;
-
-    // @ts-ignore
-    document.getElementById('toastBody').innerText = toastBody;
-
-    this.show = true;
-  }
-
   translateStatus(status: string, id: number | undefined): string {
     let statusId: string = 'status'+id;
     let defaultClass: string = 'btn-primary';
-    let orderStatus: any = this.getOrderStatus(status);
+    let orderStatus: any = this._orderService.getOrderStatus(status);
 
     this.replaceClass(statusId, defaultClass, 'btn-'+orderStatus.color);
 
@@ -67,24 +66,26 @@ export class OrdersComponent implements OnInit {
   }
 
   setSorting(field: string): void {
+
+    let newId: string = 'sorting-'+field;
+    let oldId: string = 'sorting-'+this.sortingField;
+
     // @ts-ignore
     let toSort: HTMLElement = document.getElementById('sorting-'+field);
 
     if(field != this.sortingField) {
-      // @ts-ignore
-      document.getElementById('sorting-'+this.sortingField).classList.replace('opacity-100', 'opacity-25')
-      // @ts-ignore
-      toSort.classList.replace('opacity-25', 'opacity-100');
+      this.replaceClass(oldId, 'opacity-100', 'opacity-25');
+      this.replaceClass(newId, 'opacity-25', 'opacity-100');
     }
 
     this.sortingField = field;
 
     if(toSort.classList.contains('rotate-to-180')) {
       this.sorting = Sorting.ASC;
-      toSort.classList.replace('rotate-to-180', 'rotate-to-0');
+      this.replaceClass(newId, 'rotate-to-180', 'rotate-to-0');
     } else {
       this.sorting = Sorting.DESC;
-      toSort.classList.replace('rotate-to-0', 'rotate-to-180');
+      this.replaceClass(newId, 'rotate-to-0', 'rotate-to-180');
     }
   }
 
@@ -122,6 +123,10 @@ export class OrdersComponent implements OnInit {
     this.orders.push(order);
   }
 
+  getOrderStatus(status: string): any {
+    return this._orderService.getOrderStatus(status);
+  }
+
   replaceClass(id: string, oldClass: string, newClass: string): void {
     document.getElementById(id)?.classList.replace(oldClass, newClass);
   }
@@ -130,8 +135,8 @@ export class OrdersComponent implements OnInit {
     let index: number = this.orders.findIndex(order => order.id == id);
     let order: Order = this.orders[index];
 
-    let oldStatus: any = this.getOrderStatus(order.leaseOrderStatus);
-    let newStatus: any = this.getOrderStatus(status.code);
+    let oldStatus: any = this._orderService.getOrderStatus(order.leaseOrderStatus);
+    let newStatus: any = this._orderService.getOrderStatus(status.code);
 
     if(oldStatus == newStatus) {
       return;
@@ -140,34 +145,10 @@ export class OrdersComponent implements OnInit {
     order.leaseOrderStatus = status.code;
 
     this._orderService.editOrder(order).then(r => r.pipe(first()).subscribe(() => {
-      this.showToast('Bestelstatus gewijzigd!', id, 'De status van de bestelling is gewijzigd.', 'orange');
+      // @ts-ignore
+      this.toastOrder.showToast('Bestelstatus gewijzigd!', id, 'De status van de bestelling is gewijzigd.', 'orange');
       this.replaceClass('status'+id, 'btn-'+oldStatus.color, 'btn-'+newStatus.color);
     }));
-  }
-
-  getOrderStatus(status: string): any {
-    switch(status) {
-      case OrderStatus.ordered.code:
-        return OrderStatus.ordered;
-
-      case OrderStatus.delivered.code:
-        return OrderStatus.delivered;
-
-      case OrderStatus.delayed.code:
-        return OrderStatus.delayed;
-
-      case OrderStatus.shipped.code:
-        return OrderStatus.shipped;
-
-      case OrderStatus.unknown.code:
-        return OrderStatus.unknown;
-
-      case OrderStatus.canceled.code:
-        return OrderStatus.canceled;
-
-      case OrderStatus.processed.code:
-        return OrderStatus.processed;
-    }
   }
 
   reloadOrders(): void {

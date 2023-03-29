@@ -10,4 +10,16 @@ export class DummyOrder implements Order {
   weekOfDelivery: number = 0;
   quotationPath: string = "";
   leasePlanPath: string = "";
+  leaseCar: any =
+    {
+      id: 0,
+      brand: "",
+      driver: "",
+      model: "",
+      extra: "",
+      engine: "",
+      kilometers: 0,
+      price: 0.00,
+      particularities: ""
+  }
 }

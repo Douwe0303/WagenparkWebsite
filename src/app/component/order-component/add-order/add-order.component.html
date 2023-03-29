@@ -1,3 +1,5 @@
+<app-off-canvas></app-off-canvas>
+
 <div class="collapse" id="collapseExample">
   <div class="accordion mt-4" id="accordionExample">
     <div class="accordion-item">
@@ -15,23 +17,13 @@
             <div class="row">
               <div class="col-12 col-md-6 col-xxl-4">
                 <div class="form-floating mb-3">
-                  <input [(ngModel)]="orderer" #ordererInput="ngModel" name="orderer" type="text" [class.is-invalid]="ordererInput.invalid" [class.is-valid]="ordererInput.valid" class="form-control" id="ordererInput" placeholder="John Doe" required>
+                    <input [(ngModel)]="orderer" #ordererInput="ngModel" name="orderer" type="text" [class.is-invalid]="ordererInput.invalid" [class.is-valid]="ordererInput.valid" class="form-control" id="ordererInput" placeholder="John Doe" required>
                   <label for="ordererInput">Besteller <span class="brick-red">*</span></label>
-                </div>
-                <div class="form-floating mb-3">
-                  <input [(ngModel)]="driver" #driverInput="ngModel" [class.is-invalid]="driverInput.invalid" [class.is-valid]="driverInput.valid" name="driver" type="text" class="form-control" id="driverInput" placeholder="Jane Doe" required>
-                  <label for="driverInput">Bestuurder <span class="brick-red">*</span></label>
                 </div>
                 <div class="form-floating mb-3">
                   <input [(ngModel)]="supplier" #supplierInput="ngModel" [class.is-invalid]="supplierInput.invalid" [class.is-valid]="supplierInput.valid" name="supplier" type="text" class="form-control" id="supplierInput" placeholder="Jane Doe" required>
                   <label for="supplierInput">Leverancier <span class="brick-red">*</span></label>
                 </div>
-                <div class="form-floating mb-3">
-                  <input [(ngModel)]="carBrand" #carBrandInput="ngModel" [class.is-invalid]="carBrandInput.invalid" [class.is-valid]="carBrandInput.valid" name="carbrand" type="text" class="form-control" id="carInput" placeholder="Jane Doe" required>
-                  <label for="driverInput">Automerk <span class="brick-red">*</span></label>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-xxl-4">
                 <div class="input-group mb-3">
                   <div class="form-floating">
                     <input
@@ -91,6 +83,42 @@
                   <label for="statusSelect">De status van de bestelling <span class="brick-red">*</span></label>
                 </div>
               </div>
+              <div class="col-12 col-md-6 col-xxl-2">
+                <div class="form-floating mb-3">
+                  <input [(ngModel)]="driver" #driverInput="ngModel" [class.is-invalid]="driverInput.invalid" [class.is-valid]="driverInput.valid && driverInput.dirty" name="driver" type="text" class="form-control" id="driverInput" placeholder="Jane Doe" required>
+                  <label for="driverInput">Bestuurder <span class="brick-red">*</span></label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input [(ngModel)]="carBrand" #carBrandInput="ngModel" [class.is-invalid]="carBrandInput.invalid" [class.is-valid]="carBrandInput.valid && carBrandInput.dirty" name="carbrand" type="text" class="form-control" id="carBrandInput" placeholder="Jane Doe">
+                  <label for="carBrandInput">Automerk <span class="brick-red"></span></label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input [(ngModel)]="carModel" #carModelInput="ngModel" [class.is-invalid]="carModelInput.invalid" [class.is-valid]="carModelInput.valid && carModelInput.dirty" name="carModel" type="text" class="form-control" id="carModelInput" placeholder="Jane Doe">
+                  <label for="carModelInput">Model <span class="brick-red"></span></label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input [(ngModel)]="carExtra" #carExtraInput="ngModel" [class.is-invalid]="carExtraInput.invalid" [class.is-valid]="carExtraInput.valid && carExtraInput.dirty" name="carExtra" type="text" class="form-control" id="carExtraInput" placeholder="Jane Doe">
+                  <label for="carExtraInput">Extra <span class="brick-red"></span></label>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-xxl-2">
+                <div class="form-floating mb-3">
+                  <input [(ngModel)]="carEngine" #carEngineInput="ngModel" [class.is-invalid]="carEngineInput.invalid" [class.is-valid]="carEngineInput.valid && carEngineInput.dirty" name="carEngine" type="text" class="form-control" id="carEngineInput" placeholder="Jane Doe">
+                  <label for="carEngineInput">Motor <span class="brick-red"></span></label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input [(ngModel)]="carKilometers" #carKilometersInput="ngModel" [class.is-invalid]="carKilometersInput.invalid" [class.is-valid]="carKilometersInput.valid && carKilometersInput.dirty" name="carKilometers" type="text" class="form-control" id="carKilometersInput" placeholder="Jane Doe">
+                  <label for="carKilometersInput">Aantal kilometers <span class="brick-red"></span></label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input [(ngModel)]="carPrice" #carPriceInput="ngModel" [class.is-invalid]="carPriceInput.invalid" [class.is-valid]="carPriceInput.valid && carPriceInput.dirty" name="carPrice" type="text" class="form-control" id="carPriceInput" placeholder="Jane Doe">
+                  <label for="carPriceInput">Fiscale waarde <span class="brick-red"></span></label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input [(ngModel)]="carParticularities" #carParticularitiesInput="ngModel" [class.is-invalid]="carParticularitiesInput.invalid" [class.is-valid]="carParticularitiesInput.valid && carParticularitiesInput.dirty" name="carParticularities" type="text" class="form-control" id="carParticularitiesInput" placeholder="Jane Doe">
+                  <label for="carParticularitiesInput">Bijzonderheden <span class="brick-red"></span></label>
+                </div>
+              </div>
               <div class="col-12 col-xxl-4">
                 <div class="input-group mb-3 label-hover">
                   <label class="input-group-text w-50" for="leasePlanInput">Upload leaseplan</label>
@@ -111,18 +139,6 @@
           </div>
         </form>
       </div>
-    </div>
-  </div>
-</div>
-
-<div class="offcanvas offcanvas-start" tabindex="-1" id="bestellingsinformatie" aria-labelledby="Bestellingsformulier informatie">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="offcanvasExampleLabel"><b>Informatie bestellingsformulier</b><hr>  </h5>
-    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body">
-    <div>
-      <b>De velden met een asterisk (<span class="brick-red">*</span>) zijn verplicht. Deze velden mogen niet leeg zijn.</b>
     </div>
   </div>
 </div>
