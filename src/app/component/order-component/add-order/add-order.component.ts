@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Injectable, Output } from '@angular/core';
 import { NgbDateParserFormatter, NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
-import { OrderService } from "../../../service/order.service";
-import { Order } from "../../../interface/order";
+import { OrderService } from "../../../service/order/order.service";
+import { OrderDto } from "../../../interface/order-dto";
 import { first } from "rxjs";
 
 @Injectable()
@@ -55,7 +55,7 @@ export class AddOrderComponent {
   carPrice: number = 0;
   carParticularities: string = "";
 
-  @Output() newOrderEvent = new EventEmitter<Order>();
+  @Output() newOrderEvent = new EventEmitter<OrderDto>();
 
   async loading(): Promise<void> {
     await new Promise(f => setTimeout(f, 1000));
@@ -70,11 +70,11 @@ export class AddOrderComponent {
     this.displayElement('add-order-button', 'none');
     this.displayElement('add-loading-spinner', 'flex');
 
-    let order: Order | null = this.getOrder();
+    let order: OrderDto | null = this.getOrder();
 
     this.loading().then(() => {
       this._orderService.createOrder(order).then((call) => {
-        call.pipe(first()).subscribe((order: Order) => {
+        call.pipe(first()).subscribe((order: OrderDto) => {
           this.newOrderEvent.emit(order);
           this.displayElement('add-loading-spinner', 'none');
           this.displayElement('add-order-button', 'flex');
@@ -89,10 +89,10 @@ export class AddOrderComponent {
     document.getElementById(element).style.display = display;
   }
 
-  getOrder(): Order | null {
+  getOrder(): OrderDto | null {
     // @ts-ignore
     let orderDate = this.dateOfOrder.day + "-" + this.dateOfOrder.month + "-" + this.dateOfOrder.year;
-    let deliveryDate = null;
+    let deliveryDate = undefined;
 
     if(this.dateOfDelivery != null) {
       deliveryDate = this.dateOfDelivery.day + "-" + this.dateOfDelivery.month + "-" + this.dateOfDelivery.year;

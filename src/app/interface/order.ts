@@ -1,22 +1,40 @@
 export interface Order {
-  id?: number;
-  supplier: string;
-  orderer: string;
-  leaseOrderStatus: string;
-  orderDate: string;
-  deliveryDate: string | null;
-  weekOfDelivery: number | null;
-  quotationPath: string | null;
-  leasePlanPath: string | null;
-  leaseCar: {
-    id?: number,
-    brand: string | null,
-    driver: string | null,
-    model: string | null,
-    extra: string | null,
-    engine: string | null,
-    kilometers: number | null,
-    price: number | null,
-    particularities: string | null
+  data: {
+    id: {
+      value?: number,
+      translation: string
+    }
+    supplier: {
+      value: string,
+      translation: string
+    }
+    orderer: {
+      value: string,
+      translation: string
+    }
+    leaseOrderStatus: {
+      value: string,
+      translation: string
+    }
+    orderDate: {
+      value: string,
+      translation: string
+    }
+    deliveryDate: {
+      value?: string,
+      translation: string
+    }
+    weekOfDelivery: {
+      value?: number,
+      translation: string
+    }
+    quotationPath: {
+      value?: string,
+      translation: string
+    }
+    leasePlanPath: {
+      value?: string,
+      translation: string
+    }
   }
 }

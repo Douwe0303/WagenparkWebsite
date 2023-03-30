@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from "@angular/router";
-import { OrdersComponent } from "./component/order-component/orders/orders.component";
-import { DashboardComponent } from "./component/dashboard/dashboard.component";
-import { LeasecarsComponent } from "./component/leasecars/leasecars.component";
-import { PagenotfoundComponent } from "./component/pagenotfound/pagenotfound.component";
+import { OrdersComponent } from "./component/page/orders-page/orders.component";
+import { DashboardComponent } from "./component/page/dashboard-page/dashboard.component";
+import { LeasecarsComponent } from "./component/page/leasecars-page/leasecars.component";
+import { PagenotfoundComponent } from "./component/page/notfound-page/pagenotfound.component";
 import { ViewOrderComponent } from "./component/order-component/view-order/view-order.component";
 import { EditOrderComponent } from "./component/order-component/edit-order/edit-order.component";
 

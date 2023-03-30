@@ -1,18 +1,7 @@
-<app-navbar></app-navbar>
-
 <div class="container-fluid mt-4">
-  <div class="row">
-    <div class="col-3">
-      <app-order-data></app-order-data>
-    </div>
-    <div class="col-3">
-      <app-personal-data></app-personal-data>
-    </div>
-    <div class="col-3">
-      <app-contract-data></app-contract-data>
-    </div>
-    <div class="col-3">
-      <app-car-data></app-car-data>
+  <div class="row" *ngFor="let item of this.items">
+    <div class="col-12 col-lg-3">
+      <app-data-view [item]="item"></app-data-view>
     </div>
   </div>
 </div>
