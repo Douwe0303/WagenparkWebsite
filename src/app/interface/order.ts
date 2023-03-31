@@ -1,3 +1,5 @@
+import {Leasecar} from "./leasecar";
+
 export interface Order {
   data: {
     id: {
@@ -14,6 +16,7 @@ export interface Order {
     }
     leaseOrderStatus: {
       value: string,
+      data: any,
       translation: string
     }
     orderDate: {
@@ -35,6 +38,7 @@ export interface Order {
     leasePlanPath: {
       value?: string,
       translation: string
-    }
+    },
+    leasecar: Leasecar
   }
 }

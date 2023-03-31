@@ -3,6 +3,10 @@ import { NgbDateParserFormatter, NgbDateStruct } from "@ng-bootstrap/ng-bootstra
 import { OrderService } from "../../../service/order/order.service";
 import { OrderDto } from "../../../interface/order-dto";
 import { first } from "rxjs";
+import { Order } from "../../../interface/order";
+import {OrderTransformer} from "../../../class/transformer/order-transformer/order-transformer";
+import {Leasecar} from "../../../interface/leasecar";
+import {LeasecarTransformer} from "../../../class/transformer/leasecar-transformer/leasecar-transformer";
 
 @Injectable()
 export class CustomDateParserFormatter extends NgbDateParserFormatter {
@@ -30,12 +34,13 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   templateUrl: './add-order.component.html',
   styleUrls: ['./add-order.component.css'],
   providers: [
+    OrderTransformer,
     { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
   ],
 })
 export class AddOrderComponent {
 
-  constructor(private _orderService: OrderService) {}
+  constructor(private _orderService: OrderService, private orderTransformer: OrderTransformer, private leasecarTransformer: LeasecarTransformer) {}
 
   dateOfOrder: NgbDateStruct | undefined;
   dateOfDelivery: NgbDateStruct | undefined;
@@ -55,7 +60,7 @@ export class AddOrderComponent {
   carPrice: number = 0;
   carParticularities: string = "";
 
-  @Output() newOrderEvent = new EventEmitter<OrderDto>();
+  @Output() newOrderEvent = new EventEmitter<{order: Order, leasecar: Leasecar}>();
 
   async loading(): Promise<void> {
     await new Promise(f => setTimeout(f, 1000));
@@ -74,8 +79,10 @@ export class AddOrderComponent {
 
     this.loading().then(() => {
       this._orderService.createOrder(order).then((call) => {
-        call.pipe(first()).subscribe((order: OrderDto) => {
-          this.newOrderEvent.emit(order);
+        call.pipe(first()).subscribe((orderDto: OrderDto) => {
+          let order: Order = this.orderTransformer.toModel(orderDto);
+          let leasecar: Leasecar = this.leasecarTransformer.toModel(orderDto.leaseCar);
+          this.newOrderEvent.emit({order: order, leasecar: leasecar});
           this.displayElement('add-loading-spinner', 'none');
           this.displayElement('add-order-button', 'flex');
           this.close();
@@ -109,7 +116,6 @@ export class AddOrderComponent {
       quotationPath: this.quotationPath,
       leasePlanPath: this.leaseplanPath,
       leaseCar: {
-        id: 0,
         brand: this.carBrand,
         driver: this.driver,
         model: this.carModel,

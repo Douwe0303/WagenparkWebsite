@@ -8,6 +8,7 @@ import { Component, Input } from '@angular/core';
 export class DataViewComponent {
   @Input() title: string | undefined = "";
   @Input() item = { data: {} };
+  @Input() hiddenProperties: string[] = [];
 
   asIsOrder() {
     return 1;

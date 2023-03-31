@@ -1,19 +1,21 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from "@angular/router";
-import { OrderService } from "../../../service/order/order.service";
-import { first, Observable } from "rxjs";
-import { OrderDto } from "../../../interface/order-dto";
-import { Sorting } from "../../../enum/sorting";
-import { NgbDropdown } from "@ng-bootstrap/ng-bootstrap";
-import { ToastOrderComponent } from "../../order-component/toast-order/toast-order.component";
-import { OrderStatus } from "../../../class/order-status/order-status";
-import { Order } from "../../../interface/order";
-import {OrderTransformer} from "../../../class/transformer/order-transformer";
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {Router} from "@angular/router";
+import {OrderService} from "../../../service/order/order.service";
+import {first, Observable} from "rxjs";
+import {OrderDto} from "../../../interface/order-dto";
+import {Sorting} from "../../../enum/sorting";
+import {NgbDropdown} from "@ng-bootstrap/ng-bootstrap";
+import {ToastOrderComponent} from "../../order-component/toast-order/toast-order.component";
+import {OrderStatus} from "../../../class/order-status/order-status";
+import {Order} from "../../../interface/order";
+import {OrderTransformer} from "../../../class/transformer/order-transformer/order-transformer";
+import {LeasecarTransformer} from "../../../class/transformer/leasecar-transformer/leasecar-transformer";
 
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.component.html',
-  styleUrls: ['./orders.component.css']
+  styleUrls: ['./orders.component.css'],
+  providers: [OrderTransformer, LeasecarTransformer]
 })
 export class OrdersComponent implements OnInit {
 
@@ -24,7 +26,6 @@ export class OrdersComponent implements OnInit {
   public searchText: string = "";
   public reload: boolean = false;
   private opened: boolean = false;
-  private orderTransformer: OrderTransformer | undefined;
 
   @ViewChild(NgbDropdown, { static: true })
   public dropdown: NgbDropdown | undefined;
@@ -34,19 +35,7 @@ export class OrdersComponent implements OnInit {
 
   public ORDERSTATUS = OrderStatus;
 
-  constructor(private router: Router, private _orderService: OrderService) {
-    this.orderTransformer = new OrderTransformer();
-  }
-
-  getItems(orderDto: OrderDto): Order[] {
-    let order: Order | undefined = this.orderTransformer?.toModel(orderDto)
-
-    if(order != undefined) {
-      return [order];
-    }
-
-    return [];
-  }
+  constructor(private router: Router, private _orderService: OrderService, private orderTransformer: OrderTransformer) {}
 
   ngOnInit(): void {
     this.fetchOrders();
@@ -69,25 +58,13 @@ export class OrdersComponent implements OnInit {
 
   convertDtos(orderDtos: OrderDto[]): void {
     for(let dto of orderDtos) {
-      let order: Order | undefined = this.orderTransformer?.toModel(dto);
-      if(order != undefined) {
-        this.orders.push(order);
-      }
+      let order: Order | undefined = this.orderTransformer.toModel(dto);
+      this.orders.push(order);
     }
   }
 
   openStatusMenu(): void {
     this.dropdown?.open();
-  }
-
-  translateStatus(status: string, id: number | undefined): string {
-    // let statusId: string = 'status'+id;
-    // let defaultClass: string = 'btn-primary';
-    // let orderStatus: any = this._orderService.getOrderStatus(status);
-    //
-    // this.replaceClass(statusId, defaultClass, 'btn-'+orderStatus.color);
-    //
-    // return orderStatus.text;
   }
 
   setSorting(field: string): void {
@@ -136,7 +113,7 @@ export class OrdersComponent implements OnInit {
     this._orderService.deleteOrder(id).then((call) => {
       call.pipe(first()).subscribe(() => {
         // @ts-ignore
-        this.orders = this.orders.filter(order => order.id !== id);
+        this.orders = this.orders.filter(order => order.data.id.value !== id);
       })
       //TODO: catch error and show error to client
     }).catch((error) => {
@@ -144,36 +121,43 @@ export class OrdersComponent implements OnInit {
     })
   }
 
-  addOrder(order: Order): void {
-    this.orders.push(order);
+  addOrder(data: any): void {
+    this.orders.push(data.order);
   }
-
-  // getOrderStatus(status: string): any {
-  //   // return this._orderService.getOrderStatus(status);
-  // }
 
   replaceClass(id: string, oldClass: string, newClass: string): void {
     document.getElementById(id)?.classList.replace(oldClass, newClass);
   }
 
   editStatus(id: number, status: any): void {
-    let index: number = this.orders.findIndex(order => order.id == id);
-    let order: OrderDto = this.orders[index];
+    let index: number = this.orders.findIndex(order => order.data.id.value == id);
+    let order: Order = this.orders[index];
 
-    let oldStatus: any = this._orderService.getOrderStatus(order.leaseOrderStatus);
-    let newStatus: any = this._orderService.getOrderStatus(status.code);
+    let oldStatus: string = order.data.leaseOrderStatus.value;
+    let oldData: any = order.data.leaseOrderStatus.data;
+    let newStatus: string = status.code;
 
     if(oldStatus == newStatus) {
       return;
     }
 
-    order.leaseOrderStatus = status.code;
+    order.data.leaseOrderStatus.value = newStatus;
+    order.data.leaseOrderStatus.data = status;
 
-    this._orderService.editOrder(order).then(r => r.pipe(first()).subscribe(() => {
-      // @ts-ignore
-      this.toastOrder.showToast('Bestelstatus gewijzigd!', id, 'De status van de bestelling is gewijzigd.', 'orange');
-      this.replaceClass('status'+id, 'btn-'+oldStatus.color, 'btn-'+newStatus.color);
-    }));
+    let orderDto: OrderDto = this.orderTransformer?.toDto(order);
+
+    this._orderService.editOrder(orderDto).then(r => r.pipe(first()).subscribe(
+      {
+        error: (error: any) => {
+          console.log(error.statusText);
+          alert(error);
+        },
+        complete: () => {
+          // @ts-ignore
+          this.toastOrder.showToast('Bestelstatus gewijzigd!', id, 'De status van de bestelling is gewijzigd.', 'orange');
+          this.replaceClass('status'+id, 'btn-'+oldData.color, 'btn-'+status.color);
+        }
+      }));
   }
 
   reloadOrders(): void {

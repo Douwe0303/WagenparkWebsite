@@ -11,6 +11,7 @@ import { OrderDto } from "../../../interface/order-dto";
 })
 export class ViewOrderComponent implements OnInit {
   @Input() items: {data: {}}[] = [];
+  @Input() hiddenProperties: string[] = [];
 
   constructor(private activatedRoute: ActivatedRoute, private _orderService: OrderService){}
 
