@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { OrderService } from "../../../service/order/order.service";
 import { first } from "rxjs";
-import { OrderDto } from "../../../interface/order-dto";
+import { OrderDto } from "../../../interface/dto/order-dto";
 
 @Component({
   selector: 'app-view-order',
@@ -12,6 +12,7 @@ import { OrderDto } from "../../../interface/order-dto";
 export class ViewOrderComponent implements OnInit {
   @Input() items: {data: {}}[] = [];
   @Input() hiddenProperties: string[] = [];
+  @Input() titles: string[] = [];
 
   constructor(private activatedRoute: ActivatedRoute, private _orderService: OrderService){}
 

@@ -1,4 +1,4 @@
-import {Leasecar} from "./leasecar";
+import { Leasecar } from "./leasecar";
 
 export interface Order {
   data: {
@@ -6,11 +6,11 @@ export interface Order {
       value?: number,
       translation: string
     }
-    supplier: {
+    orderer: {
       value: string,
       translation: string
     }
-    orderer: {
+    supplier: {
       value: string,
       translation: string
     }

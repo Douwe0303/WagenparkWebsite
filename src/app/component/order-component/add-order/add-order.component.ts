@@ -1,12 +1,13 @@
 import { Component, EventEmitter, Injectable, Output } from '@angular/core';
 import { NgbDateParserFormatter, NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
 import { OrderService } from "../../../service/order/order.service";
-import { OrderDto } from "../../../interface/order-dto";
+import { OrderDto } from "../../../interface/dto/order-dto";
 import { first } from "rxjs";
-import { Order } from "../../../interface/order";
-import {OrderTransformer} from "../../../class/transformer/order-transformer/order-transformer";
-import {Leasecar} from "../../../interface/leasecar";
-import {LeasecarTransformer} from "../../../class/transformer/leasecar-transformer/leasecar-transformer";
+import { Order } from "../../../interface/model/order";
+import { OrderTransformer } from "../../../class/transformer/order-transformer/order-transformer";
+import { Leasecar } from "../../../interface/model/leasecar";
+import { LeasecarTransformer } from "../../../class/transformer/leasecar-transformer/leasecar-transformer";
+import { OrderStatus } from "../../../class/order-status/order-status";
 
 @Injectable()
 export class CustomDateParserFormatter extends NgbDateParserFormatter {
@@ -42,6 +43,8 @@ export class AddOrderComponent {
 
   constructor(private _orderService: OrderService, private orderTransformer: OrderTransformer, private leasecarTransformer: LeasecarTransformer) {}
 
+  protected readonly OrderStatus = OrderStatus;
+
   dateOfOrder: NgbDateStruct | undefined;
   dateOfDelivery: NgbDateStruct | undefined;
 
@@ -50,15 +53,23 @@ export class AddOrderComponent {
   supplier: string = "";
   carBrand: string = "";
   status: string | undefined;
-  expectedWeek: number = 0;
+  expectedWeek?: number;
   leaseplanPath: string = "";
   quotationPath: string = "";
+
   carModel: string = "";
   carExtra: string = "";
   carEngine: string = "";
-  carKilometers: number = 0;
-  carPrice: number = 0;
+  carKilometers?: number;
+  carPrice?: number;
   carParticularities: string = "";
+
+  contractType?: string;
+  signed: boolean = false;
+  startDate?: NgbDateStruct;
+  endDate?: NgbDateStruct;
+  taxAddition?: number;
+  contribution?: number;
 
   @Output() newOrderEvent = new EventEmitter<{order: Order, leasecar: Leasecar}>();
 
@@ -77,16 +88,24 @@ export class AddOrderComponent {
 
     let order: OrderDto | null = this.getOrder();
 
+    console.log(order);
+
     this.loading().then(() => {
       this._orderService.createOrder(order).then((call) => {
-        call.pipe(first()).subscribe((orderDto: OrderDto) => {
-          let order: Order = this.orderTransformer.toModel(orderDto);
-          let leasecar: Leasecar = this.leasecarTransformer.toModel(orderDto.leaseCar);
-          this.newOrderEvent.emit({order: order, leasecar: leasecar});
-          this.displayElement('add-loading-spinner', 'none');
-          this.displayElement('add-order-button', 'flex');
-          this.close();
-        })
+        call.pipe(first()).subscribe(
+          (orderDto: OrderDto) => {
+            let order: Order = this.orderTransformer.toModel(orderDto);
+            let leasecar: Leasecar = this.leasecarTransformer.toModel(orderDto.leaseCar);
+            this.newOrderEvent.emit({order: order, leasecar: leasecar});
+          },
+          (error: any) => {
+            alert(error.statusText);
+          },
+          () => {
+            this.displayElement('add-loading-spinner', 'none');
+            this.displayElement('add-order-button', 'flex');
+            this.close();
+          })
       })
     })
   }
@@ -96,20 +115,27 @@ export class AddOrderComponent {
     document.getElementById(element).style.display = display;
   }
 
-  getOrder(): OrderDto | null {
-    // @ts-ignore
-    let orderDate = this.dateOfOrder.day + "-" + this.dateOfOrder.month + "-" + this.dateOfOrder.year;
-    let deliveryDate = undefined;
-
-    if(this.dateOfDelivery != null) {
-      deliveryDate = this.dateOfDelivery.day + "-" + this.dateOfDelivery.month + "-" + this.dateOfDelivery.year;
+  getDate(date: NgbDateStruct | undefined): string | undefined {
+    if(date != null) {
+      return date.day + "-" + date.month + "-" + date.year;
+    } else {
+      return undefined;
     }
+  }
+
+  getOrder(): OrderDto | null {
+
+    let orderDate = this.getDate(this.dateOfOrder);
+    let deliveryDate = this.getDate(this.dateOfDelivery);
+    let startDate = this.getDate(this.startDate);
+    let endDate = this.getDate(this.endDate);
 
     return {
       supplier: this.supplier,
       orderer: this.orderer,
       //@ts-ignore
       leaseOrderStatus: this.status,
+      //@ts-ignore
       orderDate: orderDate,
       deliveryDate: deliveryDate,
       weekOfDelivery: this.expectedWeek,
@@ -123,7 +149,15 @@ export class AddOrderComponent {
         engine: this.carEngine,
         kilometers: this.carKilometers,
         price: this.carPrice,
-        particularities: this.carParticularities
+        particularities: this.carParticularities,
+        contract: {
+          contractType: this.contractType,
+          signed: this.signed,
+          startDate: startDate,
+          endDate: endDate,
+          taxAddition: this.taxAddition,
+          contribution: this.contribution
+        }
       }
     }
   }

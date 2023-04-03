@@ -1,3 +1,5 @@
+import { ContractDto } from "./contract-dto";
+
 export interface LeasecarDto {
   id?: number;
   brand?: string;
@@ -8,4 +10,5 @@ export interface LeasecarDto {
   kilometers?: number;
   price?: number;
   particularities?: string;
+  contract: ContractDto;
 }

@@ -1,5 +1,5 @@
 <app-navbar></app-navbar>
-<app-toast-order></app-toast-order>
+<app-toast></app-toast>
 
 <div class="container mt-3">
   <div class="row">
@@ -25,41 +25,12 @@
   <table class="table table-hover table-borderless mt-4 shadow-all bg-light">
     <thead>
       <tr class="table-header">
-        <th scope="col" class="pointer-hover" (click)="this.setSorting('id');">
+        <th *ngFor="let headerItem of OrderHeader | keyvalue: asIsOrder; let i = index" scope="col" class="pointer-hover" (click)="this.setSorting(headerItem.key);">
           <div class="d-flex align-items-center">
-            <img alt="driver" src="../../../../assets/image/tableheaders/counter.png" class="me-1 table-header-height">
-            <span class="hidden">#</span>
-            <mat-icon id="sorting-id" title="sorteer besteller" aria-hidden="false" class="ms-2 pointer-hover rotate-to-0 brick-red opacity-100" aria-label="sort_by_alpha" fontIcon="arrow_drop_up"></mat-icon>
-          </div>
-        </th>
-        <th scope="col" class="pointer-hover" (click)="this.setSorting('orderer');">
-          <div class="d-flex align-items-center">
-            Besteller
-            <mat-icon id="sorting-orderer" title="sorteer besteller" aria-hidden="false" class="ms-2 pointer-hover rotate-to-0 brick-red opacity-25" aria-label="sort_by_alpha" fontIcon="arrow_drop_up"></mat-icon>
-          </div>
-        </th>
-        <th scope="col" class="pointer-hover" (click)="this.setSorting('driver');">
-          <div class="d-flex align-items-center">
-            Bestuurder
-            <mat-icon id="sorting-driver"  title="sorteer Bestuurder" aria-hidden="false" class="ms-2 pointer-hover rotate-to-0 brick-red opacity-25" aria-label="sort_by_alpha" fontIcon="arrow_drop_up"></mat-icon>
-          </div>
-        </th>
-        <th scope="col" class="pointer-hover" (click)="this.setSorting('carbrand');">
-          <div class="d-flex align-items-center">
-            Automerk
-            <mat-icon id="sorting-carbrand" title="sorteer automerk" aria-hidden="false" class="ms-2 pointer-hover rotate-to-0 brick-red opacity-25" aria-label="sort_by_alpha" fontIcon="arrow_drop_up"></mat-icon>
-          </div>
-        </th>
-        <th scope="col" class="pointer-hover" (click)="this.setSorting('orderDate');">
-          <div class="d-flex align-items-center">
-            Besteldatum
-            <mat-icon id="sorting-orderDate" title="sorteer besteldatum" aria-hidden="false" class="ms-2 pointer-hover rotate-to-0 brick-red opacity-25" aria-label="sort_by_alpha" fontIcon="arrow_drop_up"></mat-icon>
-          </div>
-        </th>
-        <th scope="col" class="pointer-hover" (click)="this.setSorting('leaseOrderStatus');">
-          <div class="d-flex align-items-center">
-            Status
-            <mat-icon id="sorting-leaseOrderStatus" title="sorteer status" aria-hidden="false" class="ms-2 pointer-hover rotate-to-0 brick-red opacity-25" aria-label="sort_by_alpha" fontIcon="arrow_drop_up"></mat-icon>
+            <img *ngIf="i == 0" alt="driver" src="../../../../assets/image/tableheaders/counter.png" class="me-1 table-header-height">
+            <span *ngIf="i == 0" class="hidden">#</span>
+            {{ headerItem.value.name }}
+            <mat-icon id="sorting-{{ headerItem.key }}" title="{{ headerItem.value.title }}" aria-hidden="false" class="ms-2 pointer-hover rotate-to-0 brick-red {{ i == 0 ? 'opacity-100' : 'opacity-25' }}" aria-label="sort_by_alpha" fontIcon="arrow_drop_up"></mat-icon>
           </div>
         </th>
         <th scope="col">Actie</th>
@@ -69,19 +40,19 @@
     <tbody>
       <ng-container *ngFor="let order of this.orders | orderFilter: this.searchText: this.reload | orderSort: this.sortingField: this.sorting: this.reload;">
         <tr id="row{{ order.data.id.value }}" (click)="rotateArrow(order.data.id.value);" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse'+order.data.id.value" aria-expanded="false">
-          <th scope="row">{{ order.data.id.value }}</th>
-          <td>{{ order.data.orderer.value }}</td>
-          <td>{{ 'Dummy' }}</td>
-          <td class="pe-5">{{ 'Dummy' }}</td>
-          <td class="pe-5">{{ order.data.orderDate.value }}</td>
+          <th scope="row"><span class="text-nowrap">{{ order.data.id.value }}</span></th>
+          <td><span class="text-nowrap">{{ order.data.orderer.value }}</span></td>
+          <td><span class="text-nowrap">{{ order.data.leasecar.data.driver.value }}</span></td>
+          <td><span class="text-nowrap">{{ order.data.leasecar.data.brand.value }}</span></td>
+          <td><span class="text-nowrap">{{ order.data.orderDate.value }}</span></td>
           <td class="pe-5 w-15">
             <div ngbDropdown #dropdown class="btn-group w-100">
               <button ngbDropdownToggle id="status{{order.data.id.value}}" (click)="openStatusMenu();" class="btn btn-sm btn-group-sm dropdown-toggle {{'btn-'+order.data.leaseOrderStatus.data.color}}" data-bs-toggle="collapse" data-bs-target="" aria-expanded="false">
                 {{ order.data.leaseOrderStatus.data.text }}
               </button>
               <ul ngbDropdownMenu class="dropdown-menu" data-bs-toggle="collapse" data-bs-target="" [attr.aria-labelledby]="'status'+order.data.id.value">
-                <div *ngFor="let status of this.ORDERSTATUS | keyvalue">
-                  <li><a class="dropdown-item {{ order.data.leaseOrderStatus.value == status.value.code ? 'd-none' : '' }}" (click)="this.editStatus(order.data.id.value, status.value);">{{ status.value.text }}</a></li>
+                <div *ngFor="let status of this.OrderStatus | keyvalue">
+                  <li><a class="dropdown-item {{ order.data.leaseOrderStatus.data.code == status.value.code ? 'd-none' : '' }}" (click)="this.editStatus(order.data.id.value, status.value);">{{ status.value.text }}</a></li>
                 </div>
               </ul>
             </div>
@@ -107,7 +78,7 @@
         <tr class="td-p-0">
           <td colspan="8">
             <div class="collapse border-top border-bottom pb-3" id="{{'collapse' + order.data.id.value }}">
-              <app-view-order [hiddenProperties]="['leasecar', 'id']" [items]="[order, order.data.leasecar]"></app-view-order>
+              <app-view-order [hiddenProperties]="['leasecar', 'id', 'contract']" [titles]="['Informatie', 'Leaseauto', 'Contract']" [items]="[order, order.data.leasecar, order.data.leasecar.data.contract]"></app-view-order>
             </div>
           </td>
         </tr>

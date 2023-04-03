@@ -1,4 +1,4 @@
-import { Leasecar } from "../../../interface/leasecar";
+import { Leasecar } from "../../../interface/model/leasecar";
 
 export class LeasecarDummy implements Leasecar {
   data: any = {

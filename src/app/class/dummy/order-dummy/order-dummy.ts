@@ -1,4 +1,4 @@
-import { Order } from "../../../interface/order";
+import { Order } from "../../../interface/model/order";
 
 export class OrderDummy implements Order {
   data: any = {

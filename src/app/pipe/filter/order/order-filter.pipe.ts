@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {Order} from "../../../interface/order";
+import {Order} from "../../../interface/model/order";
 
 @Pipe({
   name: 'orderFilter'

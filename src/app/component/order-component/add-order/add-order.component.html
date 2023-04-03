@@ -67,60 +67,56 @@
                     </button>
                   </div>
                   <div class="form-floating mb-3">
-                    <input [(ngModel)]="expectedWeek" #expectedWeekInput="ngModel" [class.is-valid]="expectedWeekInput.valid && expectedWeekInput.dirty" [class.is-invalid]="expectedWeekInput.invalid" name="expected-week" type="number" id="expectedWeekInput" class="form-control" placeholder="verwachte week" min="0" max="52"/>
+                    <input [(ngModel)]="expectedWeek" #expectedWeekInput="ngModel" [class.is-valid]="expectedWeekInput.valid && expectedWeekInput.dirty && expectedWeekInput.value != null" [class.is-invalid]="expectedWeekInput.invalid" name="expected-week" type="number" id="expectedWeekInput" class="form-control" placeholder="verwachte week" min="0" max="52"/>
                     <label class="form-label" for="expectedWeekInput">Verwachte week van levering</label>
                   </div>
                   <div class="form-floating mb-3">
                     <select [(ngModel)]="status" #statusInput="ngModel" [class.is-valid]="statusInput.valid" [class.is-invalid]="statusInput.invalid" name="status" class="form-select" id="statusSelect" aria-label="Status selecteren" required>
                       <option value="" disabled>Selecteer status...</option>
-                      <option value="ORDERED">Besteld</option>
-                      <option value="PROCESSED">Verwerkt</option>
-                      <option value="DELAYED">Vertraagd</option>
-                      <option value="SHIPPED">Onderweg</option>
-                      <option value="DELIVERED">Geleverd</option>
-                      <option value="CANCELED">Geannuleerd</option>
-                      <option value="UKNOWN">Onbekend</option>
+                      <option *ngFor="let orderStatus of OrderStatus | keyvalue; let i = index;" value="{{ orderStatus.value.code }}">{{ orderStatus.value.text }}</option>
                     </select>
                     <label for="statusSelect">De status van de bestelling <span class="brick-red">*</span></label>
                   </div>
                 </div>
-                <div class="col-12 col-md-6 col-xxl-2">
-                  <div class="form-floating mb-3">
-                    <input [(ngModel)]="driver" #driverInput="ngModel" [class.is-invalid]="driverInput.invalid" [class.is-valid]="driverInput.valid && driverInput.dirty" name="driver" type="text" class="form-control" id="driverInput" placeholder="Jane Doe" required>
-                    <label for="driverInput">Bestuurder <span class="brick-red">*</span></label>
+                <div class="col-12 col-md-6 col-xxl-4">
+                  <div class="row">
+                    <div class="col-12 col-md-6 col-xxl-6">
+                      <div class="form-floating mb-3">
+                        <input [(ngModel)]="driver" #driverInput="ngModel" [class.is-invalid]="driverInput.invalid" [class.is-valid]="driverInput.valid && driverInput.dirty" name="driver" type="text" class="form-control" id="driverInput" placeholder="Jane Doe" required>
+                        <label for="driverInput">Bestuurder <span class="brick-red">*</span></label>
+                      </div>
+                      <div class="form-floating mb-3">
+                        <input [(ngModel)]="carBrand" #carBrandInput="ngModel" [class.is-invalid]="carBrandInput.invalid" [class.is-valid]="carBrandInput.valid && carBrandInput.dirty" name="carbrand" type="text" class="form-control" id="carBrandInput" placeholder="Jane Doe">
+                        <label for="carBrandInput">Automerk</label>
+                      </div>
+                      <div class="form-floating mb-3">
+                        <input [(ngModel)]="carModel" #carModelInput="ngModel" [class.is-invalid]="carModelInput.invalid" [class.is-valid]="carModelInput.valid && carModelInput.dirty" name="carModel" type="text" class="form-control" id="carModelInput" placeholder="Jane Doe">
+                        <label for="carModelInput">Model</label>
+                      </div>
+                      <div class="form-floating mb-3">
+                        <input [(ngModel)]="carExtra" #carExtraInput="ngModel" [class.is-invalid]="carExtraInput.invalid" [class.is-valid]="carExtraInput.valid && carExtraInput.dirty" name="carExtra" type="text" class="form-control" id="carExtraInput" placeholder="Jane Doe">
+                        <label for="carExtraInput">Extra</label>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-xxl-6">
+                      <div class="form-floating mb-3">
+                        <input [(ngModel)]="carEngine" #carEngineInput="ngModel" [class.is-invalid]="carEngineInput.invalid" [class.is-valid]="carEngineInput.valid && carEngineInput.dirty" name="carEngine" type="text" class="form-control" id="carEngineInput" placeholder="Jane Doe">
+                        <label for="carEngineInput">Motor</label>
+                      </div>
+                      <div class="form-floating mb-3">
+                        <input [(ngModel)]="carKilometers" #carKilometersInput="ngModel" [class.is-invalid]="carKilometersInput.invalid" [class.is-valid]="carKilometersInput.valid && carKilometersInput.dirty" name="carKilometers" type="text" class="form-control" id="carKilometersInput" placeholder="Jane Doe">
+                        <label for="carKilometersInput">Aantal kilometers</label>
+                      </div>
+                      <div class="form-floating mb-3">
+                        <input [(ngModel)]="carPrice" #carPriceInput="ngModel" [class.is-invalid]="carPriceInput.invalid" [class.is-valid]="carPriceInput.valid && carPriceInput.dirty" name="carPrice" type="text" class="form-control" id="carPriceInput" placeholder="Jane Doe">
+                        <label for="carPriceInput">Fiscale waarde</label>
+                      </div>
+                      <div class="form-floating mb-3">
+                        <input [(ngModel)]="carParticularities" #carParticularitiesInput="ngModel" [class.is-invalid]="carParticularitiesInput.invalid" [class.is-valid]="carParticularitiesInput.valid && carParticularitiesInput.dirty" name="carParticularities" type="text" class="form-control" id="carParticularitiesInput" placeholder="Jane Doe">
+                        <label for="carParticularitiesInput">Bijzonderheden</label>
+                      </div>
+                    </div>
                   </div>
-                  <div class="form-floating mb-3">
-                    <input [(ngModel)]="carBrand" #carBrandInput="ngModel" [class.is-invalid]="carBrandInput.invalid" [class.is-valid]="carBrandInput.valid && carBrandInput.dirty" name="carbrand" type="text" class="form-control" id="carBrandInput" placeholder="Jane Doe">
-                    <label for="carBrandInput">Automerk <span class="brick-red"></span></label>
-                  </div>
-                  <div class="form-floating mb-3">
-                    <input [(ngModel)]="carModel" #carModelInput="ngModel" [class.is-invalid]="carModelInput.invalid" [class.is-valid]="carModelInput.valid && carModelInput.dirty" name="carModel" type="text" class="form-control" id="carModelInput" placeholder="Jane Doe">
-                    <label for="carModelInput">Model <span class="brick-red"></span></label>
-                  </div>
-                  <div class="form-floating mb-3">
-                    <input [(ngModel)]="carExtra" #carExtraInput="ngModel" [class.is-invalid]="carExtraInput.invalid" [class.is-valid]="carExtraInput.valid && carExtraInput.dirty" name="carExtra" type="text" class="form-control" id="carExtraInput" placeholder="Jane Doe">
-                    <label for="carExtraInput">Extra <span class="brick-red"></span></label>
-                  </div>
-                </div>
-                <div class="col-12 col-md-6 col-xxl-2">
-                  <div class="form-floating mb-3">
-                    <input [(ngModel)]="carEngine" #carEngineInput="ngModel" [class.is-invalid]="carEngineInput.invalid" [class.is-valid]="carEngineInput.valid && carEngineInput.dirty" name="carEngine" type="text" class="form-control" id="carEngineInput" placeholder="Jane Doe">
-                    <label for="carEngineInput">Motor <span class="brick-red"></span></label>
-                  </div>
-                  <div class="form-floating mb-3">
-                    <input [(ngModel)]="carKilometers" #carKilometersInput="ngModel" [class.is-invalid]="carKilometersInput.invalid" [class.is-valid]="carKilometersInput.valid && carKilometersInput.dirty" name="carKilometers" type="text" class="form-control" id="carKilometersInput" placeholder="Jane Doe">
-                    <label for="carKilometersInput">Aantal kilometers <span class="brick-red"></span></label>
-                  </div>
-                  <div class="form-floating mb-3">
-                    <input [(ngModel)]="carPrice" #carPriceInput="ngModel" [class.is-invalid]="carPriceInput.invalid" [class.is-valid]="carPriceInput.valid && carPriceInput.dirty" name="carPrice" type="text" class="form-control" id="carPriceInput" placeholder="Jane Doe">
-                    <label for="carPriceInput">Fiscale waarde <span class="brick-red"></span></label>
-                  </div>
-                  <div class="form-floating mb-3">
-                    <input [(ngModel)]="carParticularities" #carParticularitiesInput="ngModel" [class.is-invalid]="carParticularitiesInput.invalid" [class.is-valid]="carParticularitiesInput.valid && carParticularitiesInput.dirty" name="carParticularities" type="text" class="form-control" id="carParticularitiesInput" placeholder="Jane Doe">
-                    <label for="carParticularitiesInput">Bijzonderheden <span class="brick-red"></span></label>
-                  </div>
-                </div>
-                <div class="col-12 col-xxl-4">
                   <div class="input-group mb-3 label-hover">
                     <label class="input-group-text w-50" for="leasePlanInput">Upload leaseplan</label>
                     <input [(ngModel)]="leaseplanPath" #leaseplanPathInput="ngModel" [class.is-valid]="leaseplanPathInput.valid && leaseplanPathInput.dirty" [class.is-invalid]="leaseplanPathInput.invalid" name="lease-plan-path" type="file" class="form-control custom-button" id="leasePlanInput" placeholder="Leaseplan">
@@ -128,6 +124,80 @@
                   <div class="input-group mb-3 label-hover">
                     <label class="input-group-text w-50" for="quotationInput">Upload factuur</label>
                     <input [(ngModel)]="quotationPath" #quotationPathInput="ngModel" [class.is-valid]="quotationPathInput.valid && quotationPathInput.dirty" [class.is-invalid]="quotationPathInput.invalid" name="quotation-path" type="file" class="form-control custom-button" id="quotationInput" placeholder="factuur">
+                  </div>
+                </div>
+                <div class="col-12 col-xxl-4">
+                  <div class="row">
+                    <div class="col-xxl-6">
+                      <div class="form-floating mb-3">
+                        <input [(ngModel)]="contractType" #contractTypeInput="ngModel" [class.is-invalid]="contractTypeInput.invalid && contractTypeInput.dirty" [class.is-valid]="contractTypeInput.valid && contractTypeInput.dirty" name="contractType" type="text" class="form-control" id="contractTypeInput" placeholder="A1">
+                        <label for="contractTypeInput">Regeling</label>
+                      </div>
+                    </div>
+                    <div class="col-xxl-6">
+                      <div class="form-floating mb-3">
+                        <select [(ngModel)]="this.signed" #signedInput="ngModel" [class.is-valid]="signedInput.valid" [class.is-invalid]="signedInput.invalid" name="signed" class="form-select" id="signedSelect" aria-label="Ondertekend selecteren" required>
+                          <option value="" disabled>Selecteer ondertekening...</option>
+                          <option value="true">Ja</option>
+                          <option value="false">Nee</option>
+                        </select>
+                        <label for="signedSelect">Ondertekend</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="input-group mb-3">
+                    <div class="form-floating">
+                      <input
+                        class="form-control"
+                        placeholder="dd-mm-yyyy"
+                        id="startDateInput"
+                        name="dpStartDate"
+                        [(ngModel)]="startDate"
+                        #startDateInput="ngModel"
+                        [class.is-valid]="startDateInput.valid && startDateInput.dirty"
+                        [class.is-invalid]="startDateInput.invalid"
+                        ngbDatepicker
+                        #dpStartDate="ngbDatepicker"
+                      />
+                      <label for="startDateInput">Inzetdatum contract</label>
+                    </div>
+                    <button class="btn btn-outline-secondary {{ startDateInput.valid ? 'border-secondary' : 'border-danger' }} align-items-center display-flex" (click)="dpStartDate.toggle()" type="button">
+                      <mat-icon title="Open kalender" class="pointer-hover brick-red calender-hover" aria-label="calendar_month" fontIcon="calendar_month"></mat-icon>
+                    </button>
+                  </div>
+                  <div class="input-group mb-3">
+                    <div class="form-floating">
+                      <input
+                        class="form-control"
+                        placeholder="dd-mm-yyyy"
+                        id="endDateInput"
+                        name="dpEndDate"
+                        [(ngModel)]="endDate"
+                        #endDateInput="ngModel"
+                        [class.is-valid]="endDateInput.valid && endDateInput.dirty"
+                        [class.is-invalid]="endDateInput.invalid"
+                        ngbDatepicker
+                        #dpEndDate="ngbDatepicker"
+                      />
+                      <label for="endDateInput">Einddatum contract</label>
+                    </div>
+                    <button class="btn btn-outline-secondary {{ endDateInput.valid ? 'border-secondary' : 'border-danger' }} align-items-center display-flex" (click)="dpEndDate.toggle()" type="button">
+                      <mat-icon title="Open kalender" class="pointer-hover brick-red calender-hover" aria-label="calendar_month" fontIcon="calendar_month"></mat-icon>
+                    </button>
+                  </div>
+                  <div class="row">
+                    <div class="col-6">
+                      <div class="form-floating mb-3">
+                        <input [(ngModel)]="taxAddition" #taxAdditionInput="ngModel" [class.is-invalid]="taxAdditionInput.invalid" [class.is-valid]="taxAdditionInput.valid && taxAdditionInput.dirty && taxAdditionInput.value != ''" name="taxAddition" type="number" class="form-control" id="taxAdditionInput" placeholder="Jane Doe">
+                        <label for="taxAdditionInput">Fiscale bijtelling</label>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="form-floating mb-3">
+                        <input [(ngModel)]="contribution" #contributionInput="ngModel" [class.is-invalid]="contributionInput.invalid" [class.is-valid]="contributionInput.valid && contributionInput.dirty && contributionInput.value != ''" name="contribution" type="number" class="form-control" id="contributionInput" placeholder="Jane Doe">
+                        <label for="contributionInput">Eigen bijdrage</label>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

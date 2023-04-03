@@ -17,11 +17,13 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { OrderSortPipe } from './pipe/sort/order/order-sort.pipe';
 import { OrderFilterPipe } from './pipe/filter/order/order-filter.pipe';
 import { EditOrderComponent } from './component/order-component/edit-order/edit-order.component';
-import { ToastOrderComponent } from './component/order-component/toast-order/toast-order.component';
+import { ToastComponent } from './component/toast/toast.component';
 import { ViewOrderComponent } from './component/order-component/view-order/view-order.component';
 import { PagenotfoundComponent } from './component/page/notfound-page/pagenotfound.component';
 import { DataViewComponent } from './component/data-view/data-view.component';
 import { OffCanvasComponent } from './component/off-canvas/off-canvas.component';
+import { DatePickerComponent } from './component/date-picker/date-picker.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,11 +36,12 @@ import { OffCanvasComponent } from './component/off-canvas/off-canvas.component'
     OrderSortPipe,
     OrderFilterPipe,
     EditOrderComponent,
-    ToastOrderComponent,
+    ToastComponent,
     ViewOrderComponent,
     PagenotfoundComponent,
     DataViewComponent,
     OffCanvasComponent,
+    DatePickerComponent,
   ],
   imports: [
     BrowserModule,

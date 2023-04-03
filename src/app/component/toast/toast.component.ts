@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
-  selector: 'app-toast-order',
-  templateUrl: './toast-order.component.html',
-  styleUrls: ['./toast-order.component.css']
+  selector: 'app-toast',
+  templateUrl: './toast.component.html',
+  styleUrls: ['./toast.component.css']
 })
-export class ToastOrderComponent {
+export class ToastComponent {
   show = false;
 
   showToast(toastTitle: string, toastId: number | undefined, toastBody: string, color: string): void {

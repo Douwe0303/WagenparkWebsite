@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OrderService } from "../../../service/order/order.service";
-import { OrderDto } from "../../../interface/order-dto";
+import { OrderDto } from "../../../interface/dto/order-dto";
 import { OrderDummy } from "../../../class/dummy/order-dummy/order-dummy";
 import { ActivatedRoute } from "@angular/router";
 import { first } from "rxjs";

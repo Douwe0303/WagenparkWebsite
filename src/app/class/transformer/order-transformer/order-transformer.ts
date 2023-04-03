@@ -1,117 +1,80 @@
-import { Order } from "../../../interface/order";
-import { OrderDto } from "../../../interface/order-dto";
+import { Order } from "../../../interface/model/order";
+import { OrderDto } from "../../../interface/dto/order-dto";
 import { Transformer} from "../../../interface/transformer";
 import { OrderStatus } from "../../order-status/order-status";
 import { Injectable } from "@angular/core";
+import { LeasecarTransformer } from "../leasecar-transformer/leasecar-transformer";
+import { Leasecar } from "../../../interface/model/leasecar";
+import { LeasecarDto } from "../../../interface/dto/leasecar-dto";
 
 @Injectable()
 export class OrderTransformer implements Transformer<Order, OrderDto> {
+
+  constructor(private leasecarTransformer: LeasecarTransformer) {}
+
   toModel(orderDto: OrderDto): Order {
+    let status: any = this.getOrderStatus(orderDto.leaseOrderStatus);
+
+    let leasecar: Leasecar = this.leasecarTransformer.toModel(orderDto.leaseCar);
+
     return {
       data: {
         id: {
           value: orderDto.id,
           translation: "id"
         },
-        supplier: {
-          value: orderDto.supplier,
-          translation: "leverancier"
-        },
         orderer: {
           value: orderDto.orderer,
-          translation: "besteller"
+          translation: "Besteller"
+        },
+        supplier: {
+          value: orderDto.supplier,
+          translation: "Leverancier"
         },
         leaseOrderStatus: {
-          value: orderDto.leaseOrderStatus,
-          data: this.getOrderStatus(orderDto.leaseOrderStatus),
-          translation: "status",
+          value: status.text,
+          data: status,
+          translation: "Status",
         },
         orderDate: {
           value: orderDto.orderDate,
-          translation: "besteldatum"
+          translation: "Besteldatum"
         },
         deliveryDate: {
           value: orderDto.deliveryDate,
-          translation: "leverdatum"
+          translation: "Leverdatum"
         },
         weekOfDelivery: {
           value: orderDto.weekOfDelivery,
-          translation: "verwachte leverweek"
+          translation: "Verwachte leverweek"
         },
         quotationPath: {
           value: orderDto.quotationPath,
-          translation: "factuur"
+          translation: "Factuur"
         },
         leasePlanPath: {
           value: orderDto.leasePlanPath,
-          translation: "lease plan"
+          translation: "Lease plan"
         },
-        leasecar: {
-          data: {
-            id: {
-              value: orderDto.leaseCar.id,
-              translation: "id"
-            },
-            brand: {
-              value: orderDto.leaseCar.brand,
-              translation: "automerk"
-            },
-            driver: {
-              value: orderDto.leaseCar.driver,
-              translation: "bestuurder"
-            },
-            model: {
-              value: orderDto.leaseCar.model,
-              translation: "model"
-            },
-            extra: {
-              value: orderDto.leaseCar.extra,
-              translation: "extra/kleur"
-            },
-            engine: {
-              value: orderDto.leaseCar.engine,
-              translation: "motor"
-            },
-            kilometers: {
-              value: orderDto.leaseCar.kilometers,
-              translation: "kilometrage"
-            },
-            price: {
-              value: orderDto.leaseCar.price,
-              translation: "fiscale waarde"
-            },
-            particularities: {
-              value: orderDto.leaseCar.particularities,
-              translation: "bijzonderheden"
-            }
-          }
-        }
+        leasecar: leasecar
       }
     }
   }
 
   toDto(order: Order): OrderDto {
+    let leasecarDto: LeasecarDto = this.leasecarTransformer.toDto(order.data.leasecar);
+
     return {
       id: order.data.id.value,
       supplier: order.data.supplier.value,
       orderer: order.data.orderer.value,
-      leaseOrderStatus: order.data.leaseOrderStatus.value,
+      leaseOrderStatus: order.data.leaseOrderStatus.data.code,
       orderDate: order.data.orderDate.value,
       deliveryDate: order.data.deliveryDate.value,
       weekOfDelivery: order.data.weekOfDelivery.value,
       quotationPath: order.data.quotationPath.value,
       leasePlanPath: order.data.leasePlanPath.value,
-      leaseCar: {
-        id: order.data.leasecar.data.id.value,
-        brand: order.data.leasecar.data.brand.value,
-        driver: order.data.leasecar.data.driver.value,
-        model: order.data.leasecar.data.model.value,
-        extra: order.data.leasecar.data.extra.value,
-        engine: order.data.leasecar.data.engine.value,
-        kilometers: order.data.leasecar.data.kilometers.value,
-        price: order.data.leasecar.data.price.value,
-        particularities: order.data.leasecar.data.particularities.value
-      }
+      leaseCar: leasecarDto
     }
   }
 

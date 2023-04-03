@@ -1,0 +1,17 @@
+<div class="input-group mb-3">
+  <div class="form-floating">
+    <input
+      class="form-control"
+      placeholder="dd-mm-yyyy"
+      id="orderDeliveryInput"
+      name="dpDelivery"
+      [(ngModel)]="this.date"
+      #dateInput="ngModel"
+      [class.is-valid]="dateInput.valid && dateInput.dirty"
+      [class.is-invalid]="dateInput.invalid"
+      ngbDatepicker
+      #dp="ngbDatepicker"
+    />
+    <label for="orderDeliveryInput">{{ this.label }}</label>
+  </div>
+</div>

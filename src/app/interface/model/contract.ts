@@ -1,40 +1,31 @@
-
-export interface Leasecar {
+export interface Contract {
   data: {
     id: {
       value?: number,
       translation: string
     }
-    brand: {
+    contractType: {
       value?: string,
       translation: string
     }
-    driver: {
+    signed: {
+      value?: boolean,
+      translation: string
+    }
+    startDate: {
       value?: string,
       translation: string
     }
-    model: {
+    endDate: {
       value?: string,
       translation: string
     }
-    extra: {
-      value?: string,
-      translation: string
-    }
-    engine: {
-      value?: string,
-      translation: string
-    }
-    kilometers: {
+    taxAddition: {
       value?: number,
       translation: string
     }
-    price: {
+    contribution: {
       value?: number,
-      translation: string
-    }
-    particularities: {
-      value?: string,
       translation: string
     }
   }

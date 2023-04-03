@@ -1,21 +1,23 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {Router} from "@angular/router";
-import {OrderService} from "../../../service/order/order.service";
-import {first, Observable} from "rxjs";
-import {OrderDto} from "../../../interface/order-dto";
-import {Sorting} from "../../../enum/sorting";
-import {NgbDropdown} from "@ng-bootstrap/ng-bootstrap";
-import {ToastOrderComponent} from "../../order-component/toast-order/toast-order.component";
-import {OrderStatus} from "../../../class/order-status/order-status";
-import {Order} from "../../../interface/order";
-import {OrderTransformer} from "../../../class/transformer/order-transformer/order-transformer";
-import {LeasecarTransformer} from "../../../class/transformer/leasecar-transformer/leasecar-transformer";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from "@angular/router";
+import { OrderService } from "../../../service/order/order.service";
+import { first } from "rxjs";
+import { OrderDto } from "../../../interface/dto/order-dto";
+import { Sorting } from "../../../enum/sorting";
+import { NgbDropdown } from "@ng-bootstrap/ng-bootstrap";
+import { ToastComponent } from "../../toast/toast.component";
+import { OrderStatus } from "../../../class/order-status/order-status";
+import { Order } from "../../../interface/model/order";
+import { OrderTransformer } from "../../../class/transformer/order-transformer/order-transformer";
+import { LeasecarTransformer } from "../../../class/transformer/leasecar-transformer/leasecar-transformer";
+import { OrderHeader } from "../../../class/order-header";
+import { ContractTransformer } from "../../../class/transformer/contract-transformer/contract-transformer";
 
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.component.html',
   styleUrls: ['./orders.component.css'],
-  providers: [OrderTransformer, LeasecarTransformer]
+  providers: [OrderTransformer, LeasecarTransformer, ContractTransformer]
 })
 export class OrdersComponent implements OnInit {
 
@@ -30,15 +32,20 @@ export class OrdersComponent implements OnInit {
   @ViewChild(NgbDropdown, { static: true })
   public dropdown: NgbDropdown | undefined;
 
-  @ViewChild(ToastOrderComponent)
-  public toastOrder: ToastOrderComponent = new ToastOrderComponent();
+  @ViewChild(ToastComponent)
+  public toastOrder: ToastComponent = new ToastComponent();
 
-  public ORDERSTATUS = OrderStatus;
+  protected readonly OrderHeader = OrderHeader;
+  protected readonly OrderStatus = OrderStatus;
 
   constructor(private router: Router, private _orderService: OrderService, private orderTransformer: OrderTransformer) {}
 
   ngOnInit(): void {
     this.fetchOrders();
+  }
+
+  asIsOrder() {
+    return 1;
   }
 
   scroll(el: any) {
@@ -49,18 +56,20 @@ export class OrdersComponent implements OnInit {
   }
 
   fetchOrders(): void {
-    this._orderService.fetchOrders().then((orders: Observable<any>) => {
-      orders.pipe(first()).subscribe((orderDtos) => {
-        this.convertDtos(orderDtos);
-      });
-    });
-  }
+    this._orderService.fetchOrders().then(orders =>
+      orders.pipe(first()).subscribe(
+        (orderDtos: OrderDto[]) => this.convertDtos(orderDtos),
+        (error: any) => alert(error.statusText),
+      )
+    )
+  };
 
   convertDtos(orderDtos: OrderDto[]): void {
     for(let dto of orderDtos) {
       let order: Order | undefined = this.orderTransformer.toModel(dto);
       this.orders.push(order);
     }
+    this.reloadOrders();
   }
 
   openStatusMenu(): void {
@@ -110,15 +119,12 @@ export class OrdersComponent implements OnInit {
   }
 
   delete(id: number | undefined): void {
-    this._orderService.deleteOrder(id).then((call) => {
-      call.pipe(first()).subscribe(() => {
-        // @ts-ignore
-        this.orders = this.orders.filter(order => order.data.id.value !== id);
-      })
-      //TODO: catch error and show error to client
-    }).catch((error) => {
-      console.log(error);
-    })
+    this._orderService.deleteOrder(id).then(call =>
+      call.pipe(first()).subscribe(
+        () => this.orders = this.orders.filter(order => order.data.id.value !== id),
+        (error: any) => alert(error.statusText)
+      )
+    );
   }
 
   addOrder(data: any): void {
@@ -133,30 +139,27 @@ export class OrdersComponent implements OnInit {
     let index: number = this.orders.findIndex(order => order.data.id.value == id);
     let order: Order = this.orders[index];
 
-    let oldStatus: string = order.data.leaseOrderStatus.value;
+    let oldStatus: string = order.data.leaseOrderStatus.data.code;
     let oldData: any = order.data.leaseOrderStatus.data;
-    let newStatus: string = status.code;
 
-    if(oldStatus == newStatus) {
+    if(oldStatus == status.code) {
       return;
     }
 
-    order.data.leaseOrderStatus.value = newStatus;
+    order.data.leaseOrderStatus.value = status.text;
     order.data.leaseOrderStatus.data = status;
 
     let orderDto: OrderDto = this.orderTransformer?.toDto(order);
 
     this._orderService.editOrder(orderDto).then(r => r.pipe(first()).subscribe(
-      {
-        error: (error: any) => {
-          console.log(error.statusText);
-          alert(error);
-        },
-        complete: () => {
-          // @ts-ignore
-          this.toastOrder.showToast('Bestelstatus gewijzigd!', id, 'De status van de bestelling is gewijzigd.', 'orange');
-          this.replaceClass('status'+id, 'btn-'+oldData.color, 'btn-'+status.color);
-        }
+      () => {
+        // @ts-ignore
+        this.toastOrder.showToast('Bestelstatus gewijzigd!', id, 'De status van de bestelling is gewijzigd.', 'orange');
+      },
+      (error: any) => {
+        order.data.leaseOrderStatus.value = oldData.code;
+        order.data.leaseOrderStatus.data = oldData;
+        alert(error.statusText);
       }));
   }
 
