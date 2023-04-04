@@ -12,12 +12,13 @@ import { OrderTransformer } from "../../../class/transformer/order-transformer/o
 import { LeasecarTransformer } from "../../../class/transformer/leasecar-transformer/leasecar-transformer";
 import { OrderHeader } from "../../../class/order-header";
 import { ContractTransformer } from "../../../class/transformer/contract-transformer/contract-transformer";
+import { DatePipe } from "@angular/common";
 
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.component.html',
   styleUrls: ['./orders.component.css'],
-  providers: [OrderTransformer, LeasecarTransformer, ContractTransformer]
+  providers: [OrderTransformer, LeasecarTransformer, ContractTransformer, DatePipe]
 })
 export class OrdersComponent implements OnInit {
 

@@ -78,7 +78,7 @@
         <tr class="td-p-0">
           <td colspan="8">
             <div class="collapse border-top border-bottom pb-3" id="{{'collapse' + order.data.id.value }}">
-              <app-view-order [hiddenProperties]="['leasecar', 'id', 'contract']" [titles]="['Informatie', 'Leaseauto', 'Contract']" [items]="[order, order.data.leasecar, order.data.leasecar.data.contract]"></app-view-order>
+              <app-view-order [jsonProperties]="['leasePlanPath', 'quotationPath']" [hiddenProperties]="['leasecar', 'id', 'contract']" [titles]="['Informatie', 'Leaseauto', 'Contract']" [items]="[order, order.data.leasecar, order.data.leasecar.data.contract]"></app-view-order>
             </div>
           </td>
         </tr>

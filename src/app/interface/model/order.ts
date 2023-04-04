@@ -8,11 +8,11 @@ export interface Order {
     }
     orderer: {
       value: string,
-      translation: string
+      translation: string,
     }
     supplier: {
       value: string,
-      translation: string
+      translation: string,
     }
     leaseOrderStatus: {
       value: string,
@@ -21,23 +21,25 @@ export interface Order {
     }
     orderDate: {
       value: string,
-      translation: string
+      translation: string,
     }
     deliveryDate: {
       value?: string,
-      translation: string
+      translation: string,
     }
     weekOfDelivery: {
       value?: number,
-      translation: string
+      translation: string,
     }
     quotationPath: {
       value?: string,
-      translation: string
+      file?: FormData,
+      translation: string,
     }
     leasePlanPath: {
       value?: string,
-      translation: string
+      file?: FormData,
+      translation: string,
     },
     leasecar: Leasecar
   }

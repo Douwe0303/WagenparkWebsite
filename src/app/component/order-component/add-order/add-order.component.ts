@@ -8,6 +8,7 @@ import { OrderTransformer } from "../../../class/transformer/order-transformer/o
 import { Leasecar } from "../../../interface/model/leasecar";
 import { LeasecarTransformer } from "../../../class/transformer/leasecar-transformer/leasecar-transformer";
 import { OrderStatus } from "../../../class/order-status/order-status";
+import { FileService } from "../../../service/file/file.service";
 
 @Injectable()
 export class CustomDateParserFormatter extends NgbDateParserFormatter {
@@ -41,7 +42,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 })
 export class AddOrderComponent {
 
-  constructor(private _orderService: OrderService, private orderTransformer: OrderTransformer, private leasecarTransformer: LeasecarTransformer) {}
+  constructor(private _orderService: OrderService, private _fileService: FileService, private orderTransformer: OrderTransformer, private leasecarTransformer: LeasecarTransformer) {}
 
   protected readonly OrderStatus = OrderStatus;
 
@@ -54,8 +55,12 @@ export class AddOrderComponent {
   carBrand: string = "";
   status: string | undefined;
   expectedWeek?: number;
-  leaseplanPath: string = "";
-  quotationPath: string = "";
+
+  leaseplanPath?: string;
+  quotationPath?: string;
+
+  leaseplan?: File;
+  quotation?: File;
 
   carModel: string = "";
   carExtra: string = "";
@@ -88,15 +93,12 @@ export class AddOrderComponent {
 
     let order: OrderDto | null = this.getOrder();
 
-    console.log(order);
-
     this.loading().then(() => {
       this._orderService.createOrder(order).then((call) => {
         call.pipe(first()).subscribe(
           (orderDto: OrderDto) => {
-            let order: Order = this.orderTransformer.toModel(orderDto);
             let leasecar: Leasecar = this.leasecarTransformer.toModel(orderDto.leaseCar);
-            this.newOrderEvent.emit({order: order, leasecar: leasecar});
+            this.updateFilesAfterCreate(orderDto, leasecar);
           },
           (error: any) => {
             alert(error.statusText);
@@ -108,6 +110,54 @@ export class AddOrderComponent {
           })
       })
     })
+  }
+
+  updateFilesAfterCreate(orderDto: OrderDto, leasecar: Leasecar): void {
+    let quotationPath: string | undefined = this.quotationPath?.replace('C:\\fakepath\\', '');
+    let leaseplanPath: string | undefined = this.leaseplanPath?.replace('C:\\fakepath\\', '');
+
+    let quotationName: string = "";
+    let leaseplanName: string = "";
+
+    if(quotationPath) {
+      quotationName = quotationPath.substring(0, quotationPath.lastIndexOf('.')) + orderDto.id + quotationPath.substring(quotationPath.lastIndexOf('.'), quotationPath.length);
+      orderDto.quotationPath = quotationName;
+    }
+
+    if(leaseplanPath) {
+      leaseplanName = leaseplanPath.substring(0, leaseplanPath.lastIndexOf('.')) + orderDto.id + leaseplanPath.substring(leaseplanPath.lastIndexOf('.'), leaseplanPath.length);
+      orderDto.leasePlanPath = leaseplanName;
+    }
+
+    this._orderService.editOrder(orderDto).then((call) => {
+      call.pipe(first()).subscribe(() => {
+        let order: Order = this.orderTransformer.toModel(orderDto);
+        this.uploadFile(this.quotation, quotationName).then(() => {
+          this.uploadFile(this.leaseplan, leaseplanName).then(() => {
+            this.newOrderEvent.emit({order: order, leasecar: leasecar});
+          });
+        });
+      })
+    })
+  }
+
+  async uploadFile(file: File | undefined, name: string): Promise<any> {
+    let formData: FormData = new FormData();
+    if(file) {
+      console.log(name);
+      formData.append('file', file, name);
+      this._fileService.uploadFile(formData).then((call) => {
+        return call.pipe(first()).subscribe(() => {})
+      });
+    }
+  }
+
+  onFileSelect(fileEvent: any, fileName: string): void {
+    if(fileName == 'leaseplan') {
+      this.leaseplan = fileEvent.target.files[0];
+    } else {
+      this.quotation = fileEvent.target.files[0];
+    }
   }
 
   displayElement(element: string, display: string): void {
@@ -139,8 +189,10 @@ export class AddOrderComponent {
       orderDate: orderDate,
       deliveryDate: deliveryDate,
       weekOfDelivery: this.expectedWeek,
-      quotationPath: this.quotationPath,
-      leasePlanPath: this.leaseplanPath,
+      //@ts-ignore
+      quotationPath: '',
+      //@ts-ignore
+      leasePlanPath: '',
       leaseCar: {
         brand: this.carBrand,
         driver: this.driver,

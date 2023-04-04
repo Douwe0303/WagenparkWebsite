@@ -9,6 +9,8 @@ export class DataViewComponent {
   @Input() title: string | undefined = "";
   @Input() item = { data: {} };
   @Input() hiddenProperties: string[] = [];
+  @Input() jsonProperties: string[] = [];
+  @Input() json: boolean = false;
 
   asIsOrder() {
     return 1;

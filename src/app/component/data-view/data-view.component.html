@@ -3,6 +3,7 @@
     {{ this.title }}
   </a>
   <div *ngFor="let data of this.item.data | keyvalue: asIsOrder">
-    <a class="list-group-item list-group-item-action" *ngIf="!this.hiddenProperties.includes(data.key)"><b>{{ data.value['translation'] }}: </b>{{ data.value['value'] }}</a>
+    <a class="list-group-item list-group-item-action" *ngIf="!this.hiddenProperties.includes(data.key) && !this.jsonProperties.includes(data.key)"><b>{{ data.value['translation'] }}: </b>{{ data.value['value'] }}</a>
+    <a class="list-group-item list-group-item-action" *ngIf="!this.hiddenProperties.includes(data.key) && this.jsonProperties.includes(data.key)"><b>{{ data.value['translation'] }}: </b>{{ data.value['value'] | json }}</a>
   </div>
 </div>

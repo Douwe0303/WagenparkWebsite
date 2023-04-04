@@ -9,7 +9,12 @@ export interface Contract {
       translation: string
     }
     signed: {
-      value?: boolean,
+      value?: string,
+      original?: boolean,
+      translation: string
+    }
+    duration: {
+      value?: string,
       translation: string
     }
     startDate: {
@@ -17,6 +22,10 @@ export interface Contract {
       translation: string
     }
     endDate: {
+      value?: string,
+      translation: string
+    }
+    remainingTime: {
       value?: string,
       translation: string
     }

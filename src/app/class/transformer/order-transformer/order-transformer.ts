@@ -49,7 +49,7 @@ export class OrderTransformer implements Transformer<Order, OrderDto> {
           translation: "Verwachte leverweek"
         },
         quotationPath: {
-          value: orderDto.quotationPath,
+          value: '<a href=' + orderDto.quotationPath + '> test </a>',
           translation: "Factuur"
         },
         leasePlanPath: {

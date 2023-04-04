@@ -1,7 +1,7 @@
 <div class="container-fluid mt-4">
   <div class="row">
     <div class="col-12 col-lg-3" *ngFor="let item of this.items; let i = index;">
-      <app-data-view [hiddenProperties]="hiddenProperties" [title]="titles[i]" [item]="item"></app-data-view>
+      <app-data-view [hiddenProperties]="hiddenProperties" [jsonProperties]="jsonProperties" [title]="titles[i]" [item]="item"></app-data-view>
     </div>
   </div>
 </div>

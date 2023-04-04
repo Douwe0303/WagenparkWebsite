@@ -4,7 +4,7 @@ export interface Leasecar {
   data: {
     id: {
       value?: number,
-      translation: string
+      translation: string,
     }
     brand: {
       value?: string,

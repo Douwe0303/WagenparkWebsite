@@ -119,11 +119,11 @@
                   </div>
                   <div class="input-group mb-3 label-hover">
                     <label class="input-group-text w-50" for="leasePlanInput">Upload leaseplan</label>
-                    <input [(ngModel)]="leaseplanPath" #leaseplanPathInput="ngModel" [class.is-valid]="leaseplanPathInput.valid && leaseplanPathInput.dirty" [class.is-invalid]="leaseplanPathInput.invalid" name="lease-plan-path" type="file" class="form-control custom-button" id="leasePlanInput" placeholder="Leaseplan">
+                    <input [(ngModel)]="leaseplanPath" (change)="this.onFileSelect($event, 'leaseplan')" #leaseplanPathInput="ngModel" [class.is-valid]="leaseplanPathInput.valid && leaseplanPathInput.dirty" [class.is-invalid]="leaseplanPathInput.invalid" name="lease-plan-path" type="file" class="form-control custom-button" id="leasePlanInput" placeholder="Leaseplan">
                   </div>
                   <div class="input-group mb-3 label-hover">
                     <label class="input-group-text w-50" for="quotationInput">Upload factuur</label>
-                    <input [(ngModel)]="quotationPath" #quotationPathInput="ngModel" [class.is-valid]="quotationPathInput.valid && quotationPathInput.dirty" [class.is-invalid]="quotationPathInput.invalid" name="quotation-path" type="file" class="form-control custom-button" id="quotationInput" placeholder="factuur">
+                    <input [(ngModel)]="quotationPath" (change)="this.onFileSelect($event, 'quotation')" #quotationPathInput="ngModel" [class.is-valid]="quotationPathInput.valid && quotationPathInput.dirty" [class.is-invalid]="quotationPathInput.invalid" name="quotation-path" type="file" class="form-control custom-button" id="quotationInput" placeholder="factuur">
                   </div>
                 </div>
                 <div class="col-12 col-xxl-4">
@@ -214,4 +214,3 @@
     </div>
   </div>
 </div>
-
