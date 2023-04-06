@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
+import { first } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,24 @@ export class FileService {
     return this.http.post(this.FILE_URL, file);
   }
 
-  async getFile(filename: string): Promise<any> {
-    return this.http.get(this.FILE_URL+filename);
+  async getFileHttp(filename: string, fileType: string): Promise<any> {
+    return this.http.get(this.FILE_URL+filename, { responseType: 'blob'}).pipe(first()).subscribe(
+      (res: Blob) => {
+        let file: Blob = new Blob([res], {type: 'application/' + fileType});
+        const fileUrl = URL.createObjectURL(file);
+        window.open(fileUrl, '_blank');
+      }
+    );
+  }
+
+  downloadFile(fileName: string, fileType: string): any {
+    if(fileType == 'docx') {
+      fileType = 'vnd.openxmlformats-officedocument.wordprocessingml.document';
+    } else if (fileType == 'doc') {
+      fileType = 'msword';
+    }
+
+    console.log(fileName);
+    this.getFileHttp(fileName, fileType);
   }
 }

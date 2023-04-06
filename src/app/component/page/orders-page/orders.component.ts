@@ -4,7 +4,7 @@ import { OrderService } from "../../../service/order/order.service";
 import { first } from "rxjs";
 import { OrderDto } from "../../../interface/dto/order-dto";
 import { Sorting } from "../../../enum/sorting";
-import { NgbDropdown } from "@ng-bootstrap/ng-bootstrap";
+import { NgbDropdown} from "@ng-bootstrap/ng-bootstrap";
 import { ToastComponent } from "../../toast/toast.component";
 import { OrderStatus } from "../../../class/order-status/order-status";
 import { Order } from "../../../interface/model/order";
@@ -13,6 +13,7 @@ import { LeasecarTransformer } from "../../../class/transformer/leasecar-transfo
 import { OrderHeader } from "../../../class/order-header";
 import { ContractTransformer } from "../../../class/transformer/contract-transformer/contract-transformer";
 import { DatePipe } from "@angular/common";
+import {FileService} from "../../../service/file/file.service";
 
 @Component({
   selector: 'app-orders',
@@ -39,7 +40,7 @@ export class OrdersComponent implements OnInit {
   protected readonly OrderHeader = OrderHeader;
   protected readonly OrderStatus = OrderStatus;
 
-  constructor(private router: Router, private _orderService: OrderService, private orderTransformer: OrderTransformer) {}
+  constructor(private router: Router, private _orderService: OrderService, private _fileService: FileService, private orderTransformer: OrderTransformer) {}
 
   ngOnInit(): void {
     this.fetchOrders();
@@ -119,6 +120,11 @@ export class OrdersComponent implements OnInit {
     }
   }
 
+  downloadFile(fileName: any): void {
+    let type: string = fileName.substring(fileName.lastIndexOf('.')+1, fileName.length);
+    this._fileService.downloadFile(fileName, type);
+  }
+
   delete(id: number | undefined): void {
     this._orderService.deleteOrder(id).then(call =>
       call.pipe(first()).subscribe(
@@ -147,7 +153,7 @@ export class OrdersComponent implements OnInit {
       return;
     }
 
-    order.data.leaseOrderStatus.value = status.text;
+    order.data.leaseOrderStatus.value = status.code;
     order.data.leaseOrderStatus.data = status;
 
     let orderDto: OrderDto = this.orderTransformer?.toDto(order);

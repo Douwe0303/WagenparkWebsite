@@ -188,14 +188,14 @@
                   <div class="row">
                     <div class="col-6">
                       <div class="form-floating mb-3">
-                        <input [(ngModel)]="taxAddition" #taxAdditionInput="ngModel" [class.is-invalid]="taxAdditionInput.invalid" [class.is-valid]="taxAdditionInput.valid && taxAdditionInput.dirty && taxAdditionInput.value != ''" name="taxAddition" type="number" class="form-control" id="taxAdditionInput" placeholder="Jane Doe">
-                        <label for="taxAdditionInput">Fiscale bijtelling</label>
+                        <input [(ngModel)]="taxAddition" #taxAdditionInput="ngModel" [class.is-invalid]="taxAdditionInput.invalid" [class.is-valid]="taxAdditionInput.valid && taxAdditionInput.dirty && taxAdditionInput.value != ''" name="taxAddition" type="number" class="form-control" id="taxAdditionInput" min="0" max="100" placeholder="Jane Doe">
+                        <label for="taxAdditionInput">Fiscale bijtelling (%)</label>
                       </div>
                     </div>
                     <div class="col-6">
                       <div class="form-floating mb-3">
-                        <input [(ngModel)]="contribution" #contributionInput="ngModel" [class.is-invalid]="contributionInput.invalid" [class.is-valid]="contributionInput.valid && contributionInput.dirty && contributionInput.value != ''" name="contribution" type="number" class="form-control" id="contributionInput" placeholder="Jane Doe">
-                        <label for="contributionInput">Eigen bijdrage</label>
+                        <input [(ngModel)]="contribution" #contributionInput="ngModel" [class.is-invalid]="contributionInput.invalid" [class.is-valid]="contributionInput.valid && contributionInput.dirty && contributionInput.value != ''" name="contribution" type="number" class="form-control" id="contributionInput" min="0" max="100" placeholder="Jane Doe">
+                        <label for="contributionInput">Eigen bijdrage (%)</label>
                       </div>
                     </div>
                   </div>

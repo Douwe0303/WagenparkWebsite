@@ -23,7 +23,7 @@ const routes: Routes = [
   },
   {
     path: 'orders/:id/edit',
-    title: 'Order',
+    title: 'Bestelling',
     component: EditOrderComponent,
   },
   {

@@ -21,39 +21,50 @@ export class OrderTransformer implements Transformer<Order, OrderDto> {
       data: {
         id: {
           value: orderDto.id,
+          toDisplay: orderDto.id,
           translation: "id"
         },
         orderer: {
           value: orderDto.orderer,
+          toDisplay: orderDto.orderer,
           translation: "Besteller"
         },
         supplier: {
           value: orderDto.supplier,
+          toDisplay: orderDto.supplier,
           translation: "Leverancier"
         },
         leaseOrderStatus: {
-          value: status.text,
+          value: status.code,
+          toDisplay: status.text,
           data: status,
           translation: "Status",
         },
         orderDate: {
           value: orderDto.orderDate,
+          toDisplay: orderDto.orderDate,
           translation: "Besteldatum"
         },
         deliveryDate: {
           value: orderDto.deliveryDate,
+          toDisplay: orderDto.deliveryDate == null ? '' : orderDto.deliveryDate,
           translation: "Leverdatum"
         },
         weekOfDelivery: {
           value: orderDto.weekOfDelivery,
+          toDisplay: orderDto.weekOfDelivery,
           translation: "Verwachte leverweek"
         },
         quotationPath: {
-          value: '<a href=' + orderDto.quotationPath + '> test </a>',
+          value: orderDto.quotationPath,
+          toDisplay: this.getLink(orderDto.quotationPath),
+          path: orderDto.quotationPath,
           translation: "Factuur"
         },
         leasePlanPath: {
           value: orderDto.leasePlanPath,
+          toDisplay: this.getLink(orderDto.leasePlanPath),
+          path: orderDto.leasePlanPath,
           translation: "Lease plan"
         },
         leasecar: leasecar
@@ -68,13 +79,32 @@ export class OrderTransformer implements Transformer<Order, OrderDto> {
       id: order.data.id.value,
       supplier: order.data.supplier.value,
       orderer: order.data.orderer.value,
-      leaseOrderStatus: order.data.leaseOrderStatus.data.code,
+      leaseOrderStatus: order.data.leaseOrderStatus.value,
       orderDate: order.data.orderDate.value,
       deliveryDate: order.data.deliveryDate.value,
       weekOfDelivery: order.data.weekOfDelivery.value,
       quotationPath: order.data.quotationPath.value,
       leasePlanPath: order.data.leasePlanPath.value,
       leaseCar: leasecarDto
+    }
+  }
+
+  getLink(link: string | undefined): string {
+    if(link && (link != '')) {
+      return this.getFileType(link);
+    } else {
+      return 'Document ontbreekt';
+    }
+  }
+
+  getFileType(fileName: string): string {
+    let type: string = fileName.substring(fileName.lastIndexOf('.')+1, fileName.length);
+    if(type == 'doc' || type == 'docx') {
+      return 'Download Word-bestand';
+    } else if(type == 'pdf') {
+      return 'Open pdf-bestand';
+    } else {
+      return 'Open bestand';
     }
   }
 

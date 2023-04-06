@@ -120,12 +120,12 @@ export class AddOrderComponent {
     let leaseplanName: string = "";
 
     if(quotationPath) {
-      quotationName = quotationPath.substring(0, quotationPath.lastIndexOf('.')) + orderDto.id + quotationPath.substring(quotationPath.lastIndexOf('.'), quotationPath.length);
+      quotationName = quotationPath.substring(0, quotationPath.lastIndexOf('.')) + "_" + orderDto.id + quotationPath.substring(quotationPath.lastIndexOf('.'), quotationPath.length);
       orderDto.quotationPath = quotationName;
     }
 
     if(leaseplanPath) {
-      leaseplanName = leaseplanPath.substring(0, leaseplanPath.lastIndexOf('.')) + orderDto.id + leaseplanPath.substring(leaseplanPath.lastIndexOf('.'), leaseplanPath.length);
+      leaseplanName = leaseplanPath.substring(0, leaseplanPath.lastIndexOf('.')) + "_" + orderDto.id + leaseplanPath.substring(leaseplanPath.lastIndexOf('.'), leaseplanPath.length);
       orderDto.leasePlanPath = leaseplanName;
     }
 
@@ -144,7 +144,6 @@ export class AddOrderComponent {
   async uploadFile(file: File | undefined, name: string): Promise<any> {
     let formData: FormData = new FormData();
     if(file) {
-      console.log(name);
       formData.append('file', file, name);
       this._fileService.uploadFile(formData).then((call) => {
         return call.pipe(first()).subscribe(() => {})

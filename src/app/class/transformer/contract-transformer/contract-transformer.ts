@@ -2,19 +2,15 @@ import { Transformer } from "../../../interface/transformer";
 import { Contract } from "../../../interface/model/contract";
 import { ContractDto } from "../../../interface/dto/contract-dto";
 import { Injectable } from "@angular/core";
-import {DatePipe} from "@angular/common";
-import {end} from "@popperjs/core";
 
 @Injectable()
 export class ContractTransformer implements Transformer<Contract, ContractDto> {
-
-  constructor(private datePipe: DatePipe){}
 
   toDto(model: Contract): ContractDto {
     return {
       id: model.data.id.value,
       contractType: model.data.contractType.value,
-      signed: model.data.signed.original,
+      signed: model.data.signed.value,
       startDate: model.data.startDate.value,
       endDate: model.data.endDate.value,
       taxAddition: model.data.taxAddition.value,
@@ -27,39 +23,47 @@ export class ContractTransformer implements Transformer<Contract, ContractDto> {
       data: {
         id: {
           value: dto.id,
+          toDisplay: dto.id,
           translation: "id"
         },
         contractType: {
           value: dto.contractType,
+          toDisplay: dto.contractType == null ? '' : dto.contractType,
           translation: "Regeling"
         },
         signed: {
-          value: this.getSigned(dto.signed),
-          original: dto.signed,
+          value: dto.signed,
+          toDisplay: this.getSigned(dto.signed),
           translation: "Ondertekend"
         },
         duration: {
           value: this.getDuration(dto.startDate, dto.endDate),
+          toDisplay: this.getDuration(dto.startDate, dto.endDate),
           translation: "Looptijd"
         },
         startDate: {
           value: dto.startDate,
+          toDisplay: dto.startDate  == null ? '' : dto.startDate,
           translation: "Startdatum contract"
         },
         endDate: {
           value: dto.endDate,
+          toDisplay: dto.endDate == null ? '' : dto.endDate,
           translation: "Einddatum contract"
         },
         remainingTime: {
           value: this.getRemainingTime(dto.endDate),
+          toDisplay: this.getRemainingTime(dto.endDate),
           translation: "Resterende tijd"
         },
         taxAddition: {
           value: dto.taxAddition,
+          toDisplay: dto.taxAddition + "%",
           translation: "Fiscale bijtelling"
         },
         contribution: {
           value: dto.contribution,
+          toDisplay: dto.contribution + "%",
           translation: "Eigen bijdrage"
         }
       }
@@ -68,14 +72,14 @@ export class ContractTransformer implements Transformer<Contract, ContractDto> {
 
   getDuration(startString: string | undefined, endString: string | undefined): string {
     if(startString == undefined || endString == undefined) {
-      return "Onbekend";
+      return "";
     }
 
     let startDate: Date | null = this.parseDate(startString, 'dd-MM-yyyy');
     let endDate: Date | null = this.parseDate(endString, 'dd-MM-yyyy');
 
     if(!startDate || !endDate) {
-      return "Onbekend";
+      return "";
     }
 
     let months = (endDate.getFullYear() - startDate.getFullYear()) * 12;
@@ -94,14 +98,14 @@ export class ContractTransformer implements Transformer<Contract, ContractDto> {
 
   getRemainingTime(endString: string | undefined): string {
     if(endString == undefined) {
-      return "Onbekend";
+      return "";
     }
 
     let today: Date = new Date();
     let endDate: Date | null = this.parseDate(endString, 'yyyy-MM-dd');
 
     if(!endDate) {
-      return "Onbekend";
+      return "";
     }
 
     let diff = endDate.getTime() - today.getTime();

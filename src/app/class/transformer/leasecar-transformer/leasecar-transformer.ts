@@ -17,38 +17,47 @@ export class LeasecarTransformer implements Transformer<Leasecar, LeasecarDto> {
       data: {
         id: {
           value: leasecarDto.id,
+          toDisplay: leasecarDto.id,
           translation: "id"
         },
         driver: {
           value: leasecarDto.driver,
+          toDisplay: leasecarDto.driver,
           translation: "Bestuurder"
         },
         brand: {
           value: leasecarDto.brand,
+          toDisplay: leasecarDto.brand,
           translation: "Automerk"
         },
         model: {
           value: leasecarDto.model,
+          toDisplay: leasecarDto.model,
           translation: "Model",
         },
         extra: {
           value: leasecarDto.extra,
+          toDisplay: leasecarDto.extra,
           translation: "Extra/kleur"
         },
         engine: {
           value: leasecarDto.engine,
+          toDisplay: leasecarDto.engine,
           translation: "Type motor"
         },
         kilometers: {
           value: leasecarDto.kilometers,
+          toDisplay: leasecarDto.kilometers,
           translation: "Kilometrage"
         },
         price: {
           value: leasecarDto.price,
+          toDisplay: "€" + leasecarDto.price,
           translation: "Fiscale waarde"
         },
         particularities: {
           value: leasecarDto.particularities,
+          toDisplay: leasecarDto.particularities,
           translation: "Bijzonderheden"
         },
         contract: contract
