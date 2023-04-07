@@ -6,11 +6,13 @@ import { Injectable } from "@angular/core";
 import { LeasecarTransformer } from "../leasecar-transformer/leasecar-transformer";
 import { Leasecar } from "../../../interface/model/leasecar";
 import { LeasecarDto } from "../../../interface/dto/leasecar-dto";
+import { NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
+import { CustomDateParser } from "../../customDateParser/custom-date-parser";
 
 @Injectable()
 export class OrderTransformer implements Transformer<Order, OrderDto> {
 
-  constructor(private leasecarTransformer: LeasecarTransformer) {}
+  constructor(private leasecarTransformer: LeasecarTransformer, private customDateParser: CustomDateParser) {}
 
   toModel(orderDto: OrderDto): Order {
     let status: any = this.getOrderStatus(orderDto.leaseOrderStatus);
@@ -42,11 +44,13 @@ export class OrderTransformer implements Transformer<Order, OrderDto> {
         },
         orderDate: {
           value: orderDto.orderDate,
+          data: this.customDateParser.parse(orderDto.orderDate),
           toDisplay: orderDto.orderDate,
           translation: "Besteldatum"
         },
         deliveryDate: {
           value: orderDto.deliveryDate,
+          data: orderDto.deliveryDate == undefined ? undefined : this.customDateParser.parse(orderDto.deliveryDate),
           toDisplay: orderDto.deliveryDate == null ? '' : orderDto.deliveryDate,
           translation: "Leverdatum"
         },
@@ -80,8 +84,9 @@ export class OrderTransformer implements Transformer<Order, OrderDto> {
       supplier: order.data.supplier.value,
       orderer: order.data.orderer.value,
       leaseOrderStatus: order.data.leaseOrderStatus.value,
-      orderDate: order.data.orderDate.value,
-      deliveryDate: order.data.deliveryDate.value,
+      //@ts-ignore
+      orderDate: this.getDate(order.data.orderDate.data),
+      deliveryDate: this.getDate(order.data.deliveryDate.data),
       weekOfDelivery: order.data.weekOfDelivery.value,
       quotationPath: order.data.quotationPath.value,
       leasePlanPath: order.data.leasePlanPath.value,
@@ -130,6 +135,14 @@ export class OrderTransformer implements Transformer<Order, OrderDto> {
 
       case OrderStatus.processed.code:
         return OrderStatus.processed;
+    }
+  }
+
+  getDate(date: NgbDateStruct | undefined | null): string | undefined {
+    if(date != null) {
+      return date.day + "-" + date.month + "-" + date.year;
+    } else {
+      return "";
     }
   }
 }

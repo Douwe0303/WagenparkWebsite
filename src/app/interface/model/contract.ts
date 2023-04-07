@@ -1,3 +1,5 @@
+import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+
 export interface Contract {
   data: {
     id: {
@@ -22,11 +24,13 @@ export interface Contract {
     }
     startDate: {
       value?: string,
+      data?: NgbDateStruct | null,
       toDisplay?: string,
       translation: string
     }
     endDate: {
       value?: string,
+      data?: NgbDateStruct | null,
       toDisplay?: string,
       translation: string
     }

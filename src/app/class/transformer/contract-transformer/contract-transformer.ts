@@ -2,17 +2,21 @@ import { Transformer } from "../../../interface/transformer";
 import { Contract } from "../../../interface/model/contract";
 import { ContractDto } from "../../../interface/dto/contract-dto";
 import { Injectable } from "@angular/core";
+import { NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
+import { CustomDateParser } from "../../customDateParser/custom-date-parser";
 
 @Injectable()
 export class ContractTransformer implements Transformer<Contract, ContractDto> {
+
+  constructor(private customDateParser: CustomDateParser){}
 
   toDto(model: Contract): ContractDto {
     return {
       id: model.data.id.value,
       contractType: model.data.contractType.value,
       signed: model.data.signed.value,
-      startDate: model.data.startDate.value,
-      endDate: model.data.endDate.value,
+      startDate: this.getDate(model.data.startDate.data),
+      endDate: this.getDate(model.data.endDate.data),
       taxAddition: model.data.taxAddition.value,
       contribution: model.data.contribution.value
     }
@@ -43,11 +47,13 @@ export class ContractTransformer implements Transformer<Contract, ContractDto> {
         },
         startDate: {
           value: dto.startDate,
+          data: dto.startDate == undefined ? undefined : this.customDateParser.parse(dto.startDate),
           toDisplay: dto.startDate  == null ? '' : dto.startDate,
           translation: "Startdatum contract"
         },
         endDate: {
           value: dto.endDate,
+          data: dto.endDate == undefined ? undefined : this.customDateParser.parse(dto.endDate),
           toDisplay: dto.endDate == null ? '' : dto.endDate,
           translation: "Einddatum contract"
         },
@@ -133,5 +139,13 @@ export class ContractTransformer implements Transformer<Contract, ContractDto> {
     const month = parseInt(parts[1], 10) - 1;
     const day = parseInt(parts[0], 10);
     return new Date(year, month, day);
+  }
+
+  getDate(date: NgbDateStruct | undefined | null): string | undefined {
+    if(date != null) {
+      return date.day + "-" + date.month + "-" + date.year;
+    } else {
+      return "";
+    }
   }
 }

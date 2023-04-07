@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { OrderService } from "../../../service/order/order.service";
 import { first } from "rxjs";
@@ -8,14 +8,23 @@ import {Order} from "../../../interface/model/order";
 import {LeasecarTransformer} from "../../../class/transformer/leasecar-transformer/leasecar-transformer";
 import {ContractTransformer} from "../../../class/transformer/contract-transformer/contract-transformer";
 import {Title} from "@angular/platform-browser";
+import {OrderDummy} from "../../../class/dummy/order-dummy/order-dummy";
+import {FileService} from "../../../service/file/file.service";
+import {EditOrderComponent} from "../edit-order/edit-order.component";
 
 @Component({
   selector: 'app-view-order',
   templateUrl: './view-order.component.html',
   styleUrls: ['./view-order.component.css'],
-  providers: [OrderTransformer, LeasecarTransformer, ContractTransformer]
+  providers: [OrderTransformer, LeasecarTransformer, ContractTransformer],
 })
 export class ViewOrderComponent implements OnInit {
+  order: Order = new OrderDummy();
+  view: boolean = true;
+
+  @ViewChild(EditOrderComponent)
+  private editOrderComponent!: EditOrderComponent;
+
   @Input() items: {data: {}}[] = [];
   @Input() hiddenProperties: string[] = [];
   @Input() clickableProperties: string[] = [];
@@ -23,7 +32,12 @@ export class ViewOrderComponent implements OnInit {
 
   @Output() clickEvent = new EventEmitter<any>();
 
-  constructor(private activatedRoute: ActivatedRoute, private _orderService: OrderService, private orderTransformer: OrderTransformer, private titleService: Title){}
+  constructor(private activatedRoute: ActivatedRoute,
+              private _orderService: OrderService,
+              private orderTransformer: OrderTransformer,
+              private titleService: Title,
+              private _fileService: FileService
+  ){}
 
   clicked(value: any): void {
     this.clickEvent.emit(value);
@@ -31,9 +45,24 @@ export class ViewOrderComponent implements OnInit {
 
   ngOnInit() {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
+    const action = this.activatedRoute.snapshot.paramMap.get('action');
+
     if(id != null) {
+      this.setAction(action);
       this.setTitle(id);
       this.fetchOrder(+id);
+    }
+  }
+
+  setAction(action: string | null) {
+    switch(action) {
+      case 'view':
+        this.view = true;
+        break;
+      case 'edit':
+        this.view = false;
+        break;
+      default: this.view = true;
     }
   }
 
@@ -45,6 +74,10 @@ export class ViewOrderComponent implements OnInit {
     this._orderService.fetchOrder(id).then( (get) => {
       get.pipe(first()).subscribe( (orderDto: OrderDto) => {
         let order: Order = this.orderTransformer.toModel(orderDto);
+        this.order = order;
+        console.log(this.order);
+        // this.editOrderComponent.initFiles(order.data.leasePlanPath.value);
+        // this.editOrderComponent.initFiles(order.data.quotationPath.value);
         this.setInputs(order);
       })
     })

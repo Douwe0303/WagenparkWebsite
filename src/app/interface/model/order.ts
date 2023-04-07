@@ -1,4 +1,5 @@
 import { Leasecar } from "./leasecar";
+import { NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
 
 export interface Order {
   data: {
@@ -25,11 +26,13 @@ export interface Order {
     }
     orderDate: {
       value: string,
+      data?: NgbDateStruct | null,
       toDisplay: string,
       translation: string,
     }
     deliveryDate: {
       value?: string,
+      data?: NgbDateStruct | null,
       toDisplay?: string,
       translation: string,
     }
@@ -41,15 +44,17 @@ export interface Order {
     quotationPath: {
       value?: string,
       toDisplay?: string,
+      formData?: FormData,
+      file?: File,
       path?: string,
-      file?: FormData,
       translation: string,
     }
     leasePlanPath: {
       value?: string,
       toDisplay?: string,
+      formData?: FormData,
+      file?: File,
       path?: string,
-      file?: FormData,
       translation: string,
     },
     leasecar: Leasecar

@@ -10,10 +10,10 @@ import { OrderStatus } from "../../../class/order-status/order-status";
 import { Order } from "../../../interface/model/order";
 import { OrderTransformer } from "../../../class/transformer/order-transformer/order-transformer";
 import { LeasecarTransformer } from "../../../class/transformer/leasecar-transformer/leasecar-transformer";
-import { OrderHeader } from "../../../class/order-header";
+import { OrderHeader } from "../../../class/order-header/order-header";
 import { ContractTransformer } from "../../../class/transformer/contract-transformer/contract-transformer";
 import { DatePipe } from "@angular/common";
-import {FileService} from "../../../service/file/file.service";
+import { FileService } from "../../../service/file/file.service";
 
 @Component({
   selector: 'app-orders',

@@ -25,14 +25,21 @@ export class FileService {
     );
   }
 
+  async getFile(filename: string, fileType: string): Promise<any> {
+    return this.http.get(this.FILE_URL+filename, { responseType: 'blob'}).pipe(first()).subscribe(
+      (res: Blob) => {
+        let blob: Blob = new Blob([res], {type: 'application/' + fileType});
+        return new File([blob], 'filename');
+      }
+    );
+  }
+
   downloadFile(fileName: string, fileType: string): any {
     if(fileType == 'docx') {
       fileType = 'vnd.openxmlformats-officedocument.wordprocessingml.document';
     } else if (fileType == 'doc') {
       fileType = 'msword';
     }
-
-    console.log(fileName);
     this.getFileHttp(fileName, fileType);
   }
 }

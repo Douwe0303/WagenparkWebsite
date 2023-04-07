@@ -1,0 +1,41 @@
+.display-flex {
+  display: flex;
+}
+
+.accordion-button::after {
+  display: none;
+}
+
+.info-button {
+  color: white;
+}
+
+.info-button:hover {
+  color: #c13350;
+}
+
+.display-none {
+  display: none;
+}
+
+.plus-color {
+  color: green;
+}
+
+.label-hover label {
+  cursor: pointer !important;
+}
+
+.label-hover:hover label {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.5));
+}
+
+.custom-button input[type="file"] {
+  margin-left: -2px !important;
+}
+.custom-button::-webkit-file-upload-button {
+  display: none;
+}
+.custom-button::file-selector-button {
+  display: none;
+}
