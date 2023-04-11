@@ -3,11 +3,11 @@
     <div class="row">
       <div class="col-12 col-md-6 col-xxl-4">
         <div class="form-floating mb-3">
-          <input [(ngModel)]="order.data.orderer.value" #ordererInput="ngModel" name="orderer" type="text" [class.is-invalid]="ordererInput.invalid" [class.is-valid]="ordererInput.valid" class="form-control" id="ordererInput" placeholder="John Doe" required>
+          <input [(ngModel)]="order.data.orderer.value" #ordererInput="ngModel" name="orderer" type="text" [class.is-invalid]="ordererInput.invalid" [class.is-valid]="ordererInput.valid && ordererInput.dirty" class="form-control" id="ordererInput" placeholder="John Doe" required>
           <label for="ordererInput">Besteller <span class="brick-red">*</span></label>
         </div>
         <div class="form-floating mb-3">
-          <input [(ngModel)]="order.data.supplier.value" #supplierInput="ngModel" [class.is-invalid]="supplierInput.invalid" [class.is-valid]="supplierInput.valid" name="supplier" type="text" class="form-control" id="supplierInput" placeholder="Jane Doe" required>
+          <input [(ngModel)]="order.data.supplier.value" #supplierInput="ngModel" [class.is-invalid]="supplierInput.invalid" [class.is-valid]="supplierInput.valid && supplierInput.dirty" name="supplier" type="text" class="form-control" id="supplierInput" placeholder="Jane Doe" required>
           <label for="supplierInput">Leverancier <span class="brick-red">*</span></label>
         </div>
         <div class="input-group mb-3">
@@ -20,7 +20,7 @@
               [(ngModel)]="order.data.orderDate.data"
               #dateOfOrderInput="ngModel"
               [class.is-invalid]="dateOfOrderInput.invalid"
-              [class.is-valid]="dateOfOrderInput.valid"
+              [class.is-valid]="dateOfOrderInput.valid && dateOfOrderInput.dirty"
               ngbDatepicker
               #dpOrder="ngbDatepicker"
               required
@@ -56,7 +56,7 @@
           <label class="form-label" for="expectedWeekInput">Verwachte week van levering</label>
         </div>
         <div class="form-floating mb-3">
-          <select [(ngModel)]="order.data.leaseOrderStatus.value" #statusInput="ngModel" [class.is-valid]="statusInput.valid" [class.is-invalid]="statusInput.invalid" name="status" class="form-select" id="statusSelect" aria-label="Status selecteren" required>
+          <select [(ngModel)]="order.data.leaseOrderStatus.value" #statusInput="ngModel" [class.is-valid]="statusInput.valid && statusInput.dirty" [class.is-invalid]="statusInput.invalid" name="status" class="form-select" id="statusSelect" aria-label="Status selecteren" required>
             <option value="" disabled>Selecteer status...</option>
             <option *ngFor="let orderStatus of OrderStatus | keyvalue; let i = index;" value="{{ orderStatus.value.code }}">{{ orderStatus.value.text }}</option>
           </select>
@@ -104,11 +104,11 @@
         </div>
         <div class="input-group mb-3 label-hover">
           <label class="input-group-text w-50" for="leasePlanInput">Upload leaseplan</label>
-          <input [(ngModel)]="order.data.leasePlanPath.value" (change)="this.onFileSelect($event, 'leaseplan')" #leaseplanPathInput="ngModel" [class.is-valid]="leaseplanPathInput.valid && leaseplanPathInput.dirty" [class.is-invalid]="leaseplanPathInput.invalid" name="lease-plan-path" type="file" class="form-control custom-button" id="leasePlanInput" placeholder="Leaseplan">
+          <input [(ngModel)]="this.leasePlan" (change)="this.onFileSelect($event, 'leaseplan')" #leaseplanPathInput="ngModel" [class.is-valid]="leaseplanPathInput.valid && leaseplanPathInput.dirty" [class.is-invalid]="leaseplanPathInput.invalid" name="lease-plan-path" type="file" class="form-control custom-button" id="leasePlanInput" placeholder="Leaseplan">
         </div>
         <div class="input-group mb-3 label-hover">
           <label class="input-group-text w-50" for="quotationInput">Upload factuur</label>
-          <input [(ngModel)]="order.data.quotationPath.value" (change)="this.onFileSelect($event, 'quotation')" #quotationPathInput="ngModel" [class.is-valid]="quotationPathInput.valid && quotationPathInput.dirty" [class.is-invalid]="quotationPathInput.invalid" name="quotation-path" type="file" class="form-control custom-button" id="quotationInput" placeholder="factuur">
+          <input [(ngModel)]="this.quotation" (change)="this.onFileSelect($event, 'quotation')" #quotationPathInput="ngModel" [class.is-valid]="quotationPathInput.valid && quotationPathInput.dirty" [class.is-invalid]="quotationPathInput.invalid" name="quotation-path" type="file" class="form-control custom-button" id="quotationInput" placeholder="factuur">
         </div>
       </div>
       <div class="col-12 col-xxl-4">
@@ -121,7 +121,7 @@
           </div>
           <div class="col-xxl-6">
             <div class="form-floating mb-3">
-              <select [(ngModel)]="order.data.leasecar.data.contract.data.signed.value" #signedInput="ngModel" [class.is-valid]="signedInput.valid" [class.is-invalid]="signedInput.invalid" name="signed" class="form-select" id="signedSelect" aria-label="Ondertekend selecteren" required>
+              <select [(ngModel)]="order.data.leasecar.data.contract.data.signed.value" #signedInput="ngModel" [class.is-valid]="signedInput.valid && signedInput.dirty" [class.is-invalid]="signedInput.invalid" name="signed" class="form-select" id="signedSelect" aria-label="Ondertekend selecteren" required>
                 <option value="" disabled>Selecteer ondertekening...</option>
                 <option value="true">Ja</option>
                 <option value="false">Nee</option>
@@ -186,10 +186,10 @@
         </div>
       </div>
     </div>
-    <button [disabled]="addOrderForm.form.invalid" type="submit" id="add-order-button" aria-expanded="false" aria-controls="collapseExample" (click)="this.create();" class="btn btn-light border-dark align-items-center display-flex text-nowrap mt-5 mx-auto mx-md-0" title="Klik hier om een nieuwe bestelling toe te voegen">
-      <mat-icon aria-hidden="false" class="me-2 plus-color pointer-hover" aria-label="add_box" fontIcon="add_box"></mat-icon>Nieuwe bestelling toevoegen
+    <button [disabled]="addOrderForm.form.invalid || this.busy" type="submit" id="add-order-button" aria-expanded="false" aria-controls="collapseExample" (click)="this.create();" class="btn btn-light border-dark align-items-center display-flex text-nowrap mt-5 mx-auto mx-md-0" title="Klik hier om een nieuwe bestelling toe te voegen">
+      <mat-icon aria-hidden="false" id="add-order-icon" class="me-2 {{this.buttonColorClass}} pointer-hover" aria-label="add_box" fontIcon="{{this.buttonFont}}"></mat-icon>{{ this.buttonName }}
     </button>
-    <div id="add-loading-spinner" class="spinner-border brick-red display-none" role="status">
+    <div id="add-loading-spinner" class="spinner-border brick-red display-none mt-3" role="status">
       <span class="sr-only"></span>
     </div>
   </div>

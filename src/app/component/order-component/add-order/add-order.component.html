@@ -1,19 +1,19 @@
 <app-off-canvas></app-off-canvas>
 
 <div class="container">
-  <div class="collapse" id="collapseExample">
-    <div class="accordion mt-4" id="accordionExample">
+  <div class="collapse {{ this.edit ? 'show' : 'mt-4'}}" id="collapseExample">
+    <div class="accordion" id="accordionExample">
       <div class="accordion-item">
         <h2 class="accordion-header">
           <a class="accordion-button text-decoration-none bg-dark brick-red rounded-top" aria-expanded="true" aria-controls="collapseOne">
-            Bestellingsformulier
+            {{this.formName}}
             <a class="d-flex align-items-center" data-bs-toggle="offcanvas" href="#bestellingsinformatie" role="button" aria-controls="offcanvasExample">
               <mat-icon title="info" aria-hidden="false" class="ms-2 pointer-hover info-button" aria-label="info" fontIcon="info"></mat-icon>
             </a>
           </a>
         </h2>
         <div id="collapseOne" class="accordion-collapse collapse show">
-          <app-edit-order (newOrderEvent)="this.newOrderEvent.emit($event)"></app-edit-order>
+          <app-edit-order [edit]="this.edit" [buttonName]="this.buttonName" [order]="this.order" [buttonFont]="this.buttonFont" [buttonColorClass]="this.buttonColorClass" (newOrderEvent)="this.newOrderEvent.emit($event)"></app-edit-order>
         </div>
       </div>
     </div>

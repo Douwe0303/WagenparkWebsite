@@ -26,7 +26,7 @@ export class LeasecarTransformer implements Transformer<Leasecar, LeasecarDto> {
           translation: "Bestuurder"
         },
         brand: {
-          value: leasecarDto.brand,
+          value: !leasecarDto.brand ? '' : leasecarDto.brand,
           toDisplay: leasecarDto.brand,
           translation: "Automerk"
         },

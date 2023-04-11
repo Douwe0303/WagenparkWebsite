@@ -4,8 +4,8 @@
       <app-data-view (clickEvent)="clicked($event)" [clickableProperties]="clickableProperties" [hiddenProperties]="hiddenProperties" [title]="titles[i]" [item]="item"></app-data-view>
     </div>
   </div>
-
   <div *ngIf="!this.view">
-    <app-edit-order [order]="this.order"></app-edit-order>
+    <app-toast [styleClass]="'mt-5'"></app-toast>
+    <app-add-order [formName]="'Wijzigingsformulier voor bestelling '+this.id" (newOrderEvent)="this.toastOrder.showToast('Bestelling gewijzigd!', $event.order.data.id.value, 'De bestelling is gewijzigd!', 'orange')" [edit]="true" [order]="this.order" [buttonColorClass]="'settings-color'" [buttonFont]="'settings'" [buttonName]="'Wijzig de bestelling'"></app-add-order>
   </div>
 </div>

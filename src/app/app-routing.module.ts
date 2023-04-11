@@ -5,7 +5,6 @@ import { DashboardComponent } from "./component/page/dashboard-page/dashboard.co
 import { LeasecarsComponent } from "./component/page/leasecars-page/leasecars.component";
 import { PagenotfoundComponent } from "./component/page/notfound-page/pagenotfound.component";
 import { ViewOrderComponent } from "./component/order-component/view-order/view-order.component";
-import { EditOrderComponent } from "./component/order-component/edit-order/edit-order.component";
 
 const routes: Routes = [
   {

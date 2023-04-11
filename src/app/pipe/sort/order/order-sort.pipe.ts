@@ -14,9 +14,11 @@ export class OrderSortPipe implements PipeTransform {
 
     if(sorting == Sorting.DESC) {
       array.sort((a: any, b: any) => {
-        if (a.data[field].value < b.data[field].value) {
+        a = this.getValue(a, field);
+        b = this.getValue(b, field);
+        if (a < b) {
           return -1;
-        } else if (a.data[field].value > b.data[field].value) {
+        } else if (a > b) {
           return 1;
         } else {
           return 0;
@@ -26,9 +28,11 @@ export class OrderSortPipe implements PipeTransform {
 
     else if(sorting == Sorting.ASC) {
       array.sort((a: any, b: any) => {
-        if (a.data[field].value > b.data[field].value) {
+        a = this.getValue(a, field);
+        b = this.getValue(b, field);
+        if (a > b) {
           return -1;
-        } else if (a.data[field].value < b.data[field].value) {
+        } else if (a < b) {
           return 1;
         } else {
           return 0;
@@ -38,4 +42,13 @@ export class OrderSortPipe implements PipeTransform {
 
     return array;
   }
+
+  getValue(value: any, field: string) {
+    if(field.includes('leasecar-')) {
+      let nestedField: string = field.replace('leasecar-', '').trim();
+      return value.data.leasecar.data[nestedField].value;
+    } else {
+      return value.data[field].value;
+    }
+   }
 }

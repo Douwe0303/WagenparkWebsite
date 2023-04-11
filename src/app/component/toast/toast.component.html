@@ -1,7 +1,7 @@
 <!-- Flexbox container for aligning the toasts -->
-<div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center w-100">
+<div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center w-100 mt-1">
   <!-- Then put toasts within -->
-  <div id="toastOrder" class="toast bg-light position-fixed" [ngClass]="{show: this.show}" style="z-index: 10;" role="alert" aria-live="assertive" aria-atomic="true">
+  <div id="toastOrder" class="toast bg-light position-fixed {{this.styleClass}}" [ngClass]="{show: this.show}" style="z-index: 10;" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="toast-header">
       <strong id="toastTitle" class="me-auto"></strong>
       <small id="toastId">ID: 20</small>

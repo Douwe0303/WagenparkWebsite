@@ -11,6 +11,7 @@ import {Title} from "@angular/platform-browser";
 import {OrderDummy} from "../../../class/dummy/order-dummy/order-dummy";
 import {FileService} from "../../../service/file/file.service";
 import {EditOrderComponent} from "../edit-order/edit-order.component";
+import {ToastComponent} from "../../toast/toast.component";
 
 @Component({
   selector: 'app-view-order',
@@ -21,9 +22,13 @@ import {EditOrderComponent} from "../edit-order/edit-order.component";
 export class ViewOrderComponent implements OnInit {
   order: Order = new OrderDummy();
   view: boolean = true;
+  id: string | null = "";
 
   @ViewChild(EditOrderComponent)
   private editOrderComponent!: EditOrderComponent;
+
+  @ViewChild(ToastComponent)
+  public toastOrder: ToastComponent = new ToastComponent();
 
   @Input() items: {data: {}}[] = [];
   @Input() hiddenProperties: string[] = [];
@@ -44,13 +49,13 @@ export class ViewOrderComponent implements OnInit {
   }
 
   ngOnInit() {
-    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    this.id = this.activatedRoute.snapshot.paramMap.get('id');
     const action = this.activatedRoute.snapshot.paramMap.get('action');
 
-    if(id != null) {
+    if(this.id != null) {
       this.setAction(action);
-      this.setTitle(id);
-      this.fetchOrder(+id);
+      this.setTitle(this.id);
+      this.fetchOrder(+this.id);
     }
   }
 
@@ -75,9 +80,6 @@ export class ViewOrderComponent implements OnInit {
       get.pipe(first()).subscribe( (orderDto: OrderDto) => {
         let order: Order = this.orderTransformer.toModel(orderDto);
         this.order = order;
-        console.log(this.order);
-        // this.editOrderComponent.initFiles(order.data.leasePlanPath.value);
-        // this.editOrderComponent.initFiles(order.data.quotationPath.value);
         this.setInputs(order);
       })
     })

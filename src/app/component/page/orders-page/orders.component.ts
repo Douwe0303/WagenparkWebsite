@@ -40,7 +40,12 @@ export class OrdersComponent implements OnInit {
   protected readonly OrderHeader = OrderHeader;
   protected readonly OrderStatus = OrderStatus;
 
-  constructor(private router: Router, private _orderService: OrderService, private _fileService: FileService, private orderTransformer: OrderTransformer) {}
+  constructor(
+    private router: Router,
+    private _orderService: OrderService,
+    private _fileService: FileService,
+    private orderTransformer: OrderTransformer
+  ) {}
 
   ngOnInit(): void {
     this.fetchOrders();
@@ -79,7 +84,7 @@ export class OrdersComponent implements OnInit {
   }
 
   setSorting(field: string): void {
-
+    console.log(field);
     let newId: string = 'sorting-'+field;
     let oldId: string = 'sorting-'+this.sortingField;
 

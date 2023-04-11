@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-toast',
@@ -6,7 +6,8 @@ import {Component} from '@angular/core';
   styleUrls: ['./toast.component.css']
 })
 export class ToastComponent {
-  show = false;
+  show: boolean = false;
+  @Input() styleClass: string = "";
 
   showToast(toastTitle: string, toastId: number | undefined, toastBody: string, color: string): void {
     // @ts-ignore

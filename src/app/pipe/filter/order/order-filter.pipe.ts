@@ -16,7 +16,8 @@ export class OrderFilterPipe implements PipeTransform {
     searchText = searchText.toLocaleLowerCase();
 
     return orders.filter(it => {
-      return it.data.orderer.value.toLocaleLowerCase().includes(searchText);
+      // @ts-ignore
+      return it.data.leasecar.data.driver.value.toLocaleLowerCase().includes(searchText);
     });
   }
 
