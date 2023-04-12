@@ -1,6 +1,7 @@
 <app-off-canvas></app-off-canvas>
 
 <div class="container">
+  <app-breadcrumb *ngIf="this.edit" [name]="'nr '" [items]="[['Bestellingen', '/orders'], [this.id, '/orders/'+this.id+'/edit']]"></app-breadcrumb>
   <div class="collapse {{ this.edit ? 'show' : 'mt-4'}}" id="collapseExample">
     <div class="accordion" id="accordionExample">
       <div class="accordion-item">

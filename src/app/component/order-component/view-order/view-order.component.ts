@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import { OrderService } from "../../../service/order/order.service";
 import { first } from "rxjs";
 import { OrderDto } from "../../../interface/dto/order-dto";
@@ -38,6 +38,7 @@ export class ViewOrderComponent implements OnInit {
   @Output() clickEvent = new EventEmitter<any>();
 
   constructor(private activatedRoute: ActivatedRoute,
+              private router: Router,
               private _orderService: OrderService,
               private orderTransformer: OrderTransformer,
               private titleService: Title,
@@ -77,11 +78,16 @@ export class ViewOrderComponent implements OnInit {
 
   fetchOrder(id: number | null): void {
     this._orderService.fetchOrder(id).then( (get) => {
-      get.pipe(first()).subscribe( (orderDto: OrderDto) => {
+      get.pipe(first()).subscribe(
+        (orderDto: OrderDto) => {
         let order: Order = this.orderTransformer.toModel(orderDto);
         this.order = order;
         this.setInputs(order);
-      })
+        },
+        (error: any) => {
+          this.router.navigate(['/order-not-found']);
+        }
+      )
     })
   }
 

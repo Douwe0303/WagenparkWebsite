@@ -15,8 +15,8 @@ export class ContractTransformer implements Transformer<Contract, ContractDto> {
       id: model.data.id.value,
       contractType: model.data.contractType.value,
       signed: model.data.signed.value,
-      startDate: this.getDate(model.data.startDate.data),
-      endDate: this.getDate(model.data.endDate.data),
+      startDate: this.getDate(model.data.startDate.date),
+      endDate: this.getDate(model.data.endDate.date),
       taxAddition: model.data.taxAddition.value,
       contribution: model.data.contribution.value
     }
@@ -27,48 +27,66 @@ export class ContractTransformer implements Transformer<Contract, ContractDto> {
       data: {
         id: {
           value: dto.id,
-          toDisplay: dto.id,
+          type: 'number',
+          required: true,
+          toDisplay: dto.id+'',
           translation: "id"
         },
         contractType: {
           value: dto.contractType,
+          type: 'text',
+          required: false,
           toDisplay: dto.contractType == null ? '' : dto.contractType,
           translation: "Regeling"
         },
         signed: {
           value: dto.signed,
+          type: 'text',
+          required: false,
           toDisplay: this.getSigned(dto.signed),
           translation: "Ondertekend"
         },
         duration: {
           value: this.getDuration(dto.startDate, dto.endDate),
+          required: false,
+          type: 'number',
           toDisplay: this.getDuration(dto.startDate, dto.endDate),
           translation: "Looptijd"
         },
         startDate: {
           value: dto.startDate,
-          data: dto.startDate == undefined ? undefined : this.customDateParser.parse(dto.startDate),
+          type: 'date',
+          required: false,
+          date: dto.startDate == undefined ? undefined : this.customDateParser.parse(dto.startDate),
           toDisplay: dto.startDate  == null ? '' : dto.startDate,
           translation: "Startdatum contract"
         },
         endDate: {
           value: dto.endDate,
-          data: dto.endDate == undefined ? undefined : this.customDateParser.parse(dto.endDate),
+          type: 'date',
+          required: false,
+          date: dto.endDate == undefined ? undefined : this.customDateParser.parse(dto.endDate),
           toDisplay: dto.endDate == null ? '' : dto.endDate,
           translation: "Einddatum contract"
         },
         remainingTime: {
           value: this.getRemainingTime(dto.endDate),
+          required: false,
+          type: 'text',
           toDisplay: this.getRemainingTime(dto.endDate),
           translation: "Resterende tijd"
         },
         taxAddition: {
           value: dto.taxAddition,
+          required: false,
+          type: 'number',
           toDisplay: dto.taxAddition + "%",
           translation: "Fiscale bijtelling"
         },
         contribution: {
           value: dto.contribution,
+          required: false,
+          type: 'number',
           toDisplay: dto.contribution + "%",
           translation: "Eigen bijdrage"
         }

@@ -23,50 +23,68 @@ export class OrderTransformer implements Transformer<Order, OrderDto> {
       data: {
         id: {
           value: orderDto.id,
-          toDisplay: orderDto.id,
+          type: 'number',
+          toDisplay: orderDto.id+'',
+          required: true,
           translation: "id"
         },
         orderer: {
           value: orderDto.orderer,
+          type: 'text',
+          required: true,
           toDisplay: orderDto.orderer,
           translation: "Besteller"
         },
         supplier: {
           value: orderDto.supplier,
+          type: 'text',
+          required: true,
           toDisplay: orderDto.supplier,
           translation: "Leverancier"
         },
         leaseOrderStatus: {
           value: status.code,
+          type: 'text',
+          required: true,
           toDisplay: status.text,
-          data: status,
+          status: status,
           translation: "Status",
         },
         orderDate: {
           value: orderDto.orderDate,
-          data: this.customDateParser.parse(orderDto.orderDate),
+          type: 'date',
+          required: true,
+          date: this.customDateParser.parse(orderDto.orderDate),
           toDisplay: orderDto.orderDate,
           translation: "Besteldatum"
         },
         deliveryDate: {
           value: orderDto.deliveryDate,
-          data: orderDto.deliveryDate == undefined ? undefined : this.customDateParser.parse(orderDto.deliveryDate),
+          type: 'date',
+          required: true,
+          date: orderDto.deliveryDate == undefined ? undefined : this.customDateParser.parse(orderDto.deliveryDate),
           toDisplay: orderDto.deliveryDate == null ? '' : orderDto.deliveryDate,
           translation: "Leverdatum"
         },
         weekOfDelivery: {
           value: orderDto.weekOfDelivery,
-          toDisplay: orderDto.weekOfDelivery,
+          type: 'number',
+          required: false,
+          toDisplay: orderDto.weekOfDelivery+'',
           translation: "Verwachte leverweek"
         },
         quotationPath: {
           value: orderDto.quotationPath,
+          type: 'text',
+          required: false,
           toDisplay: this.getLink(orderDto.quotationPath),
           path: orderDto.quotationPath,
           translation: "Factuur"
         },
         leasePlanPath: {
           value: orderDto.leasePlanPath,
+          type: 'text',
+          required: false,
           toDisplay: this.getLink(orderDto.leasePlanPath),
           path: orderDto.leasePlanPath,
           translation: "Lease plan"
@@ -85,8 +103,8 @@ export class OrderTransformer implements Transformer<Order, OrderDto> {
       orderer: order.data.orderer.value,
       leaseOrderStatus: order.data.leaseOrderStatus.value,
       //@ts-ignore
-      orderDate: this.getDate(order.data.orderDate.data),
-      deliveryDate: this.getDate(order.data.deliveryDate.data),
+      orderDate: this.getDate(order.data.orderDate.date),
+      deliveryDate: this.getDate(order.data.deliveryDate.date),
       weekOfDelivery: order.data.weekOfDelivery.value,
       quotationPath: order.data.quotationPath.value,
       leasePlanPath: order.data.leasePlanPath.value,

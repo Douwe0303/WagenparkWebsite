@@ -22,4 +22,6 @@ export class AddOrderComponent {
   @Input() buttonName: string = "";
   @Input() buttonFont: string = "";
   @Input() buttonColorClass: string = "";
+
+  @Input() id: string | null = "";
 }

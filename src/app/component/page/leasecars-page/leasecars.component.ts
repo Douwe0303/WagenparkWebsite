@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
+import { Leasecar } from "../../../interface/model/leasecar";
+import { LeasecarDummy } from "../../../class/dummy/leasecar-dummy/leasecar-dummy";
 @Component({
   selector: 'app-tableheaders',
   templateUrl: './leasecars.component.html',
   styleUrls: ['./leasecars.component.css']
 })
 export class LeasecarsComponent {
+
+  leasecar: Leasecar = new LeasecarDummy();
 
   delete(id: number): void {
   }

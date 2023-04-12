@@ -3,7 +3,7 @@ import { ContractDto } from "./contract-dto";
 export interface LeasecarDto {
   id?: number;
   brand?: string;
-  driver?: string;
+  driver: string;
   model?: string;
   extra?: string;
   engine?: string;

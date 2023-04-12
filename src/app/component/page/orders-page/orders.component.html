@@ -47,20 +47,20 @@
           <td><span class="text-nowrap">{{ order.data.orderDate.value }}</span></td>
           <td class="pe-5 w-15">
             <div ngbDropdown #dropdown class="btn-group w-100">
-              <button ngbDropdownToggle id="status{{order.data.id.value}}" (click)="openStatusMenu();" class="btn btn-sm btn-group-sm dropdown-toggle {{'btn-'+order.data.leaseOrderStatus.data.color}}" data-bs-toggle="collapse" data-bs-target="" aria-expanded="false">
-                {{ order.data.leaseOrderStatus.data.text }}
+              <button ngbDropdownToggle id="status{{order.data.id.value}}" (click)="openStatusMenu();" class="btn btn-sm btn-group-sm dropdown-toggle {{'btn-'+order.data.leaseOrderStatus.status.color}}" data-bs-toggle="collapse" data-bs-target="" aria-expanded="false">
+                {{ order.data.leaseOrderStatus.status.text }}
               </button>
               <ul ngbDropdownMenu class="dropdown-menu" data-bs-toggle="collapse" data-bs-target="" [attr.aria-labelledby]="'status'+order.data.id.value">
                 <div *ngFor="let status of this.OrderStatus | keyvalue">
-                  <li><a class="dropdown-item {{ order.data.leaseOrderStatus.data.code == status.value.code ? 'd-none' : '' }}" (click)="this.editStatus(order.data.id.value, status.value);">{{ status.value.text }}</a></li>
+                  <li><a class="dropdown-item {{ order.data.leaseOrderStatus.status.code == status.value.code ? 'd-none' : '' }}" (click)="this.editStatus(order.data.id.value, status.value);">{{ status.value.text }}</a></li>
                 </div>
               </ul>
             </div>
           </td>
           <td class="text-start align-middle">
             <span class="align-items-center display-flex" id="actions_{{ order.data.id.value }}">
-              <a routerLink="/orders/{{ order.data.id.value }}/view" target="_blank" class="align-items-center display-flex"><mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Bekijken" class="eye-color pointer-hover me-3" aria-label="view" fontIcon="visibility"></mat-icon></a>
-              <a routerLink="/orders/{{ order.data.id.value }}/edit" target="_blank" class="align-items-center display-flex"><mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Aanpassen" class="pencil-color pointer-hover me-3" aria-label="edit" fontIcon="edit" (click)="$event.stopPropagation()"></mat-icon></a>
+              <a [routerLink]="'/orders/'+order.data.id.value+'/view'" target="_blank" class="align-items-center display-flex"><mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Bekijken" class="eye-color pointer-hover me-3" aria-label="view" fontIcon="visibility"></mat-icon></a>
+              <a [routerLink]="'/orders/'+order.data.id.value +'/edit'" class="align-items-center display-flex"><mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Aanpassen" class="pencil-color pointer-hover me-3" aria-label="edit" fontIcon="edit"></mat-icon></a>
               <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Verwijderen" class="trash-color pointer-hover" aria-label="trash" fontIcon="delete" (click)="this.prompt(true, order.data.id.value);"></mat-icon>
             </span>
             <span class="text-nowrap prompt" id="delete_prompt_{{ order.data.id.value }}">
@@ -78,7 +78,9 @@
         <tr class="td-p-0">
           <td colspan="8">
             <div class="collapse border-top border-bottom pb-3" id="{{'collapse' + order.data.id.value }}">
-              <app-view-order (clickEvent)="downloadFile($event)" [clickableProperties]="['leasePlanPath', 'quotationPath']" [hiddenProperties]="['leasecar', 'id', 'contract']" [titles]="['Informatie', 'Leaseauto', 'Contract']" [items]="[order, order.data.leasecar, order.data.leasecar.data.contract]"></app-view-order>
+              <div class="accordion-body">
+                <app-view-order (clickEvent)="downloadFile($event)" [clickableProperties]="['leasePlanPath', 'quotationPath']" [hiddenProperties]="['leasecar', 'id', 'contract']" [titles]="['Informatie', 'Leaseauto', 'Contract']" [items]="[order, order.data.leasecar, order.data.leasecar.data.contract]"></app-view-order>
+              </div>
             </div>
           </td>
         </tr>

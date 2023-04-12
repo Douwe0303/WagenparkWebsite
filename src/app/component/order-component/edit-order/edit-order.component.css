@@ -6,6 +6,15 @@
   display: none;
 }
 
+.fake-link {
+  color: blue !important;
+  text-decoration: underline !important;
+}
+
+.fake-link:hover {
+  cursor: pointer;
+}
+
 .info-button {
   color: white;
 }

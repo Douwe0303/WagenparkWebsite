@@ -23,6 +23,10 @@ import { PagenotfoundComponent } from './component/page/notfound-page/pagenotfou
 import { DataViewComponent } from './component/data-view/data-view.component';
 import { OffCanvasComponent } from './component/off-canvas/off-canvas.component';
 import { DatePickerComponent } from './component/date-picker/date-picker.component';
+import { AlphabeticalPipe } from './pipe/sort/alphabetical/alphabetical.pipe';
+import { BreadcrumbComponent } from './component/breadcrumb/breadcrumb.component';
+import { DataInputFieldsComponent } from './component/data-input-fields/data-input-fields.component';
+import { AccordionComponent } from './component/leasecar-component/accordion/accordion.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +46,10 @@ import { DatePickerComponent } from './component/date-picker/date-picker.compone
     DataViewComponent,
     OffCanvasComponent,
     DatePickerComponent,
+    AlphabeticalPipe,
+    BreadcrumbComponent,
+    DataInputFieldsComponent,
+    AccordionComponent,
   ],
   imports: [
     BrowserModule,

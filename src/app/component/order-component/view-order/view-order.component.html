@@ -1,11 +1,14 @@
-<div class="container-fluid mt-4">
-  <div *ngIf="this.view" class="row">
+<div class="container-fluid pb-3 pb-xl-0">
+  <div *ngIf="this.view && this.id != null" class="mt-3">
+    <app-breadcrumb *ngIf="this.view && this.id != null" [id]="this.id" [items]="[['Bestellingen', '/orders'], ['nr '+ this.id, '/orders/'+this.id+'/view']]"></app-breadcrumb>
+  </div>
+  <div *ngIf="this.view" class="row mt-3">
     <div class="col-12 col-lg-3" *ngFor="let item of this.items; let i = index;">
       <app-data-view (clickEvent)="clicked($event)" [clickableProperties]="clickableProperties" [hiddenProperties]="hiddenProperties" [title]="titles[i]" [item]="item"></app-data-view>
     </div>
   </div>
-  <div *ngIf="!this.view">
-    <app-toast [styleClass]="'mt-5'"></app-toast>
-    <app-add-order [formName]="'Wijzigingsformulier voor bestelling '+this.id" (newOrderEvent)="this.toastOrder.showToast('Bestelling gewijzigd!', $event.order.data.id.value, 'De bestelling is gewijzigd!', 'orange')" [edit]="true" [order]="this.order" [buttonColorClass]="'settings-color'" [buttonFont]="'settings'" [buttonName]="'Wijzig de bestelling'"></app-add-order>
+  <div *ngIf="!this.view" class="mt-3">
+    <app-toast [styleClass]="'margin-top: 5rem;'"></app-toast>
+    <app-add-order [id]="this.id" [formName]="'Wijzigingsformulier voor bestelling '+this.id" (newOrderEvent)="this.toastOrder.showToast('Bestelling gewijzigd!', $event.order.data.id.value, 'De bestelling is gewijzigd!', 'orange')" [edit]="true" [order]="this.order" [buttonColorClass]="'settings-color'" [buttonFont]="'settings'" [buttonName]="'Wijzig de bestelling'"></app-add-order>
   </div>
 </div>

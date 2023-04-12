@@ -6,7 +6,19 @@ import {Component, Input} from '@angular/core';
   styleUrls: ['./data-tools.component.css']
 })
 export class DataToolsComponent {
-  @Input() addText: string = "";
-  @Input() searchText: string = "";
-  @Input() ariaLabel: string = "";
+  @Input() searchPlaceHolder: string = "";
+  @Input() searchAriaLabel: string = "";
+
+  @Input() buttonName: string = "";
+  @Input() buttonTitle: string = "";
+
+  searchText: string = "";
+  opened: boolean = false;
+
+  scroll(el: any) {
+    if(!this.opened) {
+      el.scrollIntoView()
+    }
+    this.opened = !this.opened;
+  }
 }

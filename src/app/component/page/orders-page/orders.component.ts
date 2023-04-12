@@ -14,6 +14,7 @@ import { OrderHeader } from "../../../class/order-header/order-header";
 import { ContractTransformer } from "../../../class/transformer/contract-transformer/contract-transformer";
 import { DatePipe } from "@angular/common";
 import { FileService } from "../../../service/file/file.service";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-orders',
@@ -44,11 +45,13 @@ export class OrdersComponent implements OnInit {
     private router: Router,
     private _orderService: OrderService,
     private _fileService: FileService,
-    private orderTransformer: OrderTransformer
+    private orderTransformer: OrderTransformer,
+    private titleService: Title,
   ) {}
 
   ngOnInit(): void {
     this.fetchOrders();
+    this.titleService.setTitle('Bestellingen');
   }
 
   asIsOrder() {
@@ -84,7 +87,6 @@ export class OrdersComponent implements OnInit {
   }
 
   setSorting(field: string): void {
-    console.log(field);
     let newId: string = 'sorting-'+field;
     let oldId: string = 'sorting-'+this.sortingField;
 
@@ -151,15 +153,15 @@ export class OrdersComponent implements OnInit {
     let index: number = this.orders.findIndex(order => order.data.id.value == id);
     let order: Order = this.orders[index];
 
-    let oldStatus: string = order.data.leaseOrderStatus.data.code;
-    let oldData: any = order.data.leaseOrderStatus.data;
+    let oldStatus: string = order.data.leaseOrderStatus.status.code;
+    let oldData: any = order.data.leaseOrderStatus.status;
 
     if(oldStatus == status.code) {
       return;
     }
 
     order.data.leaseOrderStatus.value = status.code;
-    order.data.leaseOrderStatus.data = status;
+    order.data.leaseOrderStatus.status = status;
 
     let orderDto: OrderDto = this.orderTransformer?.toDto(order);
 
@@ -167,10 +169,11 @@ export class OrdersComponent implements OnInit {
       () => {
         // @ts-ignore
         this.toastOrder.showToast('Bestelstatus gewijzigd!', id, 'De status van de bestelling is gewijzigd.', 'orange');
-      },
+        this.reloadOrders();
+        },
       (error: any) => {
         order.data.leaseOrderStatus.value = oldData.code;
-        order.data.leaseOrderStatus.data = oldData;
+        order.data.leaseOrderStatus.status = oldData;
         alert(error.statusText);
       }));
   }

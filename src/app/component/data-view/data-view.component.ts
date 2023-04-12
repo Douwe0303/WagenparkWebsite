@@ -1,6 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Order} from "../../interface/model/order";
-import {Leasecar} from "../../interface/model/leasecar";
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-data-view',

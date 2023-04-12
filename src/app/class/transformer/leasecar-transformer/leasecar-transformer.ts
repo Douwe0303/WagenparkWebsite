@@ -5,6 +5,7 @@ import { Injectable } from "@angular/core";
 import { ContractTransformer } from "../contract-transformer/contract-transformer";
 import { ContractDto } from "../../../interface/dto/contract-dto";
 import { Contract } from "../../../interface/model/contract";
+import { EngineType } from "../../engine-type/engine-type";
 
 @Injectable()
 export class LeasecarTransformer implements Transformer<Leasecar, LeasecarDto> {
@@ -17,46 +18,65 @@ export class LeasecarTransformer implements Transformer<Leasecar, LeasecarDto> {
       data: {
         id: {
           value: leasecarDto.id,
-          toDisplay: leasecarDto.id,
+          type: 'number',
+          required: true,
+          toDisplay: leasecarDto.id+'',
           translation: "id"
         },
         driver: {
           value: leasecarDto.driver,
+          type: 'text',
+          required: true,
           toDisplay: leasecarDto.driver,
           translation: "Bestuurder"
         },
         brand: {
           value: !leasecarDto.brand ? '' : leasecarDto.brand,
+          type: 'text',
+          required: false,
           toDisplay: leasecarDto.brand,
           translation: "Automerk"
         },
         model: {
           value: leasecarDto.model,
+          type: 'text',
+          required: false,
           toDisplay: leasecarDto.model,
           translation: "Model",
         },
         extra: {
           value: leasecarDto.extra,
+          type: 'text',
+          required: false,
           toDisplay: leasecarDto.extra,
           translation: "Extra/kleur"
         },
         engine: {
           value: leasecarDto.engine,
-          toDisplay: leasecarDto.engine,
+          type: 'text',
+          required: false,
+          //@ts-ignore
+          toDisplay: EngineType[leasecarDto.engine.toLowerCase()].text,
           translation: "Type motor"
         },
         kilometers: {
           value: leasecarDto.kilometers,
-          toDisplay: leasecarDto.kilometers,
+          type: 'number',
+          required: false,
+          toDisplay: leasecarDto.kilometers+'',
           translation: "Kilometrage"
         },
         price: {
           value: leasecarDto.price,
+          type: 'number',
+          required: false,
           toDisplay: "€" + leasecarDto.price,
           translation: "Fiscale waarde"
         },
         particularities: {
           value: leasecarDto.particularities,
+          type: 'text',
+          required: false,
           toDisplay: leasecarDto.particularities,
           translation: "Bijzonderheden"
         },

@@ -1,5 +1,5 @@
-<form id="addForm" #addOrderForm="ngForm" class="needs-validation" novalidate>
-  <div class="accordion-body">
+<div class="accordion-body">
+  <form id="addForm" #addOrderForm="ngForm" class="needs-validation" novalidate>
     <div class="row">
       <div class="col-12 col-md-6 col-xxl-4">
         <div class="form-floating mb-3">
@@ -17,7 +17,7 @@
               placeholder="dd-mm-yyyy"
               id="orderDateInput"
               name="dpOrder"
-              [(ngModel)]="order.data.orderDate.data"
+              [(ngModel)]="order.data.orderDate.date"
               #dateOfOrderInput="ngModel"
               [class.is-invalid]="dateOfOrderInput.invalid"
               [class.is-valid]="dateOfOrderInput.valid && dateOfOrderInput.dirty"
@@ -38,7 +38,7 @@
               placeholder="dd-mm-yyyy"
               id="orderDeliveryInput"
               name="dpDelivery"
-              [(ngModel)]="order.data.deliveryDate.data"
+              [(ngModel)]="order.data.deliveryDate.date"
               #dateOfDeliveryInput="ngModel"
               [class.is-valid]="dateOfDeliveryInput.valid && dateOfDeliveryInput.dirty"
               [class.is-invalid]="dateOfDeliveryInput.invalid"
@@ -58,7 +58,7 @@
         <div class="form-floating mb-3">
           <select [(ngModel)]="order.data.leaseOrderStatus.value" #statusInput="ngModel" [class.is-valid]="statusInput.valid && statusInput.dirty" [class.is-invalid]="statusInput.invalid" name="status" class="form-select" id="statusSelect" aria-label="Status selecteren" required>
             <option value="" disabled>Selecteer status...</option>
-            <option *ngFor="let orderStatus of OrderStatus | keyvalue; let i = index;" value="{{ orderStatus.value.code }}">{{ orderStatus.value.text }}</option>
+            <option *ngFor="let orderStatus of OrderStatus | keyvalue" value="{{ orderStatus.value.code }}">{{ orderStatus.value.text }}</option>
           </select>
           <label for="statusSelect">De status van de bestelling <span class="brick-red">*</span></label>
         </div>
@@ -78,45 +78,53 @@
               <input [(ngModel)]="order.data.leasecar.data.model.value" #carModelInput="ngModel" [class.is-invalid]="carModelInput.invalid" [class.is-valid]="carModelInput.valid && carModelInput.dirty" name="carModel" type="text" class="form-control" id="carModelInput" placeholder="Jane Doe">
               <label for="carModelInput">Model</label>
             </div>
-            <div class="form-floating mb-3">
+            <div class="form-floating {{ this.edit ? 'mb-2' : 'mb-3' }}">
               <input [(ngModel)]="order.data.leasecar.data.extra.value" #carExtraInput="ngModel" [class.is-invalid]="carExtraInput.invalid" [class.is-valid]="carExtraInput.valid && carExtraInput.dirty" name="carExtra" type="text" class="form-control" id="carExtraInput" placeholder="Jane Doe">
-              <label for="carExtraInput">Extra</label>
+              <label for="carExtraInput">Extra/Kleur</label>
             </div>
           </div>
           <div class="col-12 col-md-6 col-xxl-6">
             <div class="form-floating mb-3">
-              <input [(ngModel)]="order.data.leasecar.data.engine.value" #carEngineInput="ngModel" [class.is-invalid]="carEngineInput.invalid" [class.is-valid]="carEngineInput.valid && carEngineInput.dirty" name="carEngine" type="text" class="form-control" id="carEngineInput" placeholder="Jane Doe">
-              <label for="carEngineInput">Motor</label>
+              <select [(ngModel)]="order.data.leasecar.data.engine.value" #carEngineInput="ngModel" [class.is-invalid]="carEngineInput.invalid" [class.is-valid]="carEngineInput.valid && carEngineInput.dirty" name="carEngine" type="text" class="form-control" id="carEngineInput" placeholder="Jane Doe">
+                <option value="" disabled>Selecteer motor...</option>
+                <option *ngFor="let motor of EngineType | alphabetical" value="{{ motor.code }}">{{ motor.text }}</option>
+              </select>
+              <label for="statusSelect">Type motor</label>
             </div>
             <div class="form-floating mb-3">
               <input [(ngModel)]="order.data.leasecar.data.kilometers.value" #carKilometersInput="ngModel" [class.is-invalid]="carKilometersInput.invalid" [class.is-valid]="carKilometersInput.valid && carKilometersInput.dirty" name="carKilometers" type="text" class="form-control" id="carKilometersInput" placeholder="Jane Doe">
               <label for="carKilometersInput">Aantal kilometers</label>
             </div>
             <div class="form-floating mb-3">
-              <input [(ngModel)]="order.data.leasecar.data.price.value" #carPriceInput="ngModel" [class.is-invalid]="carPriceInput.invalid" [class.is-valid]="carPriceInput.valid && carPriceInput.dirty" name="carPrice" type="text" class="form-control" id="carPriceInput" placeholder="Jane Doe">
-              <label for="carPriceInput">Fiscale waarde</label>
+              <input [(ngModel)]="order.data.leasecar.data.price.value" #carPriceInput="ngModel" [class.is-invalid]="carPriceInput.invalid" [class.is-valid]="carPriceInput.valid && carPriceInput.dirty" name="carPrice" type="number" class="form-control" id="carPriceInput" placeholder="Jane Doe">
+              <label for="carPriceInput">Fiscale waarde (€)</label>
             </div>
-            <div class="form-floating mb-3">
+            <div class="form-floating {{ this.edit ? 'mb-2' : 'mb-3' }}">
               <input [(ngModel)]="order.data.leasecar.data.particularities.value" #carParticularitiesInput="ngModel" [class.is-invalid]="carParticularitiesInput.invalid" [class.is-valid]="carParticularitiesInput.valid && carParticularitiesInput.dirty" name="carParticularities" type="text" class="form-control" id="carParticularitiesInput" placeholder="Jane Doe">
               <label for="carParticularitiesInput">Bijzonderheden</label>
             </div>
           </div>
         </div>
-        <div class="input-group mb-3 label-hover">
-          <label class="input-group-text w-50" for="leasePlanInput">Upload leaseplan</label>
-          <input [(ngModel)]="this.leasePlan" (change)="this.onFileSelect($event, 'leaseplan')" #leaseplanPathInput="ngModel" [class.is-valid]="leaseplanPathInput.valid && leaseplanPathInput.dirty" [class.is-invalid]="leaseplanPathInput.invalid" name="lease-plan-path" type="file" class="form-control custom-button" id="leasePlanInput" placeholder="Leaseplan">
-        </div>
-        <div class="input-group mb-3 label-hover">
-          <label class="input-group-text w-50" for="quotationInput">Upload factuur</label>
+        <a [routerLink]="null" class="fake-link" (click)="this.downloadFile(order.data.quotationPath.path)" *ngIf="this.edit">{{order.data.quotationPath.path}}</a>
+        <div class="input-group {{ this.edit ? 'mt-2 mb-2' : 'mb-3' }} label-hover">
+          <label class="input-group-text w-50" for="quotationInput">{{ this.edit ? 'Wijzig' : 'Upload'}} factuur</label>
           <input [(ngModel)]="this.quotation" (change)="this.onFileSelect($event, 'quotation')" #quotationPathInput="ngModel" [class.is-valid]="quotationPathInput.valid && quotationPathInput.dirty" [class.is-invalid]="quotationPathInput.invalid" name="quotation-path" type="file" class="form-control custom-button" id="quotationInput" placeholder="factuur">
+        </div>
+        <a [routerLink]="null" class="fake-link" (click)="this.downloadFile(order.data.leasePlanPath.path)" *ngIf="this.edit">{{order.data.leasePlanPath.path}}</a>
+        <div class="input-group  mb-3 mt-2 label-hover">
+          <label class="input-group-text w-50" for="leasePlanInput">{{ this.edit ? 'Wijzig' : 'Upload'}} leaseplan</label>
+          <input [(ngModel)]="this.leasePlan" (change)="this.onFileSelect($event, 'leaseplan')" #leaseplanPathInput="ngModel" [class.is-valid]="leaseplanPathInput.valid && leaseplanPathInput.dirty" [class.is-invalid]="leaseplanPathInput.invalid" name="lease-plan-path" type="file" class="form-control custom-button" id="leasePlanInput" placeholder="Leaseplan">
         </div>
       </div>
       <div class="col-12 col-xxl-4">
         <div class="row">
           <div class="col-xxl-6">
             <div class="form-floating mb-3">
-              <input [(ngModel)]="order.data.leasecar.data.contract.data.contractType.value" #contractTypeInput="ngModel" [class.is-invalid]="contractTypeInput.invalid && contractTypeInput.dirty" [class.is-valid]="contractTypeInput.valid && contractTypeInput.dirty" name="contractType" type="text" class="form-control" id="contractTypeInput" placeholder="A1">
-              <label for="contractTypeInput">Regeling</label>
+              <select [(ngModel)]="order.data.leasecar.data.contract.data.contractType.value" #contractTypeInput="ngModel" [class.is-invalid]="contractTypeInput.invalid && contractTypeInput.dirty" [class.is-valid]="contractTypeInput.valid && contractTypeInput.dirty" name="contractType" type="text" class="form-control" id="contractTypeInput" placeholder="A1">
+                <option value="" disabled>Selecteer regeling...</option>
+                <option *ngFor="let type of ContractType | alphabetical" value="{{ type.code }}">{{ type.text }}</option>
+              </select>
+              <label for="statusSelect">Regeling</label>
             </div>
           </div>
           <div class="col-xxl-6">
@@ -137,7 +145,7 @@
               placeholder="dd-mm-yyyy"
               id="startDateInput"
               name="dpStartDate"
-              [(ngModel)]="order.data.leasecar.data.contract.data.startDate.data"
+              [(ngModel)]="order.data.leasecar.data.contract.data.startDate.date"
               #startDateInput="ngModel"
               [class.is-valid]="startDateInput.valid && startDateInput.dirty"
               [class.is-invalid]="startDateInput.invalid"
@@ -157,7 +165,7 @@
               placeholder="dd-mm-yyyy"
               id="endDateInput"
               name="dpEndDate"
-              [(ngModel)]="order.data.leasecar.data.contract.data.endDate.data"
+              [(ngModel)]="order.data.leasecar.data.contract.data.endDate.date"
               #endDateInput="ngModel"
               [class.is-valid]="endDateInput.valid && endDateInput.dirty"
               [class.is-invalid]="endDateInput.invalid"
@@ -186,11 +194,11 @@
         </div>
       </div>
     </div>
-    <button [disabled]="addOrderForm.form.invalid || this.busy" type="submit" id="add-order-button" aria-expanded="false" aria-controls="collapseExample" (click)="this.create();" class="btn btn-light border-dark align-items-center display-flex text-nowrap mt-5 mx-auto mx-md-0" title="Klik hier om een nieuwe bestelling toe te voegen">
+    <button [disabled]="addOrderForm.form.invalid || this.busy" type="submit" id="add-order-button" aria-expanded="false" aria-controls="collapseExample" (click)="this.create();" class="btn btn-light border-dark align-items-center display-flex text-nowrap mt-2 mt-xxl-4 mx-auto mx-md-0" title="Klik hier om een nieuwe bestelling toe te voegen">
       <mat-icon aria-hidden="false" id="add-order-icon" class="me-2 {{this.buttonColorClass}} pointer-hover" aria-label="add_box" fontIcon="{{this.buttonFont}}"></mat-icon>{{ this.buttonName }}
     </button>
     <div id="add-loading-spinner" class="spinner-border brick-red display-none mt-3" role="status">
       <span class="sr-only"></span>
     </div>
-  </div>
-</form>
+  </form>
+</div>

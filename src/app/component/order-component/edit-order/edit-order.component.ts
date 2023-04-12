@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Injectable, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Injectable, Input, Output, ViewChild} from '@angular/core';
 import { OrderService } from "../../../service/order/order.service";
 import { OrderDto } from "../../../interface/dto/order-dto";
 import {first} from "rxjs";
@@ -14,6 +14,8 @@ import {Title} from "@angular/platform-browser";
 import {OrderDummy} from "../../../class/dummy/order-dummy/order-dummy";
 import {ContractTransformer} from "../../../class/transformer/contract-transformer/contract-transformer";
 import {NgForm} from "@angular/forms";
+import { EngineType } from "../../../class/engine-type/engine-type";
+import {ContractType} from "../../../class/contract-type/contract-type";
 
 @Injectable()
 export class CustomDateParserFormatter extends NgbDateParserFormatter {
@@ -56,6 +58,7 @@ export class EditOrderComponent {
     ) {}
 
   protected readonly OrderStatus = OrderStatus;
+  protected readonly EngineType = EngineType;
 
   @Input() order: Order = new OrderDummy();
 
@@ -74,6 +77,11 @@ export class EditOrderComponent {
 
   async loading(): Promise<void> {
     await new Promise(f => setTimeout(f, 1000));
+  }
+
+  downloadFile(fileName: any): void {
+    let type: string = fileName.substring(fileName.lastIndexOf('.')+1, fileName.length);
+    this._fileService.downloadFile(fileName, type);
   }
 
   rotateIcon(): void {
@@ -191,8 +199,12 @@ export class EditOrderComponent {
         let order: Order = this.orderTransformer.toModel(orderDto);
         this.uploadFile(this.order.data.quotationPath.file, quotationName).then(() => {
           this.uploadFile(this.order.data.leasePlanPath.file, leaseplanName).then(() => {
-            // @ts-ignore
-            this.order = new OrderDummy();
+            if(!this.edit) {
+              // @ts-ignore
+              this.order = new OrderDummy();
+            } else {
+              this.order = order;
+            }
             this.newOrderEvent.emit({order: order, leasecar: leasecar});
           });
         });
@@ -202,10 +214,8 @@ export class EditOrderComponent {
 
   async uploadFile(file: File | undefined, name: string): Promise<any> {
     let formData: FormData = new FormData();
-    console.log('file' + file);
     if(file) {
       formData.append('file', file, name);
-      console.log(formData);
       this._fileService.uploadFile(formData).then((call) => {
         return call.pipe(first()).subscribe();
       });
@@ -215,10 +225,10 @@ export class EditOrderComponent {
   onFileSelect(fileEvent: any, fileName: string): void {
     if(fileName == 'leaseplan') {
       this.order.data.leasePlanPath.file = fileEvent.target.files[0];
-      console.log(this.order.data.leasePlanPath.file);
+      console.log(fileEvent.target.files[0]);
     } else {
       this.order.data.quotationPath.file = fileEvent.target.files[0];
-      console.log(this.order.data.leasePlanPath.file);
+      console.log(this.order.data.quotationPath.file);
     }
   }
 
@@ -226,4 +236,6 @@ export class EditOrderComponent {
     // @ts-ignore
     document.getElementById(element).style.display = display;
   }
+
+  protected readonly ContractType = ContractType;
 }
