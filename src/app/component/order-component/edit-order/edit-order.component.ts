@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Injectable, Input, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Injectable, Input, OnInit, Output, ViewChild} from '@angular/core';
 import { OrderService } from "../../../service/order/order.service";
 import { OrderDto } from "../../../interface/dto/order-dto";
 import {first} from "rxjs";
@@ -47,7 +47,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter},
   ],
 })
-export class EditOrderComponent {
+export class EditOrderComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private title: Title,
@@ -56,6 +56,13 @@ export class EditOrderComponent {
     private orderTransformer: OrderTransformer,
     private leasecarTransformer: LeasecarTransformer
     ) {}
+
+  ngOnInit(): void {
+    if(this.myForm != undefined) {
+      // @ts-ignore
+      this.myForm.form.markAsPristine();
+    }
+  }
 
   protected readonly OrderStatus = OrderStatus;
   protected readonly EngineType = EngineType;
@@ -68,6 +75,7 @@ export class EditOrderComponent {
   @Input() buttonColorClass: string = "";
 
   @Output() newOrderEvent = new EventEmitter<{order: Order, leasecar: Leasecar}>();
+  @Output() clickedEvent = new EventEmitter<string>;
 
   @ViewChild('addOrderForm') myForm: NgForm | undefined;
 
@@ -79,9 +87,8 @@ export class EditOrderComponent {
     await new Promise(f => setTimeout(f, 1000));
   }
 
-  downloadFile(fileName: any): void {
-    let type: string = fileName.substring(fileName.lastIndexOf('.')+1, fileName.length);
-    this._fileService.downloadFile(fileName, type);
+  clicked(value: any): void {
+    this.clickedEvent.emit(value);
   }
 
   rotateIcon(): void {
@@ -136,10 +143,8 @@ export class EditOrderComponent {
         call.pipe(first()).subscribe(
           (orderDto: OrderDto) => {
             let leasecar: Leasecar = this.leasecarTransformer.toModel(orderDto.leaseCar);
-            if(this.edit) {
-              // @ts-ignore
-              this.myForm.form.markAsPristine();
-            }
+            // @ts-ignore
+            this.myForm.form.markAsPristine();
             this.updateFilesAfterCreate(orderDto, leasecar);
           },
           (error: any) => {
@@ -198,6 +203,7 @@ export class EditOrderComponent {
       call.pipe(first()).subscribe(() => {
         let order: Order = this.orderTransformer.toModel(orderDto);
         this.uploadFile(this.order.data.quotationPath.file, quotationName).then(() => {
+          this.quotation = "";
           this.uploadFile(this.order.data.leasePlanPath.file, leaseplanName).then(() => {
             if(!this.edit) {
               // @ts-ignore
@@ -205,6 +211,7 @@ export class EditOrderComponent {
             } else {
               this.order = order;
             }
+            this.leasePlan = "";
             this.newOrderEvent.emit({order: order, leasecar: leasecar});
           });
         });
@@ -225,10 +232,8 @@ export class EditOrderComponent {
   onFileSelect(fileEvent: any, fileName: string): void {
     if(fileName == 'leaseplan') {
       this.order.data.leasePlanPath.file = fileEvent.target.files[0];
-      console.log(fileEvent.target.files[0]);
     } else {
       this.order.data.quotationPath.file = fileEvent.target.files[0];
-      console.log(this.order.data.quotationPath.file);
     }
   }
 

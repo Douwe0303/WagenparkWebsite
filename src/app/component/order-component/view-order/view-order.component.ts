@@ -46,7 +46,7 @@ export class ViewOrderComponent implements OnInit {
   ){}
 
   clicked(value: any): void {
-    this.clickEvent.emit(value);
+    this._fileService.downloadFile(value);
   }
 
   ngOnInit() {

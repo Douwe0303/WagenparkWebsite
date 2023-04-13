@@ -105,12 +105,12 @@
             </div>
           </div>
         </div>
-        <a [routerLink]="null" class="fake-link" (click)="this.downloadFile(order.data.quotationPath.path)" *ngIf="this.edit">{{order.data.quotationPath.path}}</a>
+        <a [routerLink]="null" class="fake-link" (click)="this.clicked(order.data.quotationPath.path)" *ngIf="this.edit">{{order.data.quotationPath.path}}</a>
         <div class="input-group {{ this.edit ? 'mt-2 mb-2' : 'mb-3' }} label-hover">
           <label class="input-group-text w-50" for="quotationInput">{{ this.edit ? 'Wijzig' : 'Upload'}} factuur</label>
           <input [(ngModel)]="this.quotation" (change)="this.onFileSelect($event, 'quotation')" #quotationPathInput="ngModel" [class.is-valid]="quotationPathInput.valid && quotationPathInput.dirty" [class.is-invalid]="quotationPathInput.invalid" name="quotation-path" type="file" class="form-control custom-button" id="quotationInput" placeholder="factuur">
         </div>
-        <a [routerLink]="null" class="fake-link" (click)="this.downloadFile(order.data.leasePlanPath.path)" *ngIf="this.edit">{{order.data.leasePlanPath.path}}</a>
+        <a [routerLink]="null" class="fake-link" (click)="this.clicked(order.data.leasePlanPath.path)" *ngIf="this.edit">{{order.data.leasePlanPath.path}}</a>
         <div class="input-group  mb-3 mt-2 label-hover">
           <label class="input-group-text w-50" for="leasePlanInput">{{ this.edit ? 'Wijzig' : 'Upload'}} leaseplan</label>
           <input [(ngModel)]="this.leasePlan" (change)="this.onFileSelect($event, 'leaseplan')" #leaseplanPathInput="ngModel" [class.is-valid]="leaseplanPathInput.valid && leaseplanPathInput.dirty" [class.is-invalid]="leaseplanPathInput.invalid" name="lease-plan-path" type="file" class="form-control custom-button" id="leasePlanInput" placeholder="Leaseplan">

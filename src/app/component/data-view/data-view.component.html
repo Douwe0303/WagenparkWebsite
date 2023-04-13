@@ -3,7 +3,7 @@
     {{ this.title }}
   </a>
   <div *ngFor="let data of this.item.data | keyvalue: asIsOrder">
-    <a class="list-group-item list-group-item-action" *ngIf="!this.hiddenProperties.includes(data.key) && !this.clickableProperties.includes(data.key)" [innerHTML]='"<b>" + data.value["translation"] + ": </b>" + data.value["toDisplay"]'></a>
+    <a class="list-group-item list-group-item-action text-nowrap" *ngIf="!this.hiddenProperties.includes(data.key) && !this.clickableProperties.includes(data.key)" [innerHTML]='"<b>" + data.value["translation"] + ": </b>" + data.value["toDisplay"]'></a>
     <a class="list-group-item list-group-item-action" (click)="this.clicked(data.value['value'])" *ngIf="!this.hiddenProperties.includes(data.key) && this.clickableProperties.includes(data.key)"><b>{{ data.value["translation"] }} : </b> <span class="{{ data.value['value'] == '' ? '' : 'fake-link' }}">{{ data.value["toDisplay"] }}</span></a>
   </div>
 </div>

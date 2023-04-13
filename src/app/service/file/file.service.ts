@@ -34,12 +34,13 @@ export class FileService {
     );
   }
 
-  downloadFile(fileName: string, fileType: string): any {
-    if(fileType == 'docx') {
-      fileType = 'vnd.openxmlformats-officedocument.wordprocessingml.document';
-    } else if (fileType == 'doc') {
-      fileType = 'msword';
+  downloadFile(fileName: string): any {
+    let type: string = fileName.substring(fileName.lastIndexOf('.')+1, fileName.length);
+    if(type == 'docx') {
+      type = 'vnd.openxmlformats-officedocument.wordprocessingml.document';
+    } else if (type == 'doc') {
+      type = 'msword';
     }
-    this.getFileHttp(fileName, fileType);
+    this.getFileHttp(fileName, type);
   }
 }

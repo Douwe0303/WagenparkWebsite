@@ -44,7 +44,6 @@ export class OrdersComponent implements OnInit {
   constructor(
     private router: Router,
     private _orderService: OrderService,
-    private _fileService: FileService,
     private orderTransformer: OrderTransformer,
     private titleService: Title,
   ) {}
@@ -127,11 +126,6 @@ export class OrdersComponent implements OnInit {
     }
   }
 
-  downloadFile(fileName: any): void {
-    let type: string = fileName.substring(fileName.lastIndexOf('.')+1, fileName.length);
-    this._fileService.downloadFile(fileName, type);
-  }
-
   delete(id: number | undefined): void {
     this._orderService.deleteOrder(id).then(call =>
       call.pipe(first()).subscribe(
@@ -162,6 +156,7 @@ export class OrdersComponent implements OnInit {
 
     order.data.leaseOrderStatus.value = status.code;
     order.data.leaseOrderStatus.status = status;
+    order.data.leaseOrderStatus.toDisplay = status.text;
 
     let orderDto: OrderDto = this.orderTransformer?.toDto(order);
 
@@ -169,13 +164,14 @@ export class OrdersComponent implements OnInit {
       () => {
         // @ts-ignore
         this.toastOrder.showToast('Bestelstatus gewijzigd!', id, 'De status van de bestelling is gewijzigd.', 'orange');
-        this.reloadOrders();
         },
       (error: any) => {
         order.data.leaseOrderStatus.value = oldData.code;
         order.data.leaseOrderStatus.status = oldData;
         alert(error.statusText);
-      }));
+      }
+      )
+    );
   }
 
   reloadOrders(): void {
