@@ -40,8 +40,7 @@ export class ViewOrderComponent implements OnInit {
               private router: Router,
               private _orderService: OrderService,
               private orderTransformer: OrderTransformer,
-              private titleService: Title,
-              private _fileService: FileService
+              private titleService: Title
   ){}
 
   clicked(value: any): void {
