@@ -9,7 +9,6 @@ import {LeasecarTransformer} from "../../../transformer/leasecar-transformer/lea
 import {ContractTransformer} from "../../../transformer/contract-transformer/contract-transformer";
 import {Title} from "@angular/platform-browser";
 import {OrderDummy} from "../../../dummy/order-dummy/order-dummy";
-import {FileService} from "../../../service/file/file.service";
 import {EditOrderComponent} from "../edit-order/edit-order.component";
 import {ToastComponent} from "../../toast/toast.component";
 
