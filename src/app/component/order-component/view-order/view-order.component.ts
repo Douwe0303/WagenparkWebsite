@@ -31,7 +31,6 @@ export class ViewOrderComponent implements OnInit {
 
   @Input() items: {data: {}}[] = [];
   @Input() hiddenProperties: string[] = [];
-  @Input() clickableProperties: string[] = [];
   @Input() titles: string[] = [];
 
   @Output() clickEvent = new EventEmitter<any>();
@@ -42,10 +41,6 @@ export class ViewOrderComponent implements OnInit {
               private orderTransformer: OrderTransformer,
               private titleService: Title
   ){}
-
-  clicked(value: any): void {
-    this._fileService.downloadFile(value);
-  }
 
   ngOnInit() {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
@@ -97,9 +92,6 @@ export class ViewOrderComponent implements OnInit {
     ];
     this.hiddenProperties = [
       'leasecar', 'id', 'contract'
-    ];
-    this.clickableProperties = [
-      'leasePlanPath', 'quotationPath'
     ];
     this.titles = [
       'Informatie', 'Leaseauto', 'Contract'

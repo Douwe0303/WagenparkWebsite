@@ -1,11 +1,10 @@
-import {Component, EventEmitter, Injectable, Input, OnInit, Output, ViewChild} from '@angular/core';
+import { Component, EventEmitter, Injectable, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { OrderService } from "../../../service/order/order.service";
 import { OrderDto } from "../../../interface/dto/order-dto";
-import {first} from "rxjs";
-import {OrderStatus} from "../../../class/order-status/order-status";
-import {NgbDateParserFormatter, NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+import { first } from "rxjs";
+import { OrderStatus } from "../../../class/order-status/order-status";
+import { NgbDateParserFormatter, NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
 import {OrderTransformer} from "../../../transformer/order-transformer/order-transformer";
-import {FileService} from "../../../service/file/file.service";
 import {LeasecarTransformer} from "../../../transformer/leasecar-transformer/leasecar-transformer";
 import {Order} from "../../../interface/model/order";
 import {Leasecar} from "../../../interface/model/leasecar";
@@ -15,7 +14,7 @@ import {OrderDummy} from "../../../dummy/order-dummy/order-dummy";
 import {ContractTransformer} from "../../../transformer/contract-transformer/contract-transformer";
 import {NgForm} from "@angular/forms";
 import { EngineType } from "../../../type/engine-type/engine-type";
-import {ContractType} from "../../../type/contract-type/contract-type";
+import { ContractType } from "../../../type/contract-type/contract-type";
 
 @Injectable()
 export class CustomDateParserFormatter extends NgbDateParserFormatter {
@@ -52,7 +51,6 @@ export class EditOrderComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private title: Title,
     private _orderService: OrderService,
-    private _fileService: FileService,
     private orderTransformer: OrderTransformer,
     private leasecarTransformer: LeasecarTransformer
     ) {}
@@ -66,6 +64,7 @@ export class EditOrderComponent implements OnInit {
 
   protected readonly OrderStatus = OrderStatus;
   protected readonly EngineType = EngineType;
+  protected readonly ContractType = ContractType;
 
   @Input() order: Order = new OrderDummy();
 
@@ -103,24 +102,6 @@ export class EditOrderComponent implements OnInit {
     icon.classList.remove('rotate-icon');
   }
 
-  initFiles(path: string | undefined): void {
-    let extension: string;
-    let fileName: string;
-    if(path) {
-      extension = this.getExtension(path);
-      fileName = this.initFileName(path, '_leaseplan_', this.order.data.id.value);
-      this.setFile(extension, fileName);
-    }
-  }
-
-  setFile(fileName: string, extension: string): void {
-    this._fileService.getFile(fileName, extension).then((call) => {
-      call.pipe(first()).subscribe((file: File) => {
-        this.order.data.leasePlanPath.file = file;
-      })
-    })
-  }
-
   close(): void {
     // @ts-ignore
     document.getElementById('open-add-order').click();
@@ -145,7 +126,6 @@ export class EditOrderComponent implements OnInit {
             let leasecar: Leasecar = this.leasecarTransformer.toModel(orderDto.leaseCar);
             // @ts-ignore
             this.myForm.form.markAsPristine();
-            this.updateFilesAfterCreate(orderDto, leasecar);
           },
           (error: any) => {
             alert(error.statusText);
@@ -164,83 +144,8 @@ export class EditOrderComponent implements OnInit {
     })
   }
 
-  getExtension(file: string): string {
-    return file.substring(file.lastIndexOf('.'), file.length);
-  }
-
-  getFileName(path: string): string {
-    return path.substring(0, path.lastIndexOf('.'));
-  }
-
-  removeFakePath(path: string): string {
-    return path.replace('C:\\fakepath\\', '');
-  }
-
-  initFileName(path: string, suffix: string, id: number | undefined): string {
-    return this.getFileName(path) + suffix + id + this.getExtension(path);
-  }
-
-  updateFilesAfterCreate(orderDto: OrderDto, leasecar: Leasecar): void {
-    // @ts-ignore
-    let quotationPath: string | undefined = this.removeFakePath(this.quotation);
-    // @ts-ignore
-    let leaseplanPath: string | undefined = this.removeFakePath(this.leasePlan);
-
-    let quotationName: string = "";
-    let leaseplanName: string = "";
-
-    if(quotationPath) {
-      quotationName = this.initFileName(quotationPath, "_factuur_", orderDto.id);
-      orderDto.quotationPath = quotationName;
-    }
-
-    if(leaseplanPath) {
-      leaseplanName = this.initFileName(leaseplanPath, "_leaseplan_", orderDto.id);
-      orderDto.leasePlanPath = leaseplanName;
-    }
-
-    this._orderService.editOrder(orderDto).then((call) => {
-      call.pipe(first()).subscribe(() => {
-        let order: Order = this.orderTransformer.toModel(orderDto);
-        this.uploadFile(this.order.data.quotationPath.file, quotationName).then(() => {
-          this.quotation = "";
-          this.uploadFile(this.order.data.leasePlanPath.file, leaseplanName).then(() => {
-            if(!this.edit) {
-              // @ts-ignore
-              this.order = new OrderDummy();
-            } else {
-              this.order = order;
-            }
-            this.leasePlan = "";
-            this.newOrderEvent.emit({order: order, leasecar: leasecar});
-          });
-        });
-      })
-    })
-  }
-
-  async uploadFile(file: File | undefined, name: string): Promise<any> {
-    let formData: FormData = new FormData();
-    if(file) {
-      formData.append('file', file, name);
-      this._fileService.uploadFile(formData).then((call) => {
-        return call.pipe(first()).subscribe();
-      });
-    }
-  }
-
-  onFileSelect(fileEvent: any, fileName: string): void {
-    if(fileName == 'leaseplan') {
-      this.order.data.leasePlanPath.file = fileEvent.target.files[0];
-    } else {
-      this.order.data.quotationPath.file = fileEvent.target.files[0];
-    }
-  }
-
   displayElement(element: string, display: string): void {
     // @ts-ignore
     document.getElementById(element).style.display = display;
   }
-
-  protected readonly ContractType = ContractType;
 }

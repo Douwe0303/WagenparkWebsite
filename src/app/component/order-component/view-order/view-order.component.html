@@ -7,8 +7,6 @@
   <div *ngIf="this.view" class="row mt-3">
     <div class="col-12 col-lg-4" *ngFor="let item of this.items; let i = index;">
       <app-data-view
-        (clickEvent)="clicked($event)"
-        [clickableProperties]="clickableProperties"
         [hiddenProperties]="hiddenProperties"
         [title]="titles[i]"
         [item]="item"></app-data-view>
