@@ -1,5 +1,5 @@
 import { Contract } from "./contract";
-import {Data} from "./data";
+import { Data } from "./data";
 
 export interface Leasecar {
   data: {

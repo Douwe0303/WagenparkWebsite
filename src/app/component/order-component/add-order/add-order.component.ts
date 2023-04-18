@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Order } from "../../../interface/model/order";
-import { OrderTransformer } from "../../../class/transformer/order-transformer/order-transformer";
+import { OrderTransformer } from "../../../transformer/order-transformer/order-transformer";
 import { Leasecar } from "../../../interface/model/leasecar";
-import { OrderDummy } from "../../../class/dummy/order-dummy/order-dummy";
+import { OrderDummy } from "../../../dummy/order-dummy/order-dummy";
 
 @Component({
   selector: 'app-add-order',

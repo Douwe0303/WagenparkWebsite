@@ -8,7 +8,5 @@ export interface OrderDto {
   orderDate: string;
   deliveryDate?: string;
   weekOfDelivery?: number;
-  quotationPath?: string;
-  leasePlanPath?: string;
   leaseCar: LeasecarDto;
 }

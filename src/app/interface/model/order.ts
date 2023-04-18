@@ -10,8 +10,6 @@ export interface Order {
     orderDate: Data<string>
     deliveryDate: Data<string | undefined>
     weekOfDelivery: Data<number | undefined>
-    quotationPath: Data<string | undefined>
-    leasePlanPath: Data<string | undefined>
     leasecar: Leasecar
   }
 }

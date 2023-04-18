@@ -4,18 +4,18 @@ import { OrderDto } from "../../../interface/dto/order-dto";
 import {first} from "rxjs";
 import {OrderStatus} from "../../../class/order-status/order-status";
 import {NgbDateParserFormatter, NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
-import {OrderTransformer} from "../../../class/transformer/order-transformer/order-transformer";
+import {OrderTransformer} from "../../../transformer/order-transformer/order-transformer";
 import {FileService} from "../../../service/file/file.service";
-import {LeasecarTransformer} from "../../../class/transformer/leasecar-transformer/leasecar-transformer";
+import {LeasecarTransformer} from "../../../transformer/leasecar-transformer/leasecar-transformer";
 import {Order} from "../../../interface/model/order";
 import {Leasecar} from "../../../interface/model/leasecar";
 import {ActivatedRoute} from "@angular/router";
 import {Title} from "@angular/platform-browser";
-import {OrderDummy} from "../../../class/dummy/order-dummy/order-dummy";
-import {ContractTransformer} from "../../../class/transformer/contract-transformer/contract-transformer";
+import {OrderDummy} from "../../../dummy/order-dummy/order-dummy";
+import {ContractTransformer} from "../../../transformer/contract-transformer/contract-transformer";
 import {NgForm} from "@angular/forms";
-import { EngineType } from "../../../class/engine-type/engine-type";
-import {ContractType} from "../../../class/contract-type/contract-type";
+import { EngineType } from "../../../type/engine-type/engine-type";
+import {ContractType} from "../../../type/contract-type/contract-type";
 
 @Injectable()
 export class CustomDateParserFormatter extends NgbDateParserFormatter {

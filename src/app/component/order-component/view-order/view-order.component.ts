@@ -3,12 +3,12 @@ import {ActivatedRoute, Router} from "@angular/router";
 import { OrderService } from "../../../service/order/order.service";
 import { first } from "rxjs";
 import { OrderDto } from "../../../interface/dto/order-dto";
-import {OrderTransformer} from "../../../class/transformer/order-transformer/order-transformer";
+import {OrderTransformer} from "../../../transformer/order-transformer/order-transformer";
 import {Order} from "../../../interface/model/order";
-import {LeasecarTransformer} from "../../../class/transformer/leasecar-transformer/leasecar-transformer";
-import {ContractTransformer} from "../../../class/transformer/contract-transformer/contract-transformer";
+import {LeasecarTransformer} from "../../../transformer/leasecar-transformer/leasecar-transformer";
+import {ContractTransformer} from "../../../transformer/contract-transformer/contract-transformer";
 import {Title} from "@angular/platform-browser";
-import {OrderDummy} from "../../../class/dummy/order-dummy/order-dummy";
+import {OrderDummy} from "../../../dummy/order-dummy/order-dummy";
 import {FileService} from "../../../service/file/file.service";
 import {EditOrderComponent} from "../edit-order/edit-order.component";
 import {ToastComponent} from "../../toast/toast.component";
@@ -84,7 +84,7 @@ export class ViewOrderComponent implements OnInit {
         this.order = order;
         this.setInputs(order);
         },
-        (error: any) => {
+        () => {
           this.router.navigate(['/order-not-found']);
         }
       )

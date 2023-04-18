@@ -1,4 +1,4 @@
-import {Contract} from "../../../interface/model/contract";
+import {Contract} from "../../interface/model/contract";
 
 export class ContractDummy implements Contract {
   data: any = {

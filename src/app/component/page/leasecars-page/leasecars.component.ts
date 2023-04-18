@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Leasecar } from "../../../interface/model/leasecar";
-import { LeasecarDummy } from "../../../class/dummy/leasecar-dummy/leasecar-dummy";
+import { LeasecarDummy } from "../../../dummy/leasecar-dummy/leasecar-dummy";
 @Component({
   selector: 'app-tableheaders',
   templateUrl: './leasecars.component.html',
@@ -10,8 +10,8 @@ export class LeasecarsComponent {
 
   leasecar: Leasecar = new LeasecarDummy();
 
-  delete(id: number): void {
-  }
+  // delete(id: number): void {
+  // }
 
   prompt(show: boolean, id: number): void {
     if(show) {

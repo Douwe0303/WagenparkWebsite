@@ -1,9 +1,9 @@
-import { Transformer } from "../../../interface/transformer";
-import { Contract } from "../../../interface/model/contract";
-import { ContractDto } from "../../../interface/dto/contract-dto";
+import { Transformer } from "../../interface/transformer";
+import { Contract } from "../../interface/model/contract";
+import { ContractDto } from "../../interface/dto/contract-dto";
 import { Injectable } from "@angular/core";
 import { NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
-import { CustomDateParser } from "../../customDateParser/custom-date-parser";
+import { CustomDateParser } from "../../class/customDateParser/custom-date-parser";
 
 @Injectable()
 export class ContractTransformer implements Transformer<Contract, ContractDto> {
@@ -43,7 +43,7 @@ export class ContractTransformer implements Transformer<Contract, ContractDto> {
           value: dto.signed,
           type: 'text',
           required: false,
-          toDisplay: this.getSigned(dto.signed),
+          toDisplay: dto.signed ? "Ja" : "Nee",
           translation: "Ondertekend"
         },
         duration: {
@@ -99,8 +99,8 @@ export class ContractTransformer implements Transformer<Contract, ContractDto> {
       return "";
     }
 
-    let startDate: Date | null = this.parseDate(startString, 'dd-MM-yyyy');
-    let endDate: Date | null = this.parseDate(endString, 'dd-MM-yyyy');
+    let startDate: Date | null = this.parseDate(startString);
+    let endDate: Date | null = this.parseDate(endString);
 
     if(!startDate || !endDate) {
       return "";
@@ -126,7 +126,7 @@ export class ContractTransformer implements Transformer<Contract, ContractDto> {
     }
 
     let today: Date = new Date();
-    let endDate: Date | null = this.parseDate(endString, 'yyyy-MM-dd');
+    let endDate: Date | null = this.parseDate(endString);
 
     if(!endDate) {
       return "";
@@ -144,11 +144,7 @@ export class ContractTransformer implements Transformer<Contract, ContractDto> {
     }
   }
 
-  getSigned(signed: boolean | undefined): string {
-    return signed ? 'Ja' : 'Nee';
-  }
-
-  private parseDate(dateString: string, format: string): Date | null {
+  private parseDate(dateString: string): Date | null {
     const parts = dateString.split('-');
     if (parts.length !== 3) {
       return null;

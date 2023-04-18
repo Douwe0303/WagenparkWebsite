@@ -1,4 +1,4 @@
-import { Leasecar } from "../../../interface/model/leasecar";
+import { Leasecar } from "../../interface/model/leasecar";
 import { ContractDummy } from "../contract-dummy/contract-dummy";
 
 export class LeasecarDummy implements Leasecar {

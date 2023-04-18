@@ -8,12 +8,11 @@ import { NgbDropdown} from "@ng-bootstrap/ng-bootstrap";
 import { ToastComponent } from "../../toast/toast.component";
 import { OrderStatus } from "../../../class/order-status/order-status";
 import { Order } from "../../../interface/model/order";
-import { OrderTransformer } from "../../../class/transformer/order-transformer/order-transformer";
-import { LeasecarTransformer } from "../../../class/transformer/leasecar-transformer/leasecar-transformer";
+import { OrderTransformer } from "../../../transformer/order-transformer/order-transformer";
+import { LeasecarTransformer } from "../../../transformer/leasecar-transformer/leasecar-transformer";
 import { OrderHeader } from "../../../class/order-header/order-header";
-import { ContractTransformer } from "../../../class/transformer/contract-transformer/contract-transformer";
+import { ContractTransformer } from "../../../transformer/contract-transformer/contract-transformer";
 import { DatePipe } from "@angular/common";
-import { FileService } from "../../../service/file/file.service";
 import {Title} from "@angular/platform-browser";
 
 @Component({

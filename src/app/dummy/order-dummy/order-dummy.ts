@@ -1,5 +1,5 @@
-import { Order } from "../../../interface/model/order";
-import { OrderStatus } from "../../order-status/order-status";
+import { Order } from "../../interface/model/order";
+import { OrderStatus } from "../../class/order-status/order-status";
 import { LeasecarDummy } from "../leasecar-dummy/leasecar-dummy";
 
 export class OrderDummy implements Order {
@@ -39,16 +39,6 @@ export class OrderDummy implements Order {
       value: 0,
       toDisplay: "",
       translation: "verwachte leverweek"
-    },
-    quotationPath: {
-      value: "",
-      toDisplay: "",
-      translation: "factuur"
-    },
-    leasePlanPath: {
-      value: "",
-      toDisplay: "",
-      translation: "lease plan"
     },
     leasecar: new LeasecarDummy()
   }

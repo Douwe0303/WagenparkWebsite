@@ -1,13 +1,13 @@
-import { Order } from "../../../interface/model/order";
-import { OrderDto } from "../../../interface/dto/order-dto";
-import { Transformer} from "../../../interface/transformer";
-import { OrderStatus } from "../../order-status/order-status";
+import { Order } from "../../interface/model/order";
+import { OrderDto } from "../../interface/dto/order-dto";
+import { Transformer} from "../../interface/transformer";
+import { OrderStatus } from "../../class/order-status/order-status";
 import { Injectable } from "@angular/core";
 import { LeasecarTransformer } from "../leasecar-transformer/leasecar-transformer";
-import { Leasecar } from "../../../interface/model/leasecar";
-import { LeasecarDto } from "../../../interface/dto/leasecar-dto";
+import { Leasecar } from "../../interface/model/leasecar";
+import { LeasecarDto } from "../../interface/dto/leasecar-dto";
 import { NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
-import { CustomDateParser } from "../../customDateParser/custom-date-parser";
+import { CustomDateParser } from "../../class/customDateParser/custom-date-parser";
 
 @Injectable()
 export class OrderTransformer implements Transformer<Order, OrderDto> {
@@ -73,22 +73,6 @@ export class OrderTransformer implements Transformer<Order, OrderDto> {
           toDisplay: orderDto.weekOfDelivery+'',
           translation: "Verwachte leverweek"
         },
-        quotationPath: {
-          value: orderDto.quotationPath,
-          type: 'text',
-          required: false,
-          toDisplay: this.getLink(orderDto.quotationPath),
-          path: orderDto.quotationPath,
-          translation: "Factuur"
-        },
-        leasePlanPath: {
-          value: orderDto.leasePlanPath,
-          type: 'text',
-          required: false,
-          toDisplay: this.getLink(orderDto.leasePlanPath),
-          path: orderDto.leasePlanPath,
-          translation: "Lease plan"
-        },
         leasecar: leasecar
       }
     }
@@ -106,28 +90,7 @@ export class OrderTransformer implements Transformer<Order, OrderDto> {
       orderDate: this.getDate(order.data.orderDate.date),
       deliveryDate: this.getDate(order.data.deliveryDate.date),
       weekOfDelivery: order.data.weekOfDelivery.value,
-      quotationPath: order.data.quotationPath.value,
-      leasePlanPath: order.data.leasePlanPath.value,
       leaseCar: leasecarDto
-    }
-  }
-
-  getLink(link: string | undefined): string {
-    if(link && (link != '')) {
-      return this.getFileType(link);
-    } else {
-      return 'Document ontbreekt';
-    }
-  }
-
-  getFileType(fileName: string): string {
-    let type: string = fileName.substring(fileName.lastIndexOf('.')+1, fileName.length);
-    if(type == 'doc' || type == 'docx') {
-      return 'Download Word-bestand';
-    } else if(type == 'pdf') {
-      return 'Open pdf-bestand';
-    } else {
-      return 'Open bestand';
     }
   }
 
