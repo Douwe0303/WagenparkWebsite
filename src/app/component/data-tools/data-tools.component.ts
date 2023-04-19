@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-data-tools',
@@ -11,6 +11,8 @@ export class DataToolsComponent {
 
   @Input() buttonName: string = "";
   @Input() buttonTitle: string = "";
+
+  @Output() searchEvent = new EventEmitter<string>();
 
   searchText: string = "";
   opened: boolean = false;

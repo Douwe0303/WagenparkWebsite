@@ -1,0 +1,68 @@
+<div class="container table-responsive">
+  <table class="table table-hover table-borderless mt-4 shadow-all bg-light">
+    <caption></caption>
+    <thead>
+    <tr class="table-header">
+      <th *ngFor="let header of headers" scope="col" class="pointer-hover">
+        <div class="d-flex align-items-center">
+          <img *ngIf="header.key == 'id'"
+               alt="unknown"
+               src="/assets/image/tableheaders/counter.png"
+               class="me-1 table-header-height">
+          <span *ngIf="header.key == 'id'" class="hidden">#</span>
+          {{ header.name }}
+          <mat-icon
+            id="sorting-{{ header.key }}"
+            title="{{ header.title }}"
+            aria-hidden="false"
+            class="ms-2 pointer-hover rotate-to-0 brick-red
+            {{ header.key == 'id' ? 'opacity-100' : 'opacity-25' }}"
+            aria-label="sort_by_alpha" fontIcon="arrow_drop_up">
+          </mat-icon>
+        </div>
+      </th>
+      <th scope="col">Actie</th>
+      <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+        <ng-container *ngFor="let array of rowData;let i=index;">
+          <tr id="row{{ i }}" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse'+i" aria-expanded="false">
+            <td *ngFor="let item of array"><span class="text-nowrap">{{ item }}</span></td>
+            <td class="text-start align-middle">
+              <span class="align-items-center display-flex" id="actions_{{ i }}">
+                <a [routerLink]="'/orders/'+array[0]+'/view'" target="_blank" class="align-items-center display-flex"><mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Bekijken" class="eye-color pointer-hover me-3" aria-label="view" fontIcon="visibility"></mat-icon></a>
+                <a [routerLink]="'/orders/'+array[0] +'/edit'" class="align-items-center display-flex"><mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Aanpassen" class="pencil-color pointer-hover me-3" aria-label="edit" fontIcon="edit"></mat-icon></a>
+                <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Verwijderen" class="trash-color pointer-hover" aria-label="trash" fontIcon="delete"></mat-icon>
+              </span>
+              <span class="text-nowrap prompt" id="delete_prompt_{{ i }}">
+                <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Verwijderen" class="trash-color pointer-hover hidden me-3" aria-label="trash" fontIcon="delete"></mat-icon>
+                <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Definitief verwijderen" class="trash-color pointer-hover me-3" aria-label="delete forever" fontIcon="delete_forever"></mat-icon>
+                <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Ongedaan maken" class="pencil-color pointer-hover" aria-label="undo" fontIcon="undo"></mat-icon>
+              </span>
+            </td>
+            <td class="text-start align-middle">
+              <span class="align-items-center display-flex">
+                <mat-icon id="arrow{{ i }}" title="Open" aria-hidden="false" class="trash-color pointer-hover rotate-to-0" aria-label="arrow_down" fontIcon="keyboard_arrow_down"></mat-icon>
+              </span>
+            </td>
+          </tr>
+          <tr class="td-p-0">
+            <td colspan="8">
+              <div class="collapse border-top border-bottom pb-3" id="{{'collapse' + i }}">
+                <div class="accordion-body">
+                  <div class="container-fluid pb-3 pb-xl-0">
+                    <div class="row mt-3">
+                      <div class="col-12 col-lg-4" *ngFor="let data of fullData[i]; let j=index">
+                        <app-data-view [title]="titles[j]" [hiddenProperties]="hiddenProperties" [item]="data"></app-data-view>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+    </tbody>
+  </table>
+</div>

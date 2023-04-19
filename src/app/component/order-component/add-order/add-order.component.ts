@@ -14,7 +14,7 @@ export class AddOrderComponent {
 
   @Output() newOrderEvent = new EventEmitter<{order: Order, leasecar: Leasecar}>();
 
-  @Input() order: Order = new OrderDummy();
+  @Input() order: Order = OrderDummy;
 
   @Input() formName: string = "";
 

@@ -26,7 +26,9 @@ import { DatePickerComponent } from './component/date-picker/date-picker.compone
 import { AlphabeticalPipe } from './pipe/sort/alphabetical/alphabetical.pipe';
 import { BreadcrumbComponent } from './component/breadcrumb/breadcrumb.component';
 import { DataInputFieldsComponent } from './component/data-input-fields/data-input-fields.component';
-import { AccordionComponent } from './component/leasecar-component/accordion/accordion.component';
+import { AccordionComponent } from './component/accordion/accordion.component';
+import { TableComponent } from './component/table/table.component';
+import { ObjectToKeyValuePipe } from './pipe/object-to-key-value.pipe';
 
 @NgModule({
   declarations: [
@@ -50,6 +52,8 @@ import { AccordionComponent } from './component/leasecar-component/accordion/acc
     BreadcrumbComponent,
     DataInputFieldsComponent,
     AccordionComponent,
+    TableComponent,
+    ObjectToKeyValuePipe,
   ],
   imports: [
     BrowserModule,

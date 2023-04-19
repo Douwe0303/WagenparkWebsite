@@ -7,6 +7,6 @@ import { Component, Input } from '@angular/core';
 })
 export class AccordionComponent {
   @Input() formName: string = "";
-  @Input() data: {data:{}}[] = [];
+  @Input() data: any[] = [];
   @Input() component: any;
 }

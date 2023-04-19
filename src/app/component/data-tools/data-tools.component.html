@@ -1,14 +1,28 @@
 <div class="container mt-3">
   <div class="row">
     <div class="col-12 col-md-6 col-xxl-4 mt-3">
-      <button #addComponent (click)="scroll(addComponent)" id="open-add" aria-expanded="false" aria-controls="collapseExample" data-bs-toggle="collapse" data-bs-target="#collapseExample" type="button" class="btn btn-light border-color-secondary align-items-center display-flex text-nowrap mx-auto mx-md-0" [attr.title]=buttonTitle>
+      <button #addComponent
+              (click)="scroll(addComponent)"
+              id="open-add" aria-expanded="false"
+              aria-controls="collapseExample"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseExample"
+              type="button"
+              class="btn btn-light border-color-secondary align-items-center display-flex text-nowrap mx-auto mx-md-0"
+              [attr.title]=buttonTitle>
         <mat-icon aria-hidden="false" class="brick-red pointer-hover" aria-label="menu_open" fontIcon="menu_open"></mat-icon>
         {{buttonName}}
       </button>
     </div>
     <div class="col-12 col-md-6 col-xxl-4 mt-3">
       <div class="input-group">
-        <input type="text" [(ngModel)]="searchText" class="form-control" [attr.placeholder]="searchPlaceHolder" [attr.aria-label]="searchAriaLabel" aria-describedby="button-addon2">
+        <input type="text"
+               [(ngModel)]="searchText"
+               (ngModelChange)="searchEvent.emit(searchText)"
+               class="form-control"
+               [attr.placeholder]="searchPlaceHolder"
+               [attr.aria-label]="searchAriaLabel"
+               aria-describedby="button-addon2">
         <button class="btn btn-outline-dark align-items-center display-flex" type="button" id="button-addon2">
           <mat-icon aria-hidden="false" class="pointer-hover ms-0 ps-0" aria-label="search" fontIcon="search"></mat-icon>
         </button>

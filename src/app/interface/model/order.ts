@@ -1,15 +1,13 @@
 import { Leasecar } from "./leasecar";
-import { Data } from "./data";
+import { Data } from "../data";
 
 export interface Order {
-  data: {
-    id: Data<number | undefined>,
-    orderer: Data<string>
-    supplier: Data<string>
-    leaseOrderStatus: Data<string>
-    orderDate: Data<string>
-    deliveryDate: Data<string | undefined>
-    weekOfDelivery: Data<number | undefined>
-    leasecar: Leasecar
-  }
+  id: Data
+  orderer: Data
+  supplier: Data
+  leaseOrderStatus: Data
+  orderDate: Data
+  deliveryDate: Data
+  weekOfDelivery: Data
+  leasecar: Leasecar
 }

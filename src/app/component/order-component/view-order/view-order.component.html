@@ -17,7 +17,7 @@
     <app-add-order
       [id]="this.id"
       [formName]="'Wijzigingsformulier voor bestelling '+this.id"
-      (newOrderEvent)="this.toastOrder.showToast('Bestelling gewijzigd!', $event.order.data.id.value, 'De bestelling is gewijzigd!', 'orange')"
+      (newOrderEvent)="this.toastOrder.showToast('Bestelling gewijzigd!', $event.order.id.value, 'De bestelling is gewijzigd!', 'orange')"
       [edit]="true"
       [order]="this.order"
       [buttonColorClass]="'settings-color'"

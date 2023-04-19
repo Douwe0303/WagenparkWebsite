@@ -19,7 +19,7 @@ import {ToastComponent} from "../../toast/toast.component";
   providers: [OrderTransformer, LeasecarTransformer, ContractTransformer],
 })
 export class ViewOrderComponent implements OnInit {
-  order: Order = new OrderDummy();
+  order: Order = OrderDummy;
   view: boolean = true;
   id: string | null = "";
 
@@ -29,7 +29,7 @@ export class ViewOrderComponent implements OnInit {
   @ViewChild(ToastComponent)
   public toastOrder: ToastComponent = new ToastComponent();
 
-  @Input() items: {data: {}}[] = [];
+  @Input() items: any[] = [];
   @Input() hiddenProperties: string[] = [];
   @Input() titles: string[] = [];
 
@@ -87,8 +87,8 @@ export class ViewOrderComponent implements OnInit {
   setInputs(order: Order): void {
     this.items = [
       order,
-      order.data.leasecar,
-      order.data.leasecar.data.contract
+      order.leasecar,
+      order.leasecar.contract
     ];
     this.hiddenProperties = [
       'leasecar', 'id', 'contract'

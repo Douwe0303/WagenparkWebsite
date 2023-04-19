@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {Order} from "../../../interface/model/order";
+import { Order } from "../../../interface/model/order";
 
 @Pipe({
   name: 'orderFilter'
@@ -17,7 +17,7 @@ export class OrderFilterPipe implements PipeTransform {
 
     return orders.filter(it => {
       // @ts-ignore
-      return it.data.leasecar.data.driver.value.toLocaleLowerCase().includes(searchText);
+      return it.leasecar.driver.value.toLocaleLowerCase().includes(searchText);
     });
   }
 

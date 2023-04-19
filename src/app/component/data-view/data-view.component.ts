@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-data-view',
@@ -7,16 +7,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class DataViewComponent {
   @Input() title: string | undefined = "";
-  @Input() item = { data: {} };
+  @Input() item = {};
   @Input() hiddenProperties: string[] = [];
-  @Input() clickableProperties: string[] = [];
   @Input() json: boolean = false;
-
-  @Output() clickEvent = new EventEmitter<any>();
-
-  clicked(value: any): void {
-    this.clickEvent.emit(value);
-  }
 
   asIsOrder() {
     return 1;

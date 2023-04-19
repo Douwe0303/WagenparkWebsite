@@ -6,78 +6,12 @@
   [searchAriaLabel]="'Zoek leaseauto'"
 ></app-data-tools>
 <app-accordion
-  [data]="[this.leasecar, this.leasecar.data.contract]"
+  [data]="[LeaseCarDummy, LeaseCarDummy.contract]"
 ></app-accordion>
-
-<div class="container mt-3 table-responsive">
-  <div>
-    <table class="table table-hover table-borderless mt-4 shadow-all bg-light">
-      <thead>
-      <tr class="table-header">
-        <th scope="col">
-          <div class="d-flex align-items-center">
-            <img alt="driver" src="../../../../assets/image/tableheaders/counter.png" class="me-1 table-header-height">
-            <span class="hidden">#</span>
-          </div>
-        </th>
-        <th scope="col">
-          <div class="d-flex align-items-center">
-            <img alt="driver" src="../../../../assets/image/tableheaders/driver.png" class="me-1 table-header-height">
-            <span>Bestuurder</span>
-          </div>
-        </th>
-        <th scope="col">
-          <div class="d-flex align-items-center">
-            <img alt="license plate" src="../../../../assets/image/tableheaders/license-plate.png" class="me-1 table-header-height">
-            <span>Kenteken</span>
-          </div>
-        </th>
-        <th scope="col">
-          <div class="d-flex align-items-center">
-            <img alt="trademark" src="../../../../assets/image/tableheaders/trademark.png" class="me-1 table-header-height">
-            <span>Automerk</span>
-          </div>
-        </th>
-        <th scope="col">
-          <div class="d-flex align-items-center">
-            <img alt="stopwatch" src="../../../../assets/image/tableheaders/stopwatch.png" class="me-1 table-header-height">
-            <span>Contractduur</span>
-          </div>
-        </th>
-        <th scope="col">
-          <div class="d-flex align-items-center">
-            <img alt="engine" src="../../../../assets/image/tableheaders/engine.png" class="me-1 table-header-height">
-            <span>Actie</span>
-          </div>
-        </th>
-      </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td class="fw-bold">
-            Bart
-          </td>
-          <td>
-            <span class="text-nowrap font-small">
-              <span class="badge rounded-0 license-plate-blue">NL</span>
-              <span class="badge bg-warning rounded-0 text-black">EF-34-GH</span>
-            </span>
-          </td>
-          <td class="fw-bold">Volkswagen</td>
-          <td class="fw-bold">60 dagen</td>
-          <td class="text-start align-middle" >
-            <span class="align-items-center display-flex" id="actions_1">
-              <mat-icon aria-hidden="false" title="Aanpassen" class="pencil_color pointer-hover me-3" aria-label="edit" fontIcon="edit"></mat-icon>
-              <mat-icon aria-hidden="false" title="Verwijderen" class="trash_color pointer-hover" aria-label="trash" fontIcon="delete" (click)="this.prompt(true, 1)"></mat-icon>
-            </span>
-            <span class="text-nowrap prompt" id="delete_prompt_1">
-                <mat-icon aria-hidden="false" title="Definitief verwijderen" class="trash_color pointer-hover me-3" aria-label="delete forever" fontIcon="delete_forever" (click)="this.delete(1)"></mat-icon>
-                <mat-icon aria-hidden="false" title="Ongedaan maken" class="pencil_color pointer-hover" aria-label="undo" fontIcon="undo" (click)="this.prompt(false, 1)"></mat-icon>
-            </span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+<app-table
+  [headers]="LeaseCarTableHeader"
+  [rowData]="rowData"
+  [fullData]="fullData"
+  [titles]="['Leaseauto', 'Contract']"
+  [hiddenProperties]="['id', 'contract']"
+></app-table>

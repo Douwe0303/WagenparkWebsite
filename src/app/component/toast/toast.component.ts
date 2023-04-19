@@ -9,7 +9,7 @@ export class ToastComponent {
   show: boolean = false;
   @Input() styleClass: string = "";
 
-  showToast(toastTitle: string, toastId: number | undefined, toastBody: string, color: string): void {
+  showToast(toastTitle: string, toastId: any, toastBody: string, color: string): void {
     // @ts-ignore
     let title: HTMLElement = document.getElementById('toastTitle');
 

@@ -66,7 +66,7 @@ export class EditOrderComponent implements OnInit {
   protected readonly EngineType = EngineType;
   protected readonly ContractType = ContractType;
 
-  @Input() order: Order = new OrderDummy();
+  @Input() order: Order = OrderDummy;
 
   @Input() edit: boolean = false;
   @Input() buttonName: string = "";

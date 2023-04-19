@@ -52,6 +52,10 @@ export class OrdersComponent implements OnInit {
     this.titleService.setTitle('Bestellingen');
   }
 
+  setSearchText(text: string) {
+    this.searchText = text;
+  }
+
   asIsOrder() {
     return 1;
   }
@@ -128,7 +132,7 @@ export class OrdersComponent implements OnInit {
   delete(id: number | undefined): void {
     this._orderService.deleteOrder(id).then(call =>
       call.pipe(first()).subscribe(
-        () => this.orders = this.orders.filter(order => order.data.id.value !== id),
+        () => this.orders = this.orders.filter(order => order.id.value !== id),
         (error: any) => alert(error.statusText)
       )
     );
@@ -143,19 +147,19 @@ export class OrdersComponent implements OnInit {
   }
 
   editStatus(id: number, status: any): void {
-    let index: number = this.orders.findIndex(order => order.data.id.value == id);
+    let index: number = this.orders.findIndex(order => order.id.value == id);
     let order: Order = this.orders[index];
 
-    let oldStatus: string = order.data.leaseOrderStatus.status.code;
-    let oldData: any = order.data.leaseOrderStatus.status;
+    let oldStatus: string = order.leaseOrderStatus.status.code;
+    let oldData: any = order.leaseOrderStatus.status;
 
     if(oldStatus == status.code) {
       return;
     }
 
-    order.data.leaseOrderStatus.value = status.code;
-    order.data.leaseOrderStatus.status = status;
-    order.data.leaseOrderStatus.toDisplay = status.text;
+    order.leaseOrderStatus.value = status.code;
+    order.leaseOrderStatus.status = status;
+    order.leaseOrderStatus.toDisplay = status.text;
 
     let orderDto: OrderDto = this.orderTransformer?.toDto(order);
 
@@ -165,8 +169,8 @@ export class OrdersComponent implements OnInit {
         this.toastOrder.showToast('Bestelstatus gewijzigd!', id, 'De status van de bestelling is gewijzigd.', 'orange');
         },
       (error: any) => {
-        order.data.leaseOrderStatus.value = oldData.code;
-        order.data.leaseOrderStatus.status = oldData;
+        order.leaseOrderStatus.value = oldData.code;
+        order.leaseOrderStatus.status = oldData;
         alert(error.statusText);
       }
       )

@@ -46,9 +46,9 @@ export class OrderSortPipe implements PipeTransform {
   getValue(value: any, field: string) {
     if(field.includes('leasecar-')) {
       let nestedField: string = field.replace('leasecar-', '').trim();
-      return value.data.leasecar.data[nestedField].value;
+      return value.leasecar[nestedField].value;
     } else {
-      return value.data[field].value;
+      return value[field].value;
     }
    }
 }

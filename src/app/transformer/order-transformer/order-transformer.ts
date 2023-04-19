@@ -20,76 +20,74 @@ export class OrderTransformer implements Transformer<Order, OrderDto> {
     let leasecar: Leasecar = this.leasecarTransformer.toModel(orderDto.leaseCar);
 
     return {
-      data: {
-        id: {
-          value: orderDto.id,
-          type: 'number',
-          toDisplay: orderDto.id+'',
-          required: true,
-          translation: "id"
-        },
-        orderer: {
-          value: orderDto.orderer,
-          type: 'text',
-          required: true,
-          toDisplay: orderDto.orderer,
-          translation: "Besteller"
-        },
-        supplier: {
-          value: orderDto.supplier,
-          type: 'text',
-          required: true,
-          toDisplay: orderDto.supplier,
-          translation: "Leverancier"
-        },
-        leaseOrderStatus: {
-          value: status.code,
-          type: 'text',
-          required: true,
-          toDisplay: status.text,
-          status: status,
-          translation: "Status",
-        },
-        orderDate: {
-          value: orderDto.orderDate,
-          type: 'date',
-          required: true,
-          date: this.customDateParser.parse(orderDto.orderDate),
-          toDisplay: orderDto.orderDate,
-          translation: "Besteldatum"
-        },
-        deliveryDate: {
-          value: orderDto.deliveryDate,
-          type: 'date',
-          required: true,
-          date: orderDto.deliveryDate == undefined ? undefined : this.customDateParser.parse(orderDto.deliveryDate),
-          toDisplay: orderDto.deliveryDate == null ? '' : orderDto.deliveryDate,
-          translation: "Leverdatum"
-        },
-        weekOfDelivery: {
-          value: orderDto.weekOfDelivery,
-          type: 'number',
-          required: false,
-          toDisplay: orderDto.weekOfDelivery+'',
-          translation: "Verwachte leverweek"
-        },
-        leasecar: leasecar
-      }
+      id: {
+        value: orderDto.id,
+        type: 'number',
+        toDisplay: orderDto.id+'',
+        required: true,
+        translation: "id"
+      },
+      orderer: {
+        value: orderDto.orderer,
+        type: 'text',
+        required: true,
+        toDisplay: orderDto.orderer,
+        translation: "Besteller"
+      },
+      supplier: {
+        value: orderDto.supplier,
+        type: 'text',
+        required: true,
+        toDisplay: orderDto.supplier,
+        translation: "Leverancier"
+      },
+      leaseOrderStatus: {
+        value: status.code,
+        type: 'text',
+        required: true,
+        toDisplay: status.text,
+        status: status,
+        translation: "Status",
+      },
+      orderDate: {
+        value: orderDto.orderDate,
+        type: 'date',
+        required: true,
+        date: this.customDateParser.parse(orderDto.orderDate),
+        toDisplay: orderDto.orderDate,
+        translation: "Besteldatum"
+      },
+      deliveryDate: {
+        value: orderDto.deliveryDate,
+        type: 'date',
+        required: true,
+        date: orderDto.deliveryDate == undefined ? undefined : this.customDateParser.parse(orderDto.deliveryDate),
+        toDisplay: orderDto.deliveryDate == null ? '' : orderDto.deliveryDate,
+        translation: "Leverdatum"
+      },
+      weekOfDelivery: {
+        value: orderDto.weekOfDelivery,
+        type: 'number',
+        required: false,
+        toDisplay: orderDto.weekOfDelivery+'',
+        translation: "Verwachte leverweek"
+      },
+      leasecar: leasecar
     }
   }
 
   toDto(order: Order): OrderDto {
-    let leasecarDto: LeasecarDto = this.leasecarTransformer.toDto(order.data.leasecar);
+    let leasecarDto: LeasecarDto = this.leasecarTransformer.toDto(order.leasecar);
 
     return {
-      id: order.data.id.value,
-      supplier: order.data.supplier.value,
-      orderer: order.data.orderer.value,
-      leaseOrderStatus: order.data.leaseOrderStatus.value,
+      id: order.id.value as number,
+      supplier: order.supplier.value as string,
+      orderer: order.orderer.value as string,
+      leaseOrderStatus: order.leaseOrderStatus.value as string,
       //@ts-ignore
-      orderDate: this.getDate(order.data.orderDate.date),
-      deliveryDate: this.getDate(order.data.deliveryDate.date),
-      weekOfDelivery: order.data.weekOfDelivery.value,
+      orderDate: this.getDate(order.orderDate.date),
+      deliveryDate: this.getDate(order.deliveryDate.date),
+      weekOfDelivery: order.weekOfDelivery.value as number,
       leaseCar: leasecarDto
     }
   }

@@ -2,6 +2,10 @@
   color: green;
 }
 
+.border-color-secondary {
+  border-color: #ced4da;
+}
+
 .display-flex {
   display: flex !important;
 }
