@@ -1,18 +1,18 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Sorting } from "../../../enum/sorting";
+import { SortingType } from "../../../enum/sorting-type";
 import { Order } from "../../../interface/model/order";
 
 @Pipe({
   name: 'orderSort'
 })
 export class OrderSortPipe implements PipeTransform {
-  transform(array: Order[], field: string, sorting: Sorting, reload: boolean): any[] {
+  transform(array: Order[], field: string, sorting: SortingType, reload: boolean): any[] {
     if (!Array.isArray(array)) {
       //@ts-ignore
       return;
     }
 
-    if(sorting == Sorting.DESC) {
+    if(sorting == SortingType.DESC) {
       array.sort((a: any, b: any) => {
         a = this.getValue(a, field);
         b = this.getValue(b, field);
@@ -26,7 +26,7 @@ export class OrderSortPipe implements PipeTransform {
       });
     }
 
-    else if(sorting == Sorting.ASC) {
+    else if(sorting == SortingType.ASC) {
       array.sort((a: any, b: any) => {
         a = this.getValue(a, field);
         b = this.getValue(b, field);

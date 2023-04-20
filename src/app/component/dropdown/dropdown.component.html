@@ -1,0 +1,30 @@
+<div ngbDropdown #dropdown
+  class="btn-group w-100">
+
+  <button ngbDropdownToggle
+    id="dropdown-{{dropdownData.id}}"
+    (click)="openStatusMenu();"
+    class="btn btn-sm btn-group-sm dropdown-toggle {{'btn-'+dropdownData.color}}"
+    data-bs-toggle="collapse"
+    data-bs-target=""
+    aria-expanded="false">
+
+    {{ dropdownData.text }}
+  </button>
+  <ul ngbDropdownMenu
+    class="dropdown-menu"
+    data-bs-toggle="collapse"
+    data-bs-target=""
+    [attr.aria-labelledby]="'dropdown'+dropdownData.id">
+
+    <div *ngFor="let data of dropdownData.data">
+      <li>
+        <a class="dropdown-item {{ dropdownData.text == data ? 'd-none' : '' }}"
+          (click)="clicked(data)">
+
+          {{ dropdownData.text }}
+        </a>
+      </li>
+    </div>
+  </ul>
+</div>

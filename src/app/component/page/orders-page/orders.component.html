@@ -7,74 +7,95 @@
   [searchAriaLabel]="'Zoek bestelling'"
   (searchEvent)="setSearchText($event)"
 ></app-data-tools>
+<app-add-order
+  [formName]="'Bestellingsformulier'"
+  [buttonName]="'Nieuwe bestelling toevoegen'"
+  [buttonColorClass]="'plus-color'"
+  [buttonFont]="'add_box'"
+  (newOrderEvent)="
+    this.addOrder($event);
+    this.reloadOrders();
+    this.toastOrder.showToast(
+      'Bestelling toegevoegd!',
+               $event.order.id.value,
+      'De bestelling is toegevoegd!', 'green')">
+</app-add-order>
+<app-table
+  [headers]="OrderTableHeader"
+  [rowData]="rowData"
+  [fullData]="fullData"
+  [titles]="['Bestelling', 'Leaseauto', 'Contract']"
+  [hiddenProperties]="['id', 'leasecar', 'contract']"
+  [searchText]="searchText"
+  [apiURL]="'/orders/'"
+  [searchIndex]="2"
+></app-table>
 
-<app-add-order [formName]="'Bestellingsformulier'" [buttonName]="'Nieuwe bestelling toevoegen'" [buttonColorClass]="'plus-color'" [buttonFont]="'add_box'" (newOrderEvent)="this.addOrder($event);this.reloadOrders();this.toastOrder.showToast('Bestelling toegevoegd!', $event.order.id.value, 'De bestelling is toegevoegd!', 'green')"></app-add-order>
-
-<div class="container table-responsive min-vh-100">
-  <table class="table table-hover table-borderless mt-4 shadow-all bg-light">
-    <caption></caption>
-    <thead>
-      <tr class="table-header">
-        <th *ngFor="let headerItem of OrderHeader | keyvalue: asIsOrder; let i = index" scope="col" class="pointer-hover" (click)="this.setSorting(headerItem.value.value);">
-          <div class="d-flex align-items-center">
-            <img *ngIf="i == 0" alt="driver" src="../../../../assets/image/tableheaders/counter.png" class="me-1 table-header-height">
-            <span *ngIf="i == 0" class="hidden">#</span>
-            {{ headerItem.value.name }}
-            <mat-icon id="sorting-{{ headerItem.value.value }}" title="{{ headerItem.value.title }}" aria-hidden="false" class="ms-2 pointer-hover rotate-to-0 brick-red {{ i == 0 ? 'opacity-100' : 'opacity-25' }}" aria-label="sort_by_alpha" fontIcon="arrow_drop_up"></mat-icon>
-          </div>
-        </th>
-        <th scope="col">Actie</th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <ng-container *ngFor="let order of this.orders | orderFilter: this.searchText: this.reload | orderSort: this.sortingField: this.sorting: this.reload;">
-        <tr id="row{{ order.id.value }}" (click)="rotateArrow(order.id.value);" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse'+order.id.value" aria-expanded="false">
-          <th scope="row"><span class="text-nowrap">{{ order.id.value }}</span></th>
-          <td><span class="text-nowrap">{{ order.orderer.value }}</span></td>
-          <td><span class="text-nowrap">{{ order.leasecar.driver.value }}</span></td>
-          <td><span class="text-nowrap">{{ order.leasecar.brand.value }}</span></td>
-          <td><span class="text-nowrap">{{ order.orderDate.value }}</span></td>
-          <td class="pe-5 w-15">
-            <div ngbDropdown #dropdown class="btn-group w-100">
-              <button ngbDropdownToggle id="status{{order.id.value}}" (click)="openStatusMenu();" class="btn btn-sm btn-group-sm dropdown-toggle {{'btn-'+order.leaseOrderStatus.status.color}}" data-bs-toggle="collapse" data-bs-target="" aria-expanded="false">
-                {{ order.leaseOrderStatus.status.text }}
-              </button>
-              <ul ngbDropdownMenu class="dropdown-menu" data-bs-toggle="collapse" data-bs-target="" [attr.aria-labelledby]="'status'+order.id.value">
-                <div *ngFor="let status of this.OrderStatus | keyvalue">
-                  <li><a class="dropdown-item {{ order.leaseOrderStatus.status.code == status.value.code ? 'd-none' : '' }}" (click)="this.editStatus(order.id.value, status.value);">{{ status.value.text }}</a></li>
-                </div>
-              </ul>
-            </div>
-          </td>
-          <td class="text-start align-middle">
-            <span class="align-items-center display-flex" id="actions_{{ order.id.value }}">
-              <a [routerLink]="'/orders/'+order.id.value+'/view'" target="_blank" class="align-items-center display-flex"><mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Bekijken" class="eye-color pointer-hover me-3" aria-label="view" fontIcon="visibility"></mat-icon></a>
-              <a [routerLink]="'/orders/'+order.id.value +'/edit'" class="align-items-center display-flex"><mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Aanpassen" class="pencil-color pointer-hover me-3" aria-label="edit" fontIcon="edit"></mat-icon></a>
-              <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Verwijderen" class="trash-color pointer-hover" aria-label="trash" fontIcon="delete" (click)="this.prompt(true, order.id.value);"></mat-icon>
-            </span>
-            <span class="text-nowrap prompt" id="delete_prompt_{{ order.id.value }}">
-              <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Verwijderen" class="trash-color pointer-hover hidden me-3" aria-label="trash" fontIcon="delete"></mat-icon>
-              <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Definitief verwijderen" class="trash-color pointer-hover me-3" aria-label="delete forever" fontIcon="delete_forever" (click)="this.delete(order.id.value);this.toastOrder.showToast('Bestelling verwijderd!', order.id.value, 'De bestelling is verwijderd!', 'red');$event.stopPropagation()"></mat-icon>
-              <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Ongedaan maken" class="pencil-color pointer-hover" aria-label="undo" fontIcon="undo" (click)="this.prompt(false, order.id.value);$event.stopPropagation()"></mat-icon>
-            </span>
-          </td>
-          <td class="text-start align-middle">
-            <span class="align-items-center display-flex">
-              <mat-icon id="arrow{{ order.id.value }}" title="Open" aria-hidden="false" class="trash-color pointer-hover rotate-to-0" aria-label="arrow_down" fontIcon="keyboard_arrow_down"></mat-icon>
-            </span>
-          </td>
-        </tr>
-        <tr class="td-p-0">
-          <td colspan="8">
-            <div class="collapse border-top border-bottom pb-3" id="{{'collapse' + order.id.value }}">
-              <div class="accordion-body">
-                <app-view-order [hiddenProperties]="['leasecar', 'id', 'contract']" [titles]="['Informatie', 'Leaseauto', 'Contract']" [items]="[order, order.leasecar, order.leasecar.contract]"></app-view-order>
-              </div>
-            </div>
-          </td>
-        </tr>
-      </ng-container>
-    </tbody>
-  </table>
-</div>
+<!--<div class="container table-responsive min-vh-100">-->
+<!--  <table class="table table-hover table-borderless mt-4 shadow-all bg-light">-->
+<!--    <caption></caption>-->
+<!--    <thead>-->
+<!--      <tr class="table-header">-->
+<!--        <th *ngFor="let headerItem of OrderHeader | keyvalue: asIsOrder; let i = index" scope="col" class="pointer-hover" (click)="this.setSorting(headerItem.value.value);">-->
+<!--          <div class="d-flex align-items-center">-->
+<!--            <img *ngIf="i == 0" alt="driver" src="../../../../assets/image/tableheaders/counter.png" class="me-1 table-header-height">-->
+<!--            <span *ngIf="i == 0" class="hidden">#</span>-->
+<!--            {{ headerItem.value.name }}-->
+<!--            <mat-icon id="sorting-{{ headerItem.value.value }}" title="{{ headerItem.value.title }}" aria-hidden="false" class="ms-2 pointer-hover rotate-to-0 brick-red {{ i == 0 ? 'opacity-100' : 'opacity-25' }}" aria-label="sort_by_alpha" fontIcon="arrow_drop_up"></mat-icon>-->
+<!--          </div>-->
+<!--        </th>-->
+<!--        <th scope="col">Actie</th>-->
+<!--        <th scope="col"></th>-->
+<!--      </tr>-->
+<!--    </thead>-->
+<!--    <tbody>-->
+<!--      <ng-container *ngFor="let order of this.orders | orderFilter: this.searchText: this.reload | orderSort: this.sortingField: this.sorting: this.reload;">-->
+<!--        <tr id="row{{ order.id.value }}" (click)="rotateArrow(order.id.value);" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse'+order.id.value" aria-expanded="false">-->
+<!--          <th scope="row"><span class="text-nowrap">{{ order.id.value }}</span></th>-->
+<!--          <td><span class="text-nowrap">{{ order.orderer.value }}</span></td>-->
+<!--          <td><span class="text-nowrap">{{ order.leasecar.driver.value }}</span></td>-->
+<!--          <td><span class="text-nowrap">{{ order.leasecar.brand.value }}</span></td>-->
+<!--          <td><span class="text-nowrap">{{ order.orderDate.value }}</span></td>-->
+<!--          <td class="pe-5 w-15">-->
+<!--            <div ngbDropdown #dropdown class="btn-group w-100">-->
+<!--              <button ngbDropdownToggle id="status{{order.id.value}}" (click)="openStatusMenu();" class="btn btn-sm btn-group-sm dropdown-toggle {{'btn-'+order.leaseOrderStatus.status.color}}" data-bs-toggle="collapse" data-bs-target="" aria-expanded="false">-->
+<!--                {{ order.leaseOrderStatus.status.text }}-->
+<!--              </button>-->
+<!--              <ul ngbDropdownMenu class="dropdown-menu" data-bs-toggle="collapse" data-bs-target="" [attr.aria-labelledby]="'status'+order.id.value">-->
+<!--                <div *ngFor="let status of this.OrderStatus | keyvalue">-->
+<!--                  <li><a class="dropdown-item {{ order.leaseOrderStatus.status.code == status.value.code ? 'd-none' : '' }}" (click)="this.editStatus(order.id.value, status.value);">{{ status.value.text }}</a></li>-->
+<!--                </div>-->
+<!--              </ul>-->
+<!--            </div>-->
+<!--          </td>-->
+<!--          <td class="text-start align-middle">-->
+<!--            <span class="align-items-center display-flex" id="actions_{{ order.id.value }}">-->
+<!--              <a [routerLink]="'/orders/'+order.id.value+'/view'" target="_blank" class="align-items-center display-flex"><mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Bekijken" class="eye-color pointer-hover me-3" aria-label="view" fontIcon="visibility"></mat-icon></a>-->
+<!--              <a [routerLink]="'/orders/'+order.id.value +'/edit'" class="align-items-center display-flex"><mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Aanpassen" class="pencil-color pointer-hover me-3" aria-label="edit" fontIcon="edit"></mat-icon></a>-->
+<!--              <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Verwijderen" class="trash-color pointer-hover" aria-label="trash" fontIcon="delete" (click)="this.prompt(true, order.id.value);"></mat-icon>-->
+<!--            </span>-->
+<!--            <span class="text-nowrap prompt" id="delete_prompt_{{ order.id.value }}">-->
+<!--              <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Verwijderen" class="trash-color pointer-hover hidden me-3" aria-label="trash" fontIcon="delete"></mat-icon>-->
+<!--              <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Definitief verwijderen" class="trash-color pointer-hover me-3" aria-label="delete forever" fontIcon="delete_forever" (click)="this.delete(order.id.value);this.toastOrder.showToast('Bestelling verwijderd!', order.id.value, 'De bestelling is verwijderd!', 'red');$event.stopPropagation()"></mat-icon>-->
+<!--              <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Ongedaan maken" class="pencil-color pointer-hover" aria-label="undo" fontIcon="undo" (click)="this.prompt(false, order.id.value);$event.stopPropagation()"></mat-icon>-->
+<!--            </span>-->
+<!--          </td>-->
+<!--          <td class="text-start align-middle">-->
+<!--            <span class="align-items-center display-flex">-->
+<!--              <mat-icon id="arrow{{ order.id.value }}" title="Open" aria-hidden="false" class="trash-color pointer-hover rotate-to-0" aria-label="arrow_down" fontIcon="keyboard_arrow_down"></mat-icon>-->
+<!--            </span>-->
+<!--          </td>-->
+<!--        </tr>-->
+<!--        <tr class="td-p-0">-->
+<!--          <td colspan="8">-->
+<!--            <div class="collapse border-top border-bottom pb-3" id="{{'collapse' + order.id.value }}">-->
+<!--              <div class="accordion-body">-->
+<!--                <app-view-order [hiddenProperties]="['leasecar', 'id', 'contract']" [titles]="['Informatie', 'Leaseauto', 'Contract']" [items]="[order, order.leasecar, order.leasecar.contract]"></app-view-order>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </td>-->
+<!--        </tr>-->
+<!--      </ng-container>-->
+<!--    </tbody>-->
+<!--  </table>-->
+<!--</div>-->

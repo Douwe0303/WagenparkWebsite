@@ -29,6 +29,14 @@ import { DataInputFieldsComponent } from './component/data-input-fields/data-inp
 import { AccordionComponent } from './component/accordion/accordion.component';
 import { TableComponent } from './component/table/table.component';
 import { ObjectToKeyValuePipe } from './pipe/object-to-key-value.pipe';
+import { SearchPipe } from './pipe/filter/search.pipe';
+import { SortPipe } from './pipe/sort/sort.pipe';
+import { TableHeadComponent } from './component/table-head/table-head.component';
+import { TableBodyComponent } from './component/table-body/table-body.component';
+import { DropdownComponent } from './component/dropdown/dropdown.component';
+import { TableRowComponent } from './component/table-row/table-row.component';
+import { TableDataComponent } from './component/table-data/table-data.component';
+import { ActionsComponent } from './component/actions/actions.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +62,14 @@ import { ObjectToKeyValuePipe } from './pipe/object-to-key-value.pipe';
     AccordionComponent,
     TableComponent,
     ObjectToKeyValuePipe,
+    SearchPipe,
+    SortPipe,
+    TableHeadComponent,
+    TableBodyComponent,
+    DropdownComponent,
+    TableRowComponent,
+    TableDataComponent,
+    ActionsComponent,
   ],
   imports: [
     BrowserModule,

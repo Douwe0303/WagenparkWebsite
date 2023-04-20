@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { Leasecar } from "../../../interface/model/leasecar";
 import { LeasecarDummy } from "../../../dummy/leasecar-dummy/leasecar-dummy";
 import { LeasecarTableHeader } from "../../../class/leasecar-table-header/leasecar-table-header";
@@ -7,6 +7,8 @@ import { first } from "rxjs";
 import { LeasecarDto } from "../../../interface/dto/leasecar-dto";
 import { LeasecarTransformer } from "../../../transformer/leasecar-transformer/leasecar-transformer";
 import { ContractTransformer } from "../../../transformer/contract-transformer/contract-transformer";
+import { Title } from "@angular/platform-browser";
+import { ToastComponent } from "../../toast/toast.component";
 
 @Component({
   selector: 'app-tableheaders',
@@ -18,24 +20,36 @@ export class LeasecarsComponent implements OnInit {
 
   LeaseCarTableHeader = LeasecarTableHeader;
   protected readonly LeaseCarDummy = LeasecarDummy;
-
   public leaseCars: Leasecar[] = [];
   rowData: string[][] = [];
   fullData: {}[][] = [];
+  searchText: string = "";
 
-  constructor(private _leaseCarService: LeasecarService, private leaseCarTransformer: LeasecarTransformer) {}
+  @ViewChild(ToastComponent)
+  public toast: ToastComponent = new ToastComponent();
+
+  constructor(
+    private _leaseCarService: LeasecarService,
+    private leaseCarTransformer: LeasecarTransformer,
+    private titleService: Title,
+    ) {}
 
   ngOnInit(): void {
     this.fetchOrders();
+    this.titleService.setTitle("Leaseauto's");
+  }
+
+  setSearchText(searchText: string): void {
+    this.searchText = searchText;
   }
 
   fetchOrders(): void {
     this._leaseCarService.fetchLeasecars().then(leaseCars =>
       leaseCars.pipe(first()).subscribe(
         (leaseCarDtos: LeasecarDto[]) => this.convertDtos(leaseCarDtos),
-        (error: any) => alert(error.statusText),
+        (error: any) => alert(error.statusText)
       )
-    )
+    );
   };
 
   convertDtos(leaseCarDtos: LeasecarDto[]): void {
@@ -45,7 +59,6 @@ export class LeasecarsComponent implements OnInit {
       this.addRowData(leaseCar);
       this.addFullData(leaseCar);
     }
-    // this.reloadOrders();
   }
 
   addRowData(leaseCar: Leasecar): void {
@@ -55,7 +68,7 @@ export class LeasecarsComponent implements OnInit {
       leaseCar.licensePlate.toDisplay as string,
       leaseCar.brand.toDisplay as string,
       leaseCar.contract.duration.toDisplay as string
-    ])
+    ]);
   }
 
   addFullData(leaseCar: Leasecar): void {

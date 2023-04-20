@@ -1,0 +1,35 @@
+<span class="align-items-center display-flex" id="actions-{{ id }}">
+  <a
+    [routerLink]="apiURL+targetId+'/view'"
+    target="_blank" class="align-items-center display-flex">
+    <mat-icon
+      data-bs-toggle="collapse"
+      data-bs-target="" aria-hidden="false"
+      title="Bekijken"
+      class="eye-color pointer-hover me-3"
+      aria-label="view"
+      fontIcon="visibility">
+    </mat-icon>
+  </a>
+  <a
+    [routerLink]="apiURL+targetId +'/edit'"
+    class="align-items-center display-flex">
+    <mat-icon
+      data-bs-toggle="collapse"
+      data-bs-target=""
+      aria-hidden="false"
+      title="Aanpassen"
+      class="pencil-color pointer-hover me-3"
+      aria-label="edit"
+      fontIcon="edit">
+    </mat-icon></a>
+  <mat-icon
+    data-bs-toggle="collapse"
+    data-bs-target=""
+    aria-hidden="false"
+    title="Verwijderen"
+    class="trash-color pointer-hover"
+    aria-label="trash"
+    fontIcon="delete"
+    (click)="this.prompt(true, id);"></mat-icon>
+</span>

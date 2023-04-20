@@ -1,0 +1,6 @@
+<tr id="row-{{ id }}" [attr.data-bs-toggle]="dataBsToggle" [attr.data-bs-target]="'#collapse'+id" [attr.aria-expanded]="ariaExpanded" class="{{ class }}">
+  <div *ngFor="let test of ['test']">
+    <ng-container #dynamic>
+    </ng-container>
+  </div>
+</tr>

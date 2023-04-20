@@ -1,0 +1,88 @@
+.td-p-0 td {
+  padding: 0 !important;
+}
+
+.w-15 {
+  width: 15%;
+}
+
+.dropdown-item {
+  height: 30px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+
+.display-flex {
+  display: flex;
+}
+
+table {
+  border-spacing: 0 10px;
+  border-collapse: collapse;
+}
+
+.plus-color {
+  color: green;
+}
+
+.prompt {
+  display: none;
+}
+
+.font-small {
+  font-size: 20px;
+}
+
+.font-very-small {
+  font-size: 15px;
+}
+
+.rotate-to-180 {
+  transform: rotate(180deg);
+  transition: transform 0.2s linear;
+}
+
+.rotate-to-0 {
+  transform: rotate(0deg);
+  transition: transform 0.2s linear;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.license-plate-blue {
+  background-color: blue;
+}
+
+tr {
+  line-height: 50px;
+  min-height: 50px;
+  background-color: white;
+}
+
+tr:active {
+  cursor: pointer;
+}
+
+.pointer-hover:hover {
+  cursor: pointer;
+}
+
+.pencil-color {
+  color: #ffb605;
+}
+
+.eye-color {
+  color: dodgerblue;
+}
+
+.trash-color {
+  color: red;
+}
+
+.arrow-color {
+  color: #c13350;
+}

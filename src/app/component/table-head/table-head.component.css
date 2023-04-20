@@ -1,0 +1,52 @@
+.table-header-height {
+  height: 30px;
+}
+
+.pointer-hover:hover {
+  cursor: pointer;
+}
+
+.table-header {
+  border-bottom: solid;
+}
+
+.table-header-height {
+  height: 30px;
+}
+
+.display-flex {
+  display: flex;
+}
+
+table {
+  border-spacing: 0 10px;
+  border-collapse: collapse;
+}
+
+.rotate-to-180 {
+  transform: rotate(180deg);
+  transition: transform 0.2s linear;
+}
+
+.rotate-to-0 {
+  transform: rotate(0deg);
+  transition: transform 0.2s linear;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+tr {
+  line-height: 50px;
+  min-height: 50px;
+  background-color: white;
+}
+
+tr:active {
+  cursor: pointer;
+}
+
+.pointer-hover:hover {
+  cursor: pointer;
+}
