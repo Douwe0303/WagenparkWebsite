@@ -1,5 +1,6 @@
 <app-navbar></app-navbar>
 <app-toast></app-toast>
+
 <app-data-tools
   [buttonName]="'Bestelling toevoegen'"
   [buttonTitle]="'Klik hier om het bestellingsformulier te openen'"
@@ -17,12 +18,14 @@
     this.reloadOrders();
     this.toastOrder.showToast(
       'Bestelling toegevoegd!',
-               $event.order.id.value,
+               $event.id.value,
       'De bestelling is toegevoegd!', 'green')">
 </app-add-order>
 <app-table
+  (deleteEvent)="delete($event)"
+
   [headers]="OrderTableHeader"
-  [rowData]="rowData"
+  [rowData]="[]"
   [fullData]="fullData"
   [titles]="['Bestelling', 'Leaseauto', 'Contract']"
   [hiddenProperties]="['id', 'leasecar', 'contract']"

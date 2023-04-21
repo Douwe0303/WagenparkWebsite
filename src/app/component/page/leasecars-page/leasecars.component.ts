@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ComponentRef, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import { Leasecar } from "../../../interface/model/leasecar";
 import { LeasecarDummy } from "../../../dummy/leasecar-dummy/leasecar-dummy";
 import { LeasecarTableHeader } from "../../../class/leasecar-table-header/leasecar-table-header";
@@ -9,6 +9,9 @@ import { LeasecarTransformer } from "../../../transformer/leasecar-transformer/l
 import { ContractTransformer } from "../../../transformer/contract-transformer/contract-transformer";
 import { Title } from "@angular/platform-browser";
 import { ToastComponent } from "../../toast/toast.component";
+import { TableDataComponent } from "../../table-data/table-data.component";
+import { TextNoWrapComponent } from "../../text-no-wrap/text-no-wrap.component";
+import {ActionsComponent} from "../../actions/actions.component";
 
 @Component({
   selector: 'app-tableheaders',
@@ -21,7 +24,9 @@ export class LeasecarsComponent implements OnInit {
   LeaseCarTableHeader = LeasecarTableHeader;
   protected readonly LeaseCarDummy = LeasecarDummy;
   public leaseCars: Leasecar[] = [];
-  rowData: string[][] = [];
+
+  rowData: any[][] = [];
+
   fullData: {}[][] = [];
   searchText: string = "";
 
@@ -62,13 +67,29 @@ export class LeasecarsComponent implements OnInit {
   }
 
   addRowData(leaseCar: Leasecar): void {
-    this.rowData.push([
-      leaseCar.id.toDisplay as string,
-      leaseCar.driver.toDisplay as string,
-      leaseCar.licensePlate.toDisplay as string,
-      leaseCar.brand.toDisplay as string,
-      leaseCar.contract.duration.toDisplay as string
-    ]);
+    let tableData: any[] = [];
+
+    for(let header of LeasecarTableHeader) {
+
+      let component: any = TextNoWrapComponent;
+      let data: any;
+
+      let key: string = header.key;
+
+      if(key == 'duration') {
+        // @ts-ignore
+        data = { data: { class: '', text: leaseCar['contract'].duration.toDisplay as string }, component: component };
+      } else {
+        // @ts-ignore
+        data = { data: { class: '', text: leaseCar[key].toDisplay as string }, component: component };
+      }
+
+      tableData.push(data);
+    }
+
+    tableData.push({component: ActionsComponent});
+    this.rowData.push(tableData);
+    console.log(this.rowData);
   }
 
   addFullData(leaseCar: Leasecar): void {

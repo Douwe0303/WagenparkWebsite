@@ -1,18 +1,25 @@
-import {Component, EventEmitter, Input, OnInit, Output, Type} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import { SortingType } from "../../enum/sorting-type";
 import { ToastData } from "../../interface/toast-data";
-import {TableDataComponent} from "../table-data/table-data.component";
-import {TableRowComponent} from "../table-row/table-row.component";
-import {ActionsComponent} from "../actions/actions.component";
+import { ActionsComponent } from "../actions/actions.component";
+import { TextNoWrapComponent } from "../text-no-wrap/text-no-wrap.component";
+import { TableDataDirective } from "../../directive/table-data.directive";
 
 @Component({
   selector: '[app-table-body]',
   templateUrl: './table-body.component.html',
   styleUrls: ['./table-body.component.css']
 })
-export class TableBodyComponent implements OnInit {
+export class TableBodyComponent implements OnInit{
 
-  @Input() rowData: string[][] = [];
+  @Input() rowData: any[][] = [];
   @Input() fullData: {}[][] = [];
   @Input() searchText: string = "";
   @Input() apiURL: string = "";
@@ -22,15 +29,23 @@ export class TableBodyComponent implements OnInit {
   @Input() sortingIndex: number = 0;
   @Input() searchIndex: number = 0;
 
+  @Output() rowClickEvent: EventEmitter<any> = new EventEmitter<any>();
   @Output() showToastEvent: EventEmitter<ToastData> = new EventEmitter<ToastData>();
 
-  ngOnInit() {
-    // let td: Type<TableDataComponent> = new TableDataComponent();
-    // td.data = new ActionsComponent();
-    // this.tableData.push(td);
-  }
+  public components: {data: any, component: any}[] = [];
 
-  tableData: Type<TableDataComponent>[] = [];
+  @ViewChild(TableDataDirective,{static: true}) appTableData!: TableDataDirective;
+
+  // for demo only
+  @Output() deleteEvent: EventEmitter<{id: string, index: number }> = new EventEmitter<{id: string, index: number }>();
+
+  ngOnInit(): void {
+    let component: any = ActionsComponent;
+    let data = { data: {id: 5, targetId: 5, apiURL: 'test123'}, class: '', component: component };
+    this.components.push(data);
+    this.components.push(data);
+    this.components.push(data);
+  }
 
   toastEvent(id: number): void {
     let toastData: ToastData = {
@@ -42,30 +57,9 @@ export class TableBodyComponent implements OnInit {
     this.showToastEvent.emit(toastData);
   }
 
-  delete(id: string | undefined): void {
-    // this._orderService.deleteOrder(id).then(call =>
-    //   call.pipe(first()).subscribe(
-    //     () => this.orders = this.orders.filter(order => order.id.value !== id),
-    //     (error: any) => alert(error.statusText)
-    //   )
-    // );
+  delete(id: string, index: number): void {
+    this.deleteEvent.emit({id: id, index: index});
   }
 
-  rotateArrow(id: number): void {
-
-    // @ts-ignore
-    let expanded: string = document.getElementById('row'+id).getAttribute('aria-expanded');
-
-    // @ts-ignore
-    let arrow: HTMLElement = document.getElementById('arrow'+id);
-
-    if(expanded == 'true') {
-      arrow.classList.replace('rotate-to-0', 'rotate-to-180');
-      arrow.title = 'Sluit';
-    }
-    else if(expanded == 'false') {
-      arrow.classList.replace('rotate-to-180', 'rotate-to-0');
-      arrow.title = 'Open';
-    }
-  }
+  protected readonly TextNoWrapComponent = TextNoWrapComponent;
 }

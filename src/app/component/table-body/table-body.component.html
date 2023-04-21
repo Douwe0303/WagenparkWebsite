@@ -1,10 +1,25 @@
-<ng-container *ngFor="let array of rowData | search: searchText: searchIndex | sort: sorting: sortingIndex;let i=index;">
-  <tr app-table-row [id]="i">
-    test
-  </tr>
-  <tr id="row{{ i }}" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse'+i" aria-expanded="false" (click)="rotateArrow(i);">
-    <td *ngFor="let item of array; let k=index"><span class="text-nowrap {{ k == 0 ? 'fw-bold' : '' }}">{{ item }}</span></td>
-    <td class="text-start align-middle">
+<ng-container *ngFor="let trData of rowData; let i=index;" >
+  <tr
+    app-table-row
+    id="row"
+    [attr.data-bs-toggle]="'collapse'"
+    [attr.data-bs-target]="'#collapse'+i"
+    [attr.aria-expanded]="false"
+    [tableData]="trData"
+    (click)="rowClickEvent.emit($event)"
+  >
+
+
+
+
+
+
+
+
+<!--      (rowClickEvent)="rotateArrow(i)"-->
+
+
+    <!--    <td class="text-start align-middle">-->
 <!--      <span class="align-items-center display-flex" id="actions_{{ i }}">-->
 <!--        <a [routerLink]="apiURL+array[0]+'/view'" target="_blank" class="align-items-center display-flex"><mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Bekijken" class="eye-color pointer-hover me-3" aria-label="view" fontIcon="visibility"></mat-icon></a>-->
 <!--        <a [routerLink]="apiURL+array[0] +'/edit'" class="align-items-center display-flex"><mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Aanpassen" class="pencil-color pointer-hover me-3" aria-label="edit" fontIcon="edit"></mat-icon></a>-->
@@ -21,19 +36,19 @@
 <!--          aria-label="delete forever"-->
 <!--          fontIcon="delete_forever"-->
 <!--          (click)="-->
-<!--            delete(array[0]);-->
+<!--            delete(array[0], i);-->
 <!--            toastEvent(i);-->
 <!--            $event.stopPropagation();-->
 <!--          "></mat-icon>-->
 <!--        <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Ongedaan maken" class="pencil-color pointer-hover" aria-label="undo" fontIcon="undo" (click)="this.prompt(false, i);$event.stopPropagation()"></mat-icon>-->
 <!--      </span>-->
-    </td>
+<!--    </td>-->
+    <td> TEST</td>
     <td class="text-start align-middle">
       <span class="align-items-center display-flex">
         <mat-icon id="arrow{{ i }}" title="Open" aria-hidden="false" class="trash-color pointer-hover rotate-to-0" aria-label="arrow_down" fontIcon="keyboard_arrow_down"></mat-icon>
       </span>
     </td>
-  </tr>
   <tr class="td-p-0">
     <td colspan="8">
       <div class="collapse border-top border-bottom pb-3" id="{{'collapse' + i }}">

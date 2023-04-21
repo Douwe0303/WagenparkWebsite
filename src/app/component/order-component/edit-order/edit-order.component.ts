@@ -73,7 +73,7 @@ export class EditOrderComponent implements OnInit {
   @Input() buttonFont: string = "";
   @Input() buttonColorClass: string = "";
 
-  @Output() newOrderEvent = new EventEmitter<{order: Order, leasecar: Leasecar}>();
+  @Output() newOrderEvent = new EventEmitter<Order>();
   @Output() clickedEvent = new EventEmitter<string>;
 
   @ViewChild('addOrderForm') myForm: NgForm | undefined;
@@ -104,7 +104,7 @@ export class EditOrderComponent implements OnInit {
 
   close(): void {
     // @ts-ignore
-    document.getElementById('open-add-order').click();
+    document.getElementById('open-add').click();
   }
 
   create(): void {
@@ -123,9 +123,14 @@ export class EditOrderComponent implements OnInit {
       this._orderService.createOrder(orderDto).then((call) => {
         call.pipe(first()).subscribe(
           (orderDto: OrderDto) => {
-            let leasecar: Leasecar = this.leasecarTransformer.toModel(orderDto.leaseCar);
+            let order: Order = this.orderTransformer.toModel(orderDto);
+            this.newOrderEvent.emit(order);
             // @ts-ignore
             this.myForm.form.markAsPristine();
+            if(!this.edit) {
+              // @ts-ignore
+              this.myForm.form.reset();
+            }
           },
           (error: any) => {
             alert(error.statusText);

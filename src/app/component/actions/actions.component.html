@@ -1,6 +1,6 @@
-<span class="align-items-center display-flex" id="actions-{{ id }}">
+<span class="align-items-center display-flex" id="actions-{{ data.id }}">
   <a
-    [routerLink]="apiURL+targetId+'/view'"
+    [routerLink]="data.apiURL+data.targetId+'/view'"
     target="_blank" class="align-items-center display-flex">
     <mat-icon
       data-bs-toggle="collapse"
@@ -12,7 +12,7 @@
     </mat-icon>
   </a>
   <a
-    [routerLink]="apiURL+targetId +'/edit'"
+    [routerLink]="data.apiURL+data.targetId +'/edit'"
     class="align-items-center display-flex">
     <mat-icon
       data-bs-toggle="collapse"
@@ -31,5 +31,5 @@
     class="trash-color pointer-hover"
     aria-label="trash"
     fontIcon="delete"
-    (click)="this.prompt(true, id);"></mat-icon>
+    (click)="this.prompt(true, data.id);"></mat-icon>
 </span>

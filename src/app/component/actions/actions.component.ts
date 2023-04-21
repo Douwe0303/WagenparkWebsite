@@ -1,15 +1,18 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input } from '@angular/core';
+import {TableData} from "../../interface/table-data";
 
 @Component({
   selector: 'app-actions',
   templateUrl: './actions.component.html',
   styleUrls: ['./actions.component.css']
 })
-export class ActionsComponent {
-  @Input() id: number = 0;
-  @Input() targetId: number = 0;
-  @Input() apiURL: string = '';
-  
+export class ActionsComponent implements TableData {
+  @Input() data: any = {
+    id: 0,
+    targetId: 0,
+    apiURL: ''
+  }
+
   prompt(show: boolean, id: number | undefined): void {
     if(show) {
       // @ts-ignore

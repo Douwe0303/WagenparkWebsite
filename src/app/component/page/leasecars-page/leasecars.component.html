@@ -12,11 +12,11 @@
 ></app-accordion>
 <app-table
   [headers]="LeaseCarTableHeader"
-  [rowData]="rowData"
   [fullData]="fullData"
   [titles]="['Leaseauto', 'Contract']"
   [hiddenProperties]="['id', 'contract']"
   [searchText]="searchText"
   [apiURL]="'/leasecars/'"
   [searchIndex]="1"
+  [rowData]="rowData"
 ></app-table>

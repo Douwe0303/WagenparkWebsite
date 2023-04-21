@@ -13,6 +13,7 @@ import { DatePipe } from "@angular/common";
 import { Title } from "@angular/platform-browser";
 import { OrderTableHeader } from "../../../class/order-table-header/order-table-header";
 import { OrderDummy } from "../../../dummy/order-dummy/order-dummy";
+import {ActionsComponent} from "../../actions/actions.component";
 
 @Component({
   selector: 'app-orders',
@@ -85,17 +86,24 @@ export class OrdersComponent implements OnInit {
     this.fullData.push([order, order.leasecar, order.leasecar.contract]);
   }
 
-  delete(id: number | undefined): void {
-    this._orderService.deleteOrder(id).then(call =>
-      call.pipe(first()).subscribe(
-        () => this.orders = this.orders.filter(order => order.id.value !== id),
+  delete(data: {id: string, index: number}): void {
+    this._orderService.deleteOrder(+data.id).then(call =>
+      call.pipe(first()).subscribe(() => {
+        this.fullData.splice(data.index, 1);
+        this.rowData.splice(data.index, 1);
+        this.toastOrder.showToast('Bestelling verwijderd', data.id, 'De bestelling is verwijderd!', 'red')
+      },
+        // () => this.orders = this.orders.filter(order => order.id.value !== data.id),
         (error: any) => alert(error.statusText)
       )
     );
   }
 
   addOrder(data: any): void {
+    console.log(data);
     this.orders.push(data.order);
+    this.addRowData(data);
+    this.addFullData(data);
   }
 
   editStatus(id: number, status: any): void {
@@ -132,4 +140,6 @@ export class OrdersComponent implements OnInit {
   reloadOrders(): void {
     this.reload = !this.reload;
   }
+
+  protected readonly ActionsComponent = ActionsComponent;
 }

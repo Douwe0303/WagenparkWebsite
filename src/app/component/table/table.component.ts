@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TableHeader } from "../../interface/table-header";
 import { SortingType } from "../../enum/sorting-type";
 import { Sorting } from "../../interface/sorting";
+import { TableDataComponent } from "../table-data/table-data.component";
 
 @Component({
   selector: 'app-table',
@@ -11,7 +12,7 @@ import { Sorting } from "../../interface/sorting";
 export class TableComponent {
 
   @Input() headers: TableHeader[] = [];
-  @Input() rowData: string[][] = [];
+  @Input() rowData: any[][] = [];
   @Input() fullData: {}[][] = [];
   @Input() titles: string[] = [];
   @Input() hiddenProperties: string[] = [];
@@ -21,6 +22,8 @@ export class TableComponent {
 
   sorting: SortingType = SortingType.ASC;
   @Input() sortingIndex: number = 0;
+
+  @Output() deleteEvent: EventEmitter<{id: string, index: number}> = new EventEmitter();
 
   setSorting(properties: Sorting) {
     this.sorting = properties.sorting;

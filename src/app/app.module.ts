@@ -37,6 +37,10 @@ import { DropdownComponent } from './component/dropdown/dropdown.component';
 import { TableRowComponent } from './component/table-row/table-row.component';
 import { TableDataComponent } from './component/table-data/table-data.component';
 import { ActionsComponent } from './component/actions/actions.component';
+import { TextNoWrapComponent } from './component/text-no-wrap/text-no-wrap.component';
+import { RotateArrowComponent } from './component/rotate-arrow/rotate-arrow.component';
+import { TableDataDirective } from './directive/table-data.directive';
+import { DynamicModule } from "ng-dynamic-component";
 
 @NgModule({
   declarations: [
@@ -70,6 +74,9 @@ import { ActionsComponent } from './component/actions/actions.component';
     TableRowComponent,
     TableDataComponent,
     ActionsComponent,
+    TextNoWrapComponent,
+    RotateArrowComponent,
+    TableDataDirective,
   ],
   imports: [
     BrowserModule,
@@ -81,7 +88,8 @@ import { ActionsComponent } from './component/actions/actions.component';
     HttpClientModule,
     FormsModule,
     NgbDropdown,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DynamicModule
   ],
   bootstrap: [AppComponent]
 })

@@ -12,7 +12,7 @@ import { OrderDummy } from "../../../dummy/order-dummy/order-dummy";
 })
 export class AddOrderComponent {
 
-  @Output() newOrderEvent = new EventEmitter<{order: Order, leasecar: Leasecar}>();
+  @Output() newOrderEvent = new EventEmitter<Order>();
 
   @Input() order: Order = OrderDummy;
 

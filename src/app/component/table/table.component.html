@@ -6,9 +6,11 @@
            (sortingEvent)="setSorting($event)"
     ></thead>
     <tbody app-table-body
-           [rowData]="rowData"
+           (deleteEvent)="deleteEvent.emit($event)"
+
            [fullData]="fullData"
            [searchText]="searchText"
+           [rowData]="rowData"
            [apiURL]="apiURL"
            [titles]="titles"
            [hiddenProperties]="hiddenProperties"

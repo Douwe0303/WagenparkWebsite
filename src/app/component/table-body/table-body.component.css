@@ -66,23 +66,3 @@ tr {
 tr:active {
   cursor: pointer;
 }
-
-.pointer-hover:hover {
-  cursor: pointer;
-}
-
-.pencil-color {
-  color: #ffb605;
-}
-
-.eye-color {
-  color: dodgerblue;
-}
-
-.trash-color {
-  color: red;
-}
-
-.arrow-color {
-  color: #c13350;
-}
