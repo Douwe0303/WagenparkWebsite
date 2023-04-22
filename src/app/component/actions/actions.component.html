@@ -1,4 +1,4 @@
-<span class="align-items-center display-flex" id="actions-{{ data.id }}">
+<span class="display-flex" id="actions-{{ data.id }}" *ngIf="delete">
   <a
     [routerLink]="data.apiURL+data.targetId+'/view'"
     target="_blank" class="align-items-center display-flex">
@@ -31,5 +31,20 @@
     class="trash-color pointer-hover"
     aria-label="trash"
     fontIcon="delete"
-    (click)="this.prompt(true, data.id);"></mat-icon>
+    (click)="this.prompt(true, data.id);$event.stopImmediatePropagation()"></mat-icon>
+</span>
+<span class="text-nowrap prompt display-flex" *ngIf="confirmDelete">
+  <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Verwijderen" class="trash-color pointer-hover hidden me-3" aria-label="trash" fontIcon="delete"></mat-icon>
+  <mat-icon
+    data-bs-toggle="collapse"
+    data-bs-target=""
+    aria-hidden="false"
+    title="Definitief verwijderen"
+    class="trash-color pointer-hover me-3"
+    aria-label="delete forever"
+    fontIcon="delete_forever"
+    (click)="
+      $event.stopImmediatePropagation();
+    "></mat-icon>
+  <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Ongedaan maken" class="pencil-color pointer-hover" aria-label="undo" fontIcon="undo" (click)="this.prompt(false, data.id);$event.stopImmediatePropagation()"></mat-icon>
 </span>

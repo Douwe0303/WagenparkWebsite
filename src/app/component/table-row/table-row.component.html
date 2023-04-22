@@ -1,7 +1,3 @@
-<!--<tr-->
-<!--    (click)="rowClickEvent.emit($event)"-->
-<!--&gt;-->
-  <ng-container *ngFor="let td of tableData">
-    <td app-table-data [data]="td"></td>
-  </ng-container>
-<!--</tr>-->
+<ng-container *ngFor="let data of tableData">
+  <td style="vertical-align: middle" app-table-data [data]="data"></td>
+</ng-container>

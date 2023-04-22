@@ -1,0 +1,22 @@
+.rotate-to-180 {
+  transform: rotate(180deg);
+  transition: transform 0.2s linear;
+}
+
+.rotate-to-0 {
+  transform: rotate(0deg);
+  transition: transform 0.2s linear;
+}
+
+.pointer-hover:hover {
+  cursor: pointer;
+}
+
+.arrow-color {
+  color: #c13350;
+}
+
+.trash-color {
+  color: red;
+}
+

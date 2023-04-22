@@ -41,6 +41,7 @@ import { TextNoWrapComponent } from './component/text-no-wrap/text-no-wrap.compo
 import { RotateArrowComponent } from './component/rotate-arrow/rotate-arrow.component';
 import { TableDataDirective } from './directive/table-data.directive';
 import { DynamicModule } from "ng-dynamic-component";
+import { LicensePlateComponent } from './component/license-plate/license-plate.component';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { DynamicModule } from "ng-dynamic-component";
     TextNoWrapComponent,
     RotateArrowComponent,
     TableDataDirective,
+    LicensePlateComponent,
   ],
   imports: [
     BrowserModule,

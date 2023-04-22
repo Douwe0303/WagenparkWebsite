@@ -1,4 +1,4 @@
-import {Component, ComponentRef, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Leasecar } from "../../../interface/model/leasecar";
 import { LeasecarDummy } from "../../../dummy/leasecar-dummy/leasecar-dummy";
 import { LeasecarTableHeader } from "../../../class/leasecar-table-header/leasecar-table-header";
@@ -9,9 +9,11 @@ import { LeasecarTransformer } from "../../../transformer/leasecar-transformer/l
 import { ContractTransformer } from "../../../transformer/contract-transformer/contract-transformer";
 import { Title } from "@angular/platform-browser";
 import { ToastComponent } from "../../toast/toast.component";
-import { TableDataComponent } from "../../table-data/table-data.component";
 import { TextNoWrapComponent } from "../../text-no-wrap/text-no-wrap.component";
-import {ActionsComponent} from "../../actions/actions.component";
+import { ActionsComponent } from "../../actions/actions.component";
+import { LicensePlateComponent } from "../../license-plate/license-plate.component";
+import { RotateArrowComponent } from "../../rotate-arrow/rotate-arrow.component";
+import { RowData } from "../../../interface/row-data";
 
 @Component({
   selector: 'app-tableheaders',
@@ -22,26 +24,41 @@ import {ActionsComponent} from "../../actions/actions.component";
 export class LeasecarsComponent implements OnInit {
 
   LeaseCarTableHeader = LeasecarTableHeader;
-  protected readonly LeaseCarDummy = LeasecarDummy;
-  public leaseCars: Leasecar[] = [];
+  LeaseCarDummy = LeasecarDummy;
 
-  rowData: any[][] = [];
-
+  rowData: RowData[] = [];
   fullData: {}[][] = [];
   searchText: string = "";
 
   @ViewChild(ToastComponent)
-  public toast: ToastComponent = new ToastComponent();
+  toast: ToastComponent = new ToastComponent();
 
   constructor(
     private _leaseCarService: LeasecarService,
     private leaseCarTransformer: LeasecarTransformer,
     private titleService: Title,
-    ) {}
+  ) {}
 
   ngOnInit(): void {
     this.fetchOrders();
     this.titleService.setTitle("Leaseauto's");
+  }
+
+  rowClicked(id: number): void {
+    this.rotateArrow(id);
+  }
+
+  rotateArrow(id: number): void {
+    // @ts-ignore
+    let expanded = document.getElementById('row-'+id).getAttribute('aria-expanded');
+
+    if(expanded == 'true') {
+      // @ts-ignore
+      document.getElementById('rotate-up-'+id).dispatchEvent(new MouseEvent('click'));
+    } else {
+      // @ts-ignore
+      document.getElementById('rotate-down-'+id).dispatchEvent(new MouseEvent('click'));
+    }
   }
 
   setSearchText(searchText: string): void {
@@ -60,36 +77,51 @@ export class LeasecarsComponent implements OnInit {
   convertDtos(leaseCarDtos: LeasecarDto[]): void {
     for(let dto of leaseCarDtos) {
       let leaseCar: Leasecar | undefined = this.leaseCarTransformer.toModel(dto);
-      this.leaseCars.push(leaseCar);
       this.addRowData(leaseCar);
       this.addFullData(leaseCar);
     }
   }
 
   addRowData(leaseCar: Leasecar): void {
-    let tableData: any[] = [];
+    let rowData: RowData = {
+      id: leaseCar.id.value as number,
+      tableData: []
+    }
 
     for(let header of LeasecarTableHeader) {
 
-      let component: any = TextNoWrapComponent;
-      let data: any;
-
-      let key: string = header.key;
-
-      if(key == 'duration') {
-        // @ts-ignore
-        data = { data: { class: '', text: leaseCar['contract'].duration.toDisplay as string }, component: component };
+      if (header.key == 'duration') {
+        rowData.tableData.push({
+          nowrap: {
+            class: '',
+            text: leaseCar['contract']['duration'].toDisplay as string,
+          },
+          component: TextNoWrapComponent
+        });
+      } else if (header.key == 'licensePlate') {
+        rowData.tableData.push({
+          licensePlate: {
+            country: 'NL',
+            code: leaseCar['licensePlate'].toDisplay as string,
+          },
+          component: LicensePlateComponent
+        });
       } else {
-        // @ts-ignore
-        data = { data: { class: '', text: leaseCar[key].toDisplay as string }, component: component };
+        rowData.tableData.push({
+          nowrap: {
+            class: '',
+            // @ts-ignore
+            text: leaseCar[header.key].toDisplay as string,
+          },
+          component: TextNoWrapComponent
+        });
       }
-
-      tableData.push(data);
     }
 
-    tableData.push({component: ActionsComponent});
-    this.rowData.push(tableData);
-    console.log(this.rowData);
+    rowData.tableData.push({ component: ActionsComponent});
+    rowData.tableData.push({ rotateArrow: { id: leaseCar['id'].toDisplay, class: 'trash-color pointer-hover rotate-to-0', title: 'open' }, component: RotateArrowComponent });
+
+    this.rowData.push(rowData);
   }
 
   addFullData(leaseCar: Leasecar): void {

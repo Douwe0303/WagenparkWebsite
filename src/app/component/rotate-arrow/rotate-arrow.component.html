@@ -1,9 +1,11 @@
-<span class="align-items-center display-flex" (click)="rotateArrow()">
+<span id="rotate-up-{{ data.rotateArrow.id }}" (click)="rotateArrowUp()"></span>
+<span id="rotate-down-{{ data.rotateArrow.id }}" (click)="rotateArrowDown()"></span>
+<span id="rotate-{{ data.rotateArrow.id }}" class="align-items-center justify-content-center d-flex">
   <mat-icon
-    id="arrow-{{ id }}"
-    title="{{ title }}"
+    id="arrow-{{ data.rotateArrow.id }}"
+    title="{{ data.rotateArrow.title }}"
     aria-hidden="false"
-    class="{{ class }}"
+    class="{{ data.rotateArrow.class }}"
     aria-label="arrow_down"
     fontIcon="keyboard_arrow_down">
   </mat-icon>

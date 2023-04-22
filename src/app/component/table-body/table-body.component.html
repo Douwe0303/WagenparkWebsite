@@ -1,13 +1,14 @@
-<ng-container *ngFor="let trData of rowData; let i=index;" >
+<ng-container *ngFor="let trData of rowData; let i=index">
   <tr
     app-table-row
-    id="row"
+    id="row-{{ trData.id }}"
     [attr.data-bs-toggle]="'collapse'"
-    [attr.data-bs-target]="'#collapse'+i"
+    [attr.data-bs-target]="'#collapse'+trData.id"
     [attr.aria-expanded]="false"
-    [tableData]="trData"
-    (click)="rowClickEvent.emit($event)"
-  >
+    [tableData]="trData.tableData"
+    (click)="rowClickEvent.emit(trData.id)"
+  ></tr>
+
 
 
 
@@ -43,15 +44,9 @@
 <!--        <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Ongedaan maken" class="pencil-color pointer-hover" aria-label="undo" fontIcon="undo" (click)="this.prompt(false, i);$event.stopPropagation()"></mat-icon>-->
 <!--      </span>-->
 <!--    </td>-->
-    <td> TEST</td>
-    <td class="text-start align-middle">
-      <span class="align-items-center display-flex">
-        <mat-icon id="arrow{{ i }}" title="Open" aria-hidden="false" class="trash-color pointer-hover rotate-to-0" aria-label="arrow_down" fontIcon="keyboard_arrow_down"></mat-icon>
-      </span>
-    </td>
   <tr class="td-p-0">
     <td colspan="8">
-      <div class="collapse border-top border-bottom pb-3" id="{{'collapse' + i }}">
+      <div class="collapse border-top border-bottom pb-3" id="{{'collapse' + trData.id }}">
         <div class="accordion-body">
           <div class="container-fluid pb-3 pb-xl-0">
             <div class="row mt-3">

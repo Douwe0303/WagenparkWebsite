@@ -2,6 +2,14 @@
   cursor: pointer;
 }
 
+.display-flex {
+  display: flex !important;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
 .pencil-color {
   color: #ffb605;
 }

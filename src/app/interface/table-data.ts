@@ -1,3 +1,3 @@
-export interface TableData {
+export interface TableDataComponent {
   data: any;
 }
