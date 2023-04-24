@@ -3,7 +3,7 @@
     <input
       class="form-control"
       placeholder="dd-mm-yyyy"
-      id="orderDeliveryInput"
+      id="date-picker-{{id}}"
       name="dpDelivery"
       [(ngModel)]="this.date"
       #dateInput="ngModel"
@@ -12,6 +12,6 @@
       ngbDatepicker
       #dp="ngbDatepicker"
     />
-    <label for="orderDeliveryInput">{{ this.label }}</label>
+    <label for="date-picker-{{id}}">{{ this.label }}</label>
   </div>
 </div>

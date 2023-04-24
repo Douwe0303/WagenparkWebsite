@@ -6,6 +6,15 @@
   display: none;
 }
 
+.fake-link {
+  color: blue !important;
+  text-decoration: underline !important;
+}
+
+.fake-link:hover {
+  cursor: pointer;
+}
+
 .info-button {
   color: white;
 }
@@ -20,6 +29,10 @@
 
 .plus-color {
   color: green;
+}
+
+.settings-color {
+  color: #ffc107;
 }
 
 .label-hover label {
@@ -38,4 +51,13 @@
 }
 .custom-button::file-selector-button {
   display: none;
+}
+
+.rotate-icon {
+  animation: rotate 1s infinite linear;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }

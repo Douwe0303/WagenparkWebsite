@@ -7,7 +7,6 @@ import { NgbDateParserFormatter, NgbDateStruct } from "@ng-bootstrap/ng-bootstra
 import {OrderTransformer} from "../../../transformer/order-transformer/order-transformer";
 import {LeasecarTransformer} from "../../../transformer/leasecar-transformer/leasecar-transformer";
 import {Order} from "../../../interface/model/order";
-import {Leasecar} from "../../../interface/model/leasecar";
 import {ActivatedRoute} from "@angular/router";
 import {Title} from "@angular/platform-browser";
 import {OrderDummy} from "../../../dummy/order-dummy/order-dummy";

@@ -3,12 +3,10 @@
     <caption></caption>
     <thead app-table-head
            [headers]="headers"
-           (sortingEvent)="setSorting($event)"
     ></thead>
     <tbody app-table-body
            (deleteEvent)="deleteEvent.emit($event)"
            (rowClickEvent)="rowClickEvent.emit($event)"
-           [fullData]="fullData"
            [searchText]="searchText"
            [rowData]="rowData"
            [apiURL]="apiURL"

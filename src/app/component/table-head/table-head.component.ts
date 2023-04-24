@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TableHeader } from "../../interface/table-header";
 import { Sorting } from "../../interface/sorting";
 import { SortingType } from "../../enum/sorting-type";
+import {EventService} from "../../service/event.service";
 
 @Component({
   selector: '[app-table-head]',
@@ -12,19 +13,15 @@ export class TableHeadComponent {
 
   @Input() headers: TableHeader[] = [];
 
-  @Output() sortingEvent = new EventEmitter<Sorting>();
-
   public properties: Sorting = {
     field: 'id',
     index: 0,
     sorting: SortingType.ASC
   }
 
-  setIndex(index: number): void {
-    this.properties.index = index;
-  }
+  constructor(private _eventService: EventService) {}
 
-  setSorting(key: string): void {
+  setSorting(key: string, index: number): void {
     let newId: string = 'sorting-'+key;
     let oldId: string = 'sorting-'+this.properties.field;
 
@@ -46,7 +43,7 @@ export class TableHeadComponent {
       this.replaceClass(newId, 'rotate-to-0', 'rotate-to-180');
     }
 
-    this.sortingEvent.emit(this.properties);
+    this._eventService.emitSorting(index, this.properties.sorting);
   }
 
   replaceClass(id: string, oldClass: string, newClass: string): void {

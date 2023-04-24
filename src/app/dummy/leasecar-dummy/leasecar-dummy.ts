@@ -10,8 +10,8 @@ export const LeasecarDummy: Leasecar = {
       translation: "id"
     },
     licensePlate: {
-      value: 'ab-12-cd',
-      type: 'string',
+      value: '',
+      type: 'text',
       required: false,
       toDisplay: '',
       translation: 'Kenteken'

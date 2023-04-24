@@ -50,10 +50,6 @@ export class OrdersComponent implements OnInit {
     this.titleService.setTitle('Bestellingen');
   }
 
-  setSearchText(text: string) {
-    this.searchText = text;
-  }
-
   fetchOrders(): void {
     this._orderService.fetchOrders().then(orders =>
       orders.pipe(first()).subscribe(

@@ -8,5 +8,4 @@ import { Component, Input } from '@angular/core';
 export class AccordionComponent {
   @Input() formName: string = "";
   @Input() data: any[] = [];
-  @Input() component: any;
 }

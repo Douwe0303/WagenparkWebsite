@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
-import {TableDataComponent} from "../../interface/table-data";
+import { TableDataComponent } from "../../interface/table-data";
+import {EventService} from "../../service/event.service";
 
 @Component({
   selector: 'app-actions',
@@ -8,10 +9,13 @@ import {TableDataComponent} from "../../interface/table-data";
 })
 export class ActionsComponent implements TableDataComponent {
   @Input() data: any = {
-    id: 0,
-    targetId: 0,
-    apiURL: ''
+    actions: {
+      id: 0,
+      apiURL: ''
+    }
   }
+
+  constructor(private eventService: EventService) {}
 
   delete: boolean = true;
   confirmDelete: boolean = false;
@@ -24,5 +28,9 @@ export class ActionsComponent implements TableDataComponent {
       this.delete = true;
       this.confirmDelete = false;
     }
+  }
+
+  deleteEvent(): void {
+    this.eventService.emitDelete(this.data.actions.id);
   }
 }

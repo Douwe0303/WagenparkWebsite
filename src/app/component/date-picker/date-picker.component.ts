@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-date-picker',
@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./date-picker.component.css']
 })
 export class DatePickerComponent {
+  @Input() id: number = 0;
   date: Date = new Date();
   label: String = "";
 }

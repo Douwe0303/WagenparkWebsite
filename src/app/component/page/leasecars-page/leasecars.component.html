@@ -1,23 +1,20 @@
-<app-toast></app-toast>
 <app-navbar></app-navbar>
+<app-toast></app-toast>
 <app-data-tools
   [buttonName]="'Leaseauto toevoegen'"
   [buttonTitle]="'Klik hier om het leaseautoformulier te openen'"
   [searchPlaceHolder]="'Zoek op bestuurder..'"
   [searchAriaLabel]="'Zoek leaseauto'"
-  (searchEvent)="setSearchText($event)"
 ></app-data-tools>
 <app-accordion
-  [data]="[LeaseCarDummy, LeaseCarDummy.contract]"
+  [data]="[LeasecarDummy, LeasecarDummy.contract]"
 ></app-accordion>
 <app-table
   [headers]="LeaseCarTableHeader"
-  [fullData]="fullData"
   [titles]="['Leaseauto', 'Contract']"
   [hiddenProperties]="['id', 'contract']"
-  [searchText]="searchText"
   [apiURL]="'/leasecars/'"
   [searchIndex]="1"
-  [rowData]="rowData"
+  [rowData]="filteredRowData"
   (rowClickEvent)="rowClicked($event)"
 ></app-table>

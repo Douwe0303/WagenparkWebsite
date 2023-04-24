@@ -87,7 +87,7 @@
             <div class="form-floating mb-3">
               <select [(ngModel)]="order.leasecar.engine.value" #carEngineInput="ngModel" [class.is-invalid]="carEngineInput.invalid" [class.is-valid]="carEngineInput.valid && carEngineInput.dirty" name="carEngine" type="text" class="form-control" id="carEngineInput" placeholder="Jane Doe">
                 <option value="" disabled>Selecteer motor...</option>
-                <option *ngFor="let motor of EngineType | alphabetical" value="{{ motor.code }}">{{ motor.text }}</option>
+<!--                <option *ngFor="let motor of EngineType | alphabetical" value="{{ motor.code }}">{{ motor.text }}</option>-->
               </select>
               <label for="statusSelect">Type motor</label>
             </div>
@@ -112,7 +112,7 @@
             <div class="form-floating mb-3">
               <select [(ngModel)]="order.leasecar.contract.contractType.value" #contractTypeInput="ngModel" [class.is-invalid]="contractTypeInput.invalid && contractTypeInput.dirty" [class.is-valid]="contractTypeInput.valid && contractTypeInput.dirty" name="contractType" type="text" class="form-control" id="contractTypeInput" placeholder="A1">
                 <option value="" disabled>Selecteer regeling...</option>
-                <option *ngFor="let type of ContractType | alphabetical" value="{{ type.code }}">{{ type.text }}</option>
+<!--                <option *ngFor="let type of ContractType" value="{{ type.code }}">{{ type.text }}</option>-->
               </select>
               <label for="statusSelect">Regeling</label>
             </div>

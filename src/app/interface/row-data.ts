@@ -1,4 +1,5 @@
 export interface RowData {
   id: number,
-  tableData: any[]
+  tableData: any[],
+  data: any[]
 }

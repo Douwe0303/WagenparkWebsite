@@ -8,49 +8,13 @@
     [tableData]="trData.tableData"
     (click)="rowClickEvent.emit(trData.id)"
   ></tr>
-
-
-
-
-
-
-
-
-
-<!--      (rowClickEvent)="rotateArrow(i)"-->
-
-
-    <!--    <td class="text-start align-middle">-->
-<!--      <span class="align-items-center display-flex" id="actions_{{ i }}">-->
-<!--        <a [routerLink]="apiURL+array[0]+'/view'" target="_blank" class="align-items-center display-flex"><mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Bekijken" class="eye-color pointer-hover me-3" aria-label="view" fontIcon="visibility"></mat-icon></a>-->
-<!--        <a [routerLink]="apiURL+array[0] +'/edit'" class="align-items-center display-flex"><mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Aanpassen" class="pencil-color pointer-hover me-3" aria-label="edit" fontIcon="edit"></mat-icon></a>-->
-<!--        <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Verwijderen" class="trash-color pointer-hover" aria-label="trash" fontIcon="delete" (click)="this.prompt(true, i);"></mat-icon>-->
-<!--      </span>-->
-<!--      <span class="text-nowrap prompt" id="delete_prompt_{{ i }}">-->
-<!--        <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Verwijderen" class="trash-color pointer-hover hidden me-3" aria-label="trash" fontIcon="delete"></mat-icon>-->
-<!--        <mat-icon-->
-<!--          data-bs-toggle="collapse"-->
-<!--          data-bs-target=""-->
-<!--          aria-hidden="false"-->
-<!--          title="Definitief verwijderen"-->
-<!--          class="trash-color pointer-hover me-3"-->
-<!--          aria-label="delete forever"-->
-<!--          fontIcon="delete_forever"-->
-<!--          (click)="-->
-<!--            delete(array[0], i);-->
-<!--            toastEvent(i);-->
-<!--            $event.stopPropagation();-->
-<!--          "></mat-icon>-->
-<!--        <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Ongedaan maken" class="pencil-color pointer-hover" aria-label="undo" fontIcon="undo" (click)="this.prompt(false, i);$event.stopPropagation()"></mat-icon>-->
-<!--      </span>-->
-<!--    </td>-->
   <tr class="td-p-0">
     <td colspan="8">
       <div class="collapse border-top border-bottom pb-3" id="{{'collapse' + trData.id }}">
         <div class="accordion-body">
           <div class="container-fluid pb-3 pb-xl-0">
             <div class="row mt-3">
-              <div class="col-12 col-lg-4" *ngFor="let data of fullData[i]; let j=index">
+              <div class="col-12 col-lg-4" *ngFor="let data of rowData[i].data; let j=index">
                 <app-data-view [title]="titles[j]" [hiddenProperties]="hiddenProperties" [item]="data"></app-data-view>
               </div>
             </div>

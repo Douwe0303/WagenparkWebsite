@@ -1,6 +1,7 @@
-<span class="display-flex" id="actions-{{ data.id }}" *ngIf="delete">
+<span class="display-flex" id="actions-{{ data.actions.id }}" *ngIf="delete">
   <a
-    [routerLink]="data.apiURL+data.targetId+'/view'"
+    [routerLink]="data.actions.apiURL+data.actions.id+'/view'"
+    (click)="$event.stopImmediatePropagation()"
     target="_blank" class="align-items-center display-flex">
     <mat-icon
       data-bs-toggle="collapse"
@@ -12,7 +13,8 @@
     </mat-icon>
   </a>
   <a
-    [routerLink]="data.apiURL+data.targetId +'/edit'"
+    [routerLink]="data.actions.apiURL+data.actions.id +'/edit'"
+    (click)="$event.stopImmediatePropagation()"
     class="align-items-center display-flex">
     <mat-icon
       data-bs-toggle="collapse"
@@ -31,7 +33,7 @@
     class="trash-color pointer-hover"
     aria-label="trash"
     fontIcon="delete"
-    (click)="this.prompt(true, data.id);$event.stopImmediatePropagation()"></mat-icon>
+    (click)="this.prompt();$event.stopImmediatePropagation()"></mat-icon>
 </span>
 <span class="text-nowrap prompt display-flex" *ngIf="confirmDelete">
   <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Verwijderen" class="trash-color pointer-hover hidden me-3" aria-label="trash" fontIcon="delete"></mat-icon>
@@ -43,8 +45,6 @@
     class="trash-color pointer-hover me-3"
     aria-label="delete forever"
     fontIcon="delete_forever"
-    (click)="
-      $event.stopImmediatePropagation();
-    "></mat-icon>
-  <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Ongedaan maken" class="pencil-color pointer-hover" aria-label="undo" fontIcon="undo" (click)="this.prompt(false, data.id);$event.stopImmediatePropagation()"></mat-icon>
+    (click)="deleteEvent();$event.stopImmediatePropagation();"></mat-icon>
+  <mat-icon data-bs-toggle="collapse" data-bs-target="" aria-hidden="false" title="Ongedaan maken" class="pencil-color pointer-hover" aria-label="undo" fontIcon="undo" (click)="this.prompt();$event.stopImmediatePropagation()"></mat-icon>
 </span>

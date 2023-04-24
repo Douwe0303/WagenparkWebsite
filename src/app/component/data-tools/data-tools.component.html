@@ -18,7 +18,7 @@
       <div class="input-group">
         <input type="text"
                [(ngModel)]="searchText"
-               (ngModelChange)="searchEvent.emit(searchText)"
+               (ngModelChange)="_eventService.emitSearch(searchText)"
                class="form-control"
                [attr.placeholder]="searchPlaceHolder"
                [attr.aria-label]="searchAriaLabel"
