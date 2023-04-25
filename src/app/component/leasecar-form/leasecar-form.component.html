@@ -1,126 +1,188 @@
-<form id="leasecarForm" #leasecarForm="ngForm" class="needs-validation" novalidate>
-  <div class="row">
-    <div class="col-12 col-md-6 col-xxl-4">
-      <div class="form-floating mb-3">
-        <input [(ngModel)]="leasecar.driver.value" #driverInput="ngModel" [class.is-invalid]="driverInput.invalid" [class.is-valid]="driverInput.valid && driverInput.dirty" name="driver" type="text" class="form-control" id="driverInput" placeholder="Jane Doe" required>
-        <label for="driverInput">Bestuurder <span class="brick-red">*</span></label>
-      </div>
-      <div class="form-floating mb-3">
-        <input [(ngModel)]="leasecar.brand.value" #carBrandInput="ngModel" [class.is-invalid]="carBrandInput.invalid" [class.is-valid]="carBrandInput.valid && carBrandInput.dirty" name="carbrand" type="text" class="form-control" id="carBrandInput" placeholder="Jane Doe">
-        <label for="carBrandInput">Automerk</label>
-      </div>
-      <div class="form-floating mb-3">
-        <input [(ngModel)]="leasecar.model.value" #carModelInput="ngModel" [class.is-invalid]="carModelInput.invalid" [class.is-valid]="carModelInput.valid && carModelInput.dirty" name="carModel" type="text" class="form-control" id="carModelInput" placeholder="Jane Doe">
-        <label for="carModelInput">Model</label>
-      </div>
-      <div class="form-floating mb-3">
-        <input [(ngModel)]="leasecar.extra.value" #carExtraInput="ngModel" [class.is-invalid]="carExtraInput.invalid" [class.is-valid]="carExtraInput.valid && carExtraInput.dirty" name="carExtra" type="text" class="form-control" id="carExtraInput" placeholder="Jane Doe">
-        <label for="carExtraInput">Extra/Kleur</label>
-      </div>
-    </div>
-    <div class="col-12 col-md-6 col-xxl-4">
-      <div class="form-floating mb-3">
-        <select [(ngModel)]="leasecar.engine.value" #carEngineInput="ngModel" [class.is-invalid]="carEngineInput.invalid" [class.is-valid]="carEngineInput.valid && carEngineInput.dirty" name="carEngine" type="text" class="form-control" id="carEngineInput" placeholder="Jane Doe">
-          <option value="" disabled>Selecteer motor...</option>
-          <option *ngFor="let motor of EngineType | alphabetical" value="{{ motor.code }}">{{ motor.text }}</option>
-        </select>
-        <label for="carEngineInput">Type motor</label>
-      </div>
-      <div class="form-floating mb-3">
-        <input [(ngModel)]="leasecar.kilometers.value" #carKilometersInput="ngModel" [class.is-invalid]="carKilometersInput.invalid" [class.is-valid]="carKilometersInput.valid && carKilometersInput.dirty" name="carKilometers" type="text" class="form-control" id="carKilometersInput" placeholder="Jane Doe">
-        <label for="carKilometersInput">Aantal kilometers</label>
-      </div>
-      <div class="form-floating mb-3">
-        <input [(ngModel)]="leasecar.price.value" #carPriceInput="ngModel" [class.is-invalid]="carPriceInput.invalid" [class.is-valid]="carPriceInput.valid && carPriceInput.dirty" name="carPrice" type="number" class="form-control" id="carPriceInput" placeholder="Jane Doe">
-        <label for="carPriceInput">Fiscale waarde (€)</label>
-      </div>
-      <div class="form-floating mb-3">
-        <input [(ngModel)]="leasecar.particularities.value" #carParticularitiesInput="ngModel" [class.is-invalid]="carParticularitiesInput.invalid" [class.is-valid]="carParticularitiesInput.valid && carParticularitiesInput.dirty" name="carParticularities" type="text" class="form-control" id="carParticularitiesInput" placeholder="Jane Doe">
-        <label for="carParticularitiesInput">Bijzonderheden</label>
-      </div>
-    </div>
-    <div class="col-12 col-xxl-4">
-      <div class="row">
-        <div class="col-xxl-6">
-          <div class="form-floating mb-3">
-            <select [(ngModel)]="leasecar.contract.contractType.value" #contractTypeInput="ngModel" [class.is-invalid]="contractTypeInput.invalid && contractTypeInput.dirty" [class.is-valid]="contractTypeInput.valid && contractTypeInput.dirty" name="contractType" type="text" class="form-control" id="contractTypeInput" placeholder="A1">
-              <option value="" disabled>Selecteer regeling...</option>
-              <option *ngFor="let type of ContractType | alphabetical" value="{{ type.text }}">{{ type.text }}</option>
-            </select>
-            <label for="contractTypeInput">Regeling</label>
-          </div>
+<div>
+  <app-toast></app-toast>
+  <form id="leasecarForm" #leasecarForm="ngForm" class="needs-validation" novalidate>
+    <app-breadcrumb *ngIf="this.action == 'edit'" [name]="'Leaseauto '" [items]="[['Dashboard', '/'],['Leaseautos', '/leasecars'], [this.leasecar.id.value]]"></app-breadcrumb>
+    <div class="row">
+      <div class="col-12 col-md-6 col-xxl-4">
+        <div class="form-floating mb-3">
+          <input [(ngModel)]="leasecar.driver.value" #driverInput="ngModel" [class.is-invalid]="driverInput.invalid" [class.is-valid]="driverInput.valid && driverInput.dirty" name="driver" type="text" class="form-control" id="driverInput" placeholder="Jane Doe" required>
+          <label for="driverInput">Bestuurder <span class="brick-red">*</span></label>
         </div>
-        <div class="col-xxl-6">
-          <div class="form-floating mb-3">
-            <select [(ngModel)]="leasecar.contract.signed.value" #signedInput="ngModel" [class.is-valid]="signedInput.valid && signedInput.dirty" [class.is-invalid]="signedInput.invalid" name="signed" class="form-select" id="signedSelect" aria-label="Ondertekend selecteren" required>
-              <option value="" disabled>Selecteer ondertekening...</option>
-              <option value="true">Ja</option>
-              <option value="false">Nee</option>
-            </select>
-            <label for="signedSelect">Ondertekend</label>
-          </div>
+        <div class="form-floating mb-3">
+          <input [(ngModel)]="leasecar.brand.value" #carBrandInput="ngModel" [class.is-invalid]="carBrandInput.invalid" [class.is-valid]="carBrandInput.valid && carBrandInput.dirty" name="carbrand" type="text" class="form-control" id="carBrandInput" placeholder="Jane Doe">
+          <label for="carBrandInput">Automerk</label>
+        </div>
+        <div class="form-floating mb-3">
+          <input [(ngModel)]="leasecar.model.value" #carModelInput="ngModel" [class.is-invalid]="carModelInput.invalid" [class.is-valid]="carModelInput.valid && carModelInput.dirty" name="carModel" type="text" class="form-control" id="carModelInput" placeholder="Jane Doe">
+          <label for="carModelInput">Model</label>
+        </div>
+        <div class="form-floating mb-3">
+          <input [(ngModel)]="leasecar.extra.value" #carExtraInput="ngModel" [class.is-invalid]="carExtraInput.invalid" [class.is-valid]="carExtraInput.valid && carExtraInput.dirty" name="carExtra" type="text" class="form-control" id="carExtraInput" placeholder="Jane Doe">
+          <label for="carExtraInput">Extra/Kleur</label>
         </div>
       </div>
-      <div class="input-group mb-3">
-        <div class="form-floating">
+      <div class="col-12 col-md-6 col-xxl-4">
+        <div class="form-floating mb-3">
+          <select
+            [(ngModel)]="leasecar.engine.value"
+            #carEngineInput="ngModel"
+            [class.is-invalid]="carEngineInput.invalid"
+            [class.is-valid]="carEngineInput.valid && carEngineInput.dirty"
+            name="carEngine" type="text" class="form-control" id="carEngineInput" placeholder="Jane Doe">
+            <option value="" disabled>Selecteer motor...</option>
+            <option *ngFor="let motor of EngineType | alphabetical" value="{{ motor.code }}">{{ motor.text }}</option>
+          </select>
+          <label for="carEngineInput">Type motor</label>
+        </div>
+        <div class="form-floating mb-3">
           <input
-            class="form-control"
-            placeholder="dd-mm-yyyy"
-            id="startDateInput"
-            name="dpStartDate"
-            [(ngModel)]="leasecar.contract.startDate.date"
-            #startDateInput="ngModel"
-            [class.is-valid]="startDateInput.valid && startDateInput.dirty"
-            [class.is-invalid]="startDateInput.invalid"
-            ngbDatepicker
-            #dpStartDate="ngbDatepicker"
-          />
-          <label for="startDateInput">Inzetdatum contract</label>
+            [(ngModel)]="leasecar.kilometers.value"
+            #carKilometersInput="ngModel"
+            [class.is-invalid]="carKilometersInput.invalid"
+            [class.is-valid]="carKilometersInput.valid && carKilometersInput.dirty"
+            name="carKilometers" type="text" class="form-control" id="carKilometersInput" placeholder="Jane Doe">
+          <label for="carKilometersInput">Aantal kilometers</label>
         </div>
-        <button class="btn btn-outline-secondary {{ startDateInput.valid ? 'border-secondary' : 'border-danger' }} align-items-center display-flex" (click)="dpStartDate.toggle()" type="button">
-          <mat-icon title="Open kalender" class="pointer-hover brick-red calender-hover" aria-label="calendar_month" fontIcon="calendar_month"></mat-icon>
-        </button>
-      </div>
-      <div class="input-group mb-3">
-        <div class="form-floating">
+        <div class="form-floating mb-3">
           <input
-            class="form-control"
-            placeholder="dd-mm-yyyy"
-            id="endDateInput"
-            name="dpEndDate"
-            [(ngModel)]="leasecar.contract.endDate.date"
-            #endDateInput="ngModel"
-            [class.is-valid]="endDateInput.valid && endDateInput.dirty"
-            [class.is-invalid]="endDateInput.invalid"
-            ngbDatepicker
-            #dpEndDate="ngbDatepicker"
-          />
-          <label for="endDateInput">Einddatum contract</label>
+            [(ngModel)]="leasecar.price.value"
+            #carPriceInput="ngModel" [class.is-invalid]="carPriceInput.invalid"
+            [class.is-valid]="carPriceInput.valid && carPriceInput.dirty"
+            name="carPrice" type="number" class="form-control" id="carPriceInput" placeholder="Jane Doe">
+          <label for="carPriceInput">Fiscale waarde (€)</label>
         </div>
-        <button class="btn btn-outline-secondary {{ endDateInput.valid ? 'border-secondary' : 'border-danger' }} align-items-center display-flex" (click)="dpEndDate.toggle()" type="button">
-          <mat-icon title="Open kalender" class="pointer-hover brick-red calender-hover" aria-label="calendar_month" fontIcon="calendar_month"></mat-icon>
-        </button>
+        <div class="form-floating mb-3">
+          <input
+            [(ngModel)]="leasecar.particularities.value"
+            #carParticularitiesInput="ngModel"
+            [class.is-invalid]="carParticularitiesInput.invalid"
+            [class.is-valid]="carParticularitiesInput.valid && carParticularitiesInput.dirty"
+            name="carParticularities" type="text" class="form-control" id="carParticularitiesInput" placeholder="Jane Doe">
+          <label for="carParticularitiesInput">Bijzonderheden</label>
+        </div>
       </div>
-      <div class="row">
-        <div class="col-6">
-          <div class="form-floating mb-3">
-            <input [(ngModel)]="leasecar.contract.taxAddition.value" #taxAdditionInput="ngModel" [class.is-invalid]="taxAdditionInput.invalid" [class.is-valid]="taxAdditionInput.valid && taxAdditionInput.dirty && taxAdditionInput.value != ''" name="taxAddition" type="number" class="form-control" id="taxAdditionInput" min="0" max="100" placeholder="Jane Doe">
-            <label for="taxAdditionInput">Fiscale bijtelling (%)</label>
+      <div class="col-12 col-xxl-4">
+        <div class="row">
+          <div class="col-xxl-6">
+            <div class="form-floating mb-3">
+              <select
+                [(ngModel)]="leasecar.contract.contractType.value"
+                #contractTypeInput="ngModel"
+                [class.is-invalid]="contractTypeInput.invalid && contractTypeInput.dirty"
+                [class.is-valid]="contractTypeInput.valid && contractTypeInput.dirty"
+                name="contractType" type="text" class="form-control" id="contractTypeInput" placeholder="A1">
+                <option value="" disabled>Selecteer regeling...</option>
+                <option *ngFor="let type of ContractType | alphabetical" value="{{ type.text }}">{{ type.text }}</option>
+              </select>
+              <label for="contractTypeInput">Regeling</label>
+            </div>
+          </div>
+          <div class="col-xxl-6">
+            <div class="form-floating mb-3">
+              <select
+                [(ngModel)]="leasecar.contract.signed.value"
+                #signedInput="ngModel" [class.is-valid]="signedInput.valid && signedInput.dirty"
+                [class.is-invalid]="signedInput.invalid"
+                name="signed" class="form-select" id="signedSelect" aria-label="Ondertekend selecteren" required
+              >
+                <option value="" disabled>Selecteer ondertekening...</option>
+                <option value="true">Ja</option>
+                <option value="false">Nee</option>
+              </select>
+              <label for="signedSelect">Ondertekend</label>
+            </div>
           </div>
         </div>
-        <div class="col-6">
-          <div class="form-floating mb-3">
-            <input [(ngModel)]="leasecar.contract.contribution.value" #contributionInput="ngModel" [class.is-invalid]="contributionInput.invalid" [class.is-valid]="contributionInput.valid && contributionInput.dirty && contributionInput.value != ''" name="contribution" type="number" class="form-control" id="contributionInput" min="0" max="100" placeholder="Jane Doe">
-            <label for="contributionInput">Eigen bijdrage (%)</label>
+        <div class="input-group mb-3">
+          <div class="form-floating">
+            <input
+              class="form-control"
+              placeholder="dd-mm-yyyy"
+              id="startDateInput"
+              name="dpStartDate"
+              [(ngModel)]="leasecar.contract.startDate.date"
+              #startDateInput="ngModel"
+              [class.is-valid]="startDateInput.valid && startDateInput.dirty"
+              [class.is-invalid]="startDateInput.invalid"
+              ngbDatepicker
+              #dpStartDate="ngbDatepicker"
+            />
+            <label for="startDateInput">Inzetdatum contract</label>
           </div>
+          <button
+            class="btn btn-outline-secondary {{ startDateInput.valid ? 'border-secondary' : 'border-danger' }} align-items-center display-flex"
+            (click)="dpStartDate.toggle()"
+            type="button">
+            <mat-icon title="Open kalender" class="pointer-hover brick-red calender-hover" aria-label="calendar_month" fontIcon="calendar_month"></mat-icon>
+          </button>
+        </div>
+        <div class="input-group mb-3">
+          <div class="form-floating">
+            <input
+              class="form-control"
+              placeholder="dd-mm-yyyy"
+              id="endDateInput"
+              name="dpEndDate"
+              [(ngModel)]="leasecar.contract.endDate.date"
+              #endDateInput="ngModel"
+              [class.is-valid]="endDateInput.valid && endDateInput.dirty"
+              [class.is-invalid]="endDateInput.invalid"
+              ngbDatepicker
+              #dpEndDate="ngbDatepicker"
+            />
+            <label for="endDateInput">Einddatum contract</label>
+          </div>
+          <button class="btn btn-outline-secondary {{ endDateInput.valid ? 'border-secondary' : 'border-danger' }} align-items-center display-flex" (click)="dpEndDate.toggle()" type="button">
+            <mat-icon title="Open kalender" class="pointer-hover brick-red calender-hover" aria-label="calendar_month" fontIcon="calendar_month"></mat-icon>
+          </button>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="form-floating mb-3">
+              <input
+                [(ngModel)]="leasecar.contract.taxAddition.value"
+                #taxAdditionInput="ngModel"
+                [class.is-invalid]="taxAdditionInput.invalid"
+                [class.is-valid]="taxAdditionInput.valid && taxAdditionInput.dirty && taxAdditionInput.value != ''"
+                name="taxAddition" type="number" class="form-control" id="taxAdditionInput" min="0" max="100" placeholder="Jane Doe">
+              <label for="taxAdditionInput">Fiscale bijtelling (%)</label>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-floating mb-3">
+              <input
+                [(ngModel)]="leasecar.contract.contribution.value"
+                #contributionInput="ngModel"
+                [class.is-invalid]="contributionInput.invalid"
+                [class.is-valid]="contributionInput.valid && contributionInput.dirty && contributionInput.value != ''"
+                name="contribution" type="number" class="form-control" id="contributionInput" min="0" max="100" placeholder="Jane Doe">
+              <label for="contributionInput">Eigen bijdrage (%)</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <button
+          [disabled]="leasecarForm.form.invalid || !leasecarForm.form.dirty|| busy"
+          type="submit"
+          id="form-button"
+          aria-expanded="false"
+          aria-controls="form-collapse"
+          (click)="submit();"
+          class="btn btn-light border-dark align-items-center display-flex text-nowrap mt-2 mt-xxl-4 mx-auto mx-md-0"
+          title="Klik hier om een nieuwe leaseauto toe te voegen">
+          <mat-icon
+            aria-hidden="false"
+            id="form-button-icon"
+            class="me-2 {{this.buttonColorClass}} pointer-hover"
+            aria-label="form-button-icon"
+            fontIcon="{{buttonFont}}">
+          </mat-icon>{{buttonName}}
+        </button>
+        <div id="loading-spinner" class="spinner-border brick-red display-none mt-3" role="status">
+          <span class="sr-only"></span>
         </div>
       </div>
     </div>
-  </div>
-  <button [disabled]="leasecarForm.form.invalid || busy" type="submit" id="add-order-button" aria-expanded="false" aria-controls="collapseExample" (click)="this.create();" class="btn btn-light border-dark align-items-center display-flex text-nowrap mt-2 mt-xxl-4 mx-auto mx-md-0" title="Klik hier om een nieuwe bestelling toe te voegen">
-    <mat-icon aria-hidden="false" id="add-order-icon" class="me-2 btn-success pointer-hover" aria-label="add_box" fontIcon="{{this.buttonFont}}"></mat-icon>{{ this.buttonName }}
-  </button>
-  <div id="add-loading-spinner" class="spinner-border brick-red display-none mt-3" role="status">
-    <span class="sr-only"></span>
-  </div>
-</form>
+  </form>
+</div>

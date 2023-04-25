@@ -1,0 +1,5 @@
+<app-navbar></app-navbar>
+<app-toast></app-toast>
+<app-accordion *ngIf="action == 'edit'" [action]="action"></app-accordion>
+<app-leasecar-view *ngIf="action == 'view' && title == 'leasecars'"></app-leasecar-view>
+<app-order-view *ngIf="action == 'view' && title == 'orders'"></app-order-view>

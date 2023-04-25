@@ -1,0 +1,11 @@
+<div class="container-fluid pb-3 pb-xl-0">
+  <div class="row mt-3">
+    <app-breadcrumb *ngIf="this.id" [name]="'Leaseauto '" [items]="[['Dashboard', '/'],['Leaseautos', '/leasecars'], [this.id]]"></app-breadcrumb>
+    <div class="col-12 col-lg-4" *ngFor="let item of this.items; let i = index;">
+      <app-data-view
+        [hiddenProperties]="hiddenProperties"
+        [title]="titles[i]"
+        [item]="item"></app-data-view>
+    </div>
+  </div>
+</div>

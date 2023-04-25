@@ -20,24 +20,27 @@ import { ViewOrderComponent } from './component/order-component/view-order/view-
 import { PagenotfoundComponent } from './component/page/notfound-page/pagenotfound.component';
 import { DataViewComponent } from './component/data-view/data-view.component';
 import { OffCanvasComponent } from './component/off-canvas/off-canvas.component';
-import { DatePickerComponent } from './component/date-picker/date-picker.component';
 import { BreadcrumbComponent } from './component/breadcrumb/breadcrumb.component';
 import { AccordionComponent } from './component/accordion/accordion.component';
-import { TableComponent } from './component/table/table.component';
-import { TableHeadComponent } from './component/table-head/table-head.component';
-import { TableBodyComponent } from './component/table-body/table-body.component';
-import { DropdownComponent } from './component/dropdown/dropdown.component';
-import { TableRowComponent } from './component/table-row/table-row.component';
-import { TableDataComponent } from './component/table-data/table-data.component';
-import { ActionsComponent } from './component/actions/actions.component';
-import { TextNoWrapComponent } from './component/text-no-wrap/text-no-wrap.component';
-import { RotateArrowComponent } from './component/rotate-arrow/rotate-arrow.component';
+import { TableComponent } from './component/table-component/table/table.component';
+import { TableHeadComponent } from './component/table-component/table-head/table-head.component';
+import { TableBodyComponent } from './component/table-component/table-body/table-body.component';
+import { TableRowComponent } from './component/table-component/table-row/table-row.component';
+import { TableDataComponent } from './component/table-component/table-data/table-data.component';
+import { ActionsComponent } from './component/table-component/table-data-items/actions/actions.component';
+import { TextNoWrapComponent } from './component/table-component/table-data-items/text-no-wrap/text-no-wrap.component';
+import { RotateArrowComponent } from './component/table-component/table-data-items/rotate-arrow/rotate-arrow.component';
 import { TableDataDirective } from './directive/table-data.directive';
 import { DynamicModule } from "ng-dynamic-component";
-import { LicensePlateComponent } from './component/license-plate/license-plate.component';
-import {EventService} from "./service/event.service";
+import { LicensePlateComponent } from './component/table-component/table-data-items/license-plate/license-plate.component';
+import { EventService } from "./service/event/event.service";
 import { LeasecarFormComponent } from './component/leasecar-form/leasecar-form.component';
 import { AlphabeticalPipe } from './pipe/alphabetical/alphabetical.pipe';
+import { NgOptimizedImage } from "@angular/common";
+import { ActionPageComponent } from './component/page/action-page/action-page.component';
+import { LeasecarViewComponent } from './component/leasecar-view/leasecar-view.component';
+import { OrderFormComponent } from './component/order-form/order-form.component';
+import { OrderViewComponent } from './component/order-view/order-view.component';
 
 @NgModule({
   declarations: [
@@ -54,13 +57,11 @@ import { AlphabeticalPipe } from './pipe/alphabetical/alphabetical.pipe';
     PagenotfoundComponent,
     DataViewComponent,
     OffCanvasComponent,
-    DatePickerComponent,
     BreadcrumbComponent,
     AccordionComponent,
     TableComponent,
     TableHeadComponent,
     TableBodyComponent,
-    DropdownComponent,
     TableRowComponent,
     TableDataComponent,
     ActionsComponent,
@@ -70,6 +71,10 @@ import { AlphabeticalPipe } from './pipe/alphabetical/alphabetical.pipe';
     LicensePlateComponent,
     LeasecarFormComponent,
     AlphabeticalPipe,
+    ActionPageComponent,
+    LeasecarViewComponent,
+    OrderFormComponent,
+    OrderViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -82,7 +87,8 @@ import { AlphabeticalPipe } from './pipe/alphabetical/alphabetical.pipe';
     FormsModule,
     NgbDropdown,
     ReactiveFormsModule,
-    DynamicModule
+    DynamicModule,
+    NgOptimizedImage
   ],
   bootstrap: [AppComponent],
   providers: [EventService]

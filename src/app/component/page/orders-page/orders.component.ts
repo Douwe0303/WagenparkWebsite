@@ -1,7 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from "@angular/router";
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { OrderService } from "../../../service/order/order.service";
-import { first } from "rxjs";
+import {first, Subscription} from "rxjs";
 import { OrderDto } from "../../../interface/dto/order-dto";
 import { NgbDropdown} from "@ng-bootstrap/ng-bootstrap";
 import { ToastComponent } from "../../toast/toast.component";
@@ -12,8 +11,12 @@ import { ContractTransformer } from "../../../transformer/contract-transformer/c
 import { DatePipe } from "@angular/common";
 import { Title } from "@angular/platform-browser";
 import { OrderTableHeader } from "../../../class/order-table-header/order-table-header";
-import { OrderDummy } from "../../../dummy/order-dummy/order-dummy";
-import {ActionsComponent} from "../../actions/actions.component";
+import {RowData} from "../../../interface/row-data";
+import {EventService} from "../../../service/event/event.service";
+import {SortingType} from "../../../enum/sorting-type";
+import {TextNoWrapComponent} from "../../table-component/table-data-items/text-no-wrap/text-no-wrap.component";
+import {ActionsComponent} from "../../table-component/table-data-items/actions/actions.component";
+import {RotateArrowComponent} from "../../table-component/table-data-items/rotate-arrow/rotate-arrow.component";
 
 @Component({
   selector: 'app-orders',
@@ -21,33 +24,95 @@ import {ActionsComponent} from "../../actions/actions.component";
   styleUrls: ['./orders.component.css'],
   providers: [OrderTransformer, LeasecarTransformer, ContractTransformer, DatePipe]
 })
-export class OrdersComponent implements OnInit {
+export class OrdersComponent implements OnInit, OnDestroy {
 
   protected readonly OrderTableHeader = OrderTableHeader;
-  protected readonly OrderDummy = OrderDummy;
-  public orders: Order[] = [];
-  rowData: string[][] = [];
-  fullData: {}[][] = [];
-  public searchText: string = "";
 
-  public reload: boolean = false;
+  rowData: RowData[] = [];
+  filteredRowData: RowData[] = [];
 
   @ViewChild(NgbDropdown, { static: true })
   public dropdown: NgbDropdown | undefined;
 
   @ViewChild(ToastComponent)
-  public toastOrder: ToastComponent = new ToastComponent();
+  public toast: ToastComponent = new ToastComponent();
+
+  deleteSubscription: Subscription = new Subscription();
+  addSubscription: Subscription = new Subscription();
+  searchSubscription: Subscription = new Subscription();
 
   constructor(
-    private router: Router,
     private _orderService: OrderService,
+    private _eventService: EventService,
     private orderTransformer: OrderTransformer,
-    private titleService: Title,
+    private _titleService: Title,
   ) {}
+
+  ngOnDestroy(): void {
+    this.deleteSubscription.unsubscribe();
+    this.addSubscription.unsubscribe();
+    this.searchSubscription.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.fetchOrders();
-    this.titleService.setTitle('Bestellingen');
+    this._titleService.setTitle("Bestellingen");
+    this.sortEvent();
+    this.deleteSubscription = this._eventService.deleteEvent.subscribe(deleteEvent => {
+      if(deleteEvent.type == 'orders') {
+        this.delete(deleteEvent.id);
+      }
+    })
+    this.searchSubscription = this._eventService.searchEvent.subscribe(text => {
+      this.filteredRowData = this.rowData.filter(row => row.tableData[2].value.toLowerCase().includes(text.toLowerCase()));
+    })
+    this.addSubscription = this._eventService.addEvent.subscribe(id => {
+      this.add(id);
+    })
+  }
+
+  delete(id: number): void {
+    this._orderService.deleteOrder(id).then((call) => {
+      call.pipe(first()).subscribe(
+        () => {
+          this.toast.showToast('Bestelling verwijderd!', id, 'De bestelling is verwijderd.', 'red');
+          this.deleteData(id);
+        },
+        (error: any) => { alert(error.statusText) },
+        () => {}
+      )
+    })
+  }
+
+  deleteData(id: number) {
+    let index: number = this.rowData.findIndex((rowData) => rowData.id == id);
+    this.rowData.splice(index, 1);
+  }
+
+  rowClicked(id: number): void {
+    this.rotateArrow(id);
+  }
+
+  rotateArrow(id: number): void {
+    // @ts-ignore
+    let expanded: boolean = (document.getElementById('row-'+id).getAttribute('aria-expanded') === 'true');
+    this._eventService.emitRotate(id, expanded);
+  }
+
+  sortEvent(): void {
+    this._eventService.sortingEvent.subscribe(data => {
+      this.filteredRowData = this.filteredRowData.sort((a: any, b: any) => {
+        const valueA = a.tableData[data.index].value;
+        const valueB = b.tableData[data.index].value;
+        if (typeof valueA === 'number' && typeof valueB === 'number') {
+          return data.sorting == SortingType.ASC ? valueA - valueB : valueB - valueA;
+        } else {
+          const stringA = valueA.toString();
+          const stringB = valueB.toString();
+          return data.sorting == SortingType.ASC ? stringA.localeCompare(stringB) : stringB.localeCompare(stringA);
+        }
+      })
+    })
   }
 
   fetchOrders(): void {
@@ -62,80 +127,89 @@ export class OrdersComponent implements OnInit {
   convertDtos(orderDtos: OrderDto[]): void {
     for(let dto of orderDtos) {
       let order: Order | undefined = this.orderTransformer.toModel(dto);
-      this.orders.push(order);
       this.addRowData(order);
-      this.addFullData(order);
     }
+    this.filteredRowData = this.rowData;
   }
 
   addRowData(order: Order): void {
-    this.rowData.push([
-      order.id.toDisplay as string,
-      order.orderer.toDisplay as string,
-      order.leasecar.driver.toDisplay as string,
-      order.orderDate.toDisplay as string,
-      order.leaseOrderStatus.toDisplay as string
-    ]);
-  }
-
-  addFullData(order: Order): void {
-    this.fullData.push([order, order.leasecar, order.leasecar.contract]);
-  }
-
-  delete(data: {id: string, index: number}): void {
-    this._orderService.deleteOrder(+data.id).then(call =>
-      call.pipe(first()).subscribe(() => {
-        this.fullData.splice(data.index, 1);
-        this.rowData.splice(data.index, 1);
-        this.toastOrder.showToast('Bestelling verwijderd', data.id, 'De bestelling is verwijderd!', 'red')
-      },
-        // () => this.orders = this.orders.filter(order => order.id.value !== data.id),
-        (error: any) => alert(error.statusText)
-      )
-    );
-  }
-
-  addOrder(data: any): void {
-    console.log(data);
-    this.orders.push(data.order);
-    this.addRowData(data);
-    this.addFullData(data);
-  }
-
-  editStatus(id: number, status: any): void {
-    let index: number = this.orders.findIndex(order => order.id.value == id);
-    let order: Order = this.orders[index];
-
-    let oldStatus: string = order.leaseOrderStatus.status.code;
-    let oldData: any = order.leaseOrderStatus.status;
-
-    if(oldStatus == status.code) {
-      return;
+    let rowData: RowData = {
+      id: order.id.value as number,
+      tableData: [],
+      data: [order, order.leasecar, order.leasecar.contract]
     }
 
-    order.leaseOrderStatus.value = status.code;
-    order.leaseOrderStatus.status = status;
-    order.leaseOrderStatus.toDisplay = status.text;
-
-    let orderDto: OrderDto = this.orderTransformer?.toDto(order);
-
-    this._orderService.editOrder(orderDto).then(r => r.pipe(first()).subscribe(
-      () => {
-        // @ts-ignore
-        this.toastOrder.showToast('Bestelstatus gewijzigd!', id, 'De status van de bestelling is gewijzigd.', 'orange');
-        },
-      (error: any) => {
-        order.leaseOrderStatus.value = oldData.code;
-        order.leaseOrderStatus.status = oldData;
-        alert(error.statusText);
+    for(let header of OrderTableHeader) {
+      if(header.key == 'driver') {
+        rowData.tableData.push({
+          value: order['leasecar']['driver'].value,
+          nowrap: {
+            class: '',
+            text: order['leasecar']['driver'].toDisplay
+          },
+          component: TextNoWrapComponent
+        })
+      } else {
+        rowData.tableData.push({
+          //@ts-ignore
+          value: order[header.key].value,
+          nowrap: {
+            class: '',
+            // @ts-ignore
+            text: order[header.key].toDisplay as string
+          },
+          component: TextNoWrapComponent
+        });
       }
+    }
+    rowData.tableData.push({ actions: { id: order['id'].value, apiURL: '/orders/', type: 'orders' }, component: ActionsComponent});
+    rowData.tableData.push({ rotateArrow: { id: order['id'].toDisplay, class: 'trash-color pointer-hover rotate-to-0', title: 'open' }, component: RotateArrowComponent });
+
+    this.rowData.push(rowData);
+  }
+
+  add(id: number): void {
+    this._orderService.fetchOrder(id).then((get) => {
+      get.pipe(first()).subscribe(
+        (orderDto: OrderDto) => {
+          let order: Order = this.orderTransformer.toModel(orderDto);
+          this.addRowData(order);
+          this.toast.showToast('Bestelling toegevoegd!', orderDto.id, 'De bestelling is toegevoegd', 'green');
+          // @ts-ignore
+          document.getElementById('open-add').click();
+        }
       )
-    );
+    })
   }
 
-  reloadOrders(): void {
-    this.reload = !this.reload;
-  }
-
-  protected readonly ActionsComponent = ActionsComponent;
+  // editStatus(id: number, status: any): void {
+  //   let index: number = this.orders.findIndex(order => order.id.value == id);
+  //   let order: Order = this.orders[index];
+  //
+  //   let oldStatus: string = order.leaseOrderStatus.status.code;
+  //   let oldData: any = order.leaseOrderStatus.status;
+  //
+  //   if(oldStatus == status.code) {
+  //     return;
+  //   }
+  //
+  //   order.leaseOrderStatus.value = status.code;
+  //   order.leaseOrderStatus.status = status;
+  //   order.leaseOrderStatus.toDisplay = status.text;
+  //
+  //   let orderDto: OrderDto = this.orderTransformer?.toDto(order);
+  //
+  //   this._orderService.editOrder(orderDto).then(r => r.pipe(first()).subscribe(
+  //     () => {
+  //       // @ts-ignore
+  //       this.toastOrder.showToast('Bestelstatus gewijzigd!', id, 'De status van de bestelling is gewijzigd.', 'orange');
+  //       },
+  //     (error: any) => {
+  //       order.leaseOrderStatus.value = oldData.code;
+  //       order.leaseOrderStatus.status = oldData;
+  //       alert(error.statusText);
+  //     }
+  //     )
+  //   );
+  // }
 }

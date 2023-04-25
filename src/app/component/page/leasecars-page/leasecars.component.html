@@ -6,9 +6,7 @@
   [searchPlaceHolder]="'Zoek op bestuurder..'"
   [searchAriaLabel]="'Zoek leaseauto'"
 ></app-data-tools>
-<app-accordion
-  [data]="[LeasecarDummy, LeasecarDummy.contract]"
-></app-accordion>
+<app-accordion [title]="'leasecars'"></app-accordion>
 <app-table
   [headers]="LeaseCarTableHeader"
   [titles]="['Leaseauto', 'Contract']"

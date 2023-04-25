@@ -1,6 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { Leasecar } from "../../../interface/model/leasecar";
-import { LeasecarDummy } from "../../../dummy/leasecar-dummy/leasecar-dummy";
 import { LeasecarTableHeader } from "../../../class/leasecar-table-header/leasecar-table-header";
 import { LeasecarService } from "../../../service/leasecar/leasecar.service";
 import { LeasecarDto } from "../../../interface/dto/leasecar-dto";
@@ -8,26 +7,24 @@ import { LeasecarTransformer } from "../../../transformer/leasecar-transformer/l
 import { ContractTransformer } from "../../../transformer/contract-transformer/contract-transformer";
 import { Title } from "@angular/platform-browser";
 import { ToastComponent } from "../../toast/toast.component";
-import { TextNoWrapComponent } from "../../text-no-wrap/text-no-wrap.component";
-import { ActionsComponent } from "../../actions/actions.component";
-import { LicensePlateComponent } from "../../license-plate/license-plate.component";
-import { RotateArrowComponent } from "../../rotate-arrow/rotate-arrow.component";
+import { TextNoWrapComponent } from "../../table-component/table-data-items/text-no-wrap/text-no-wrap.component";
+import { ActionsComponent } from "../../table-component/table-data-items/actions/actions.component";
+import { LicensePlateComponent } from "../../table-component/table-data-items/license-plate/license-plate.component";
+import { RotateArrowComponent } from "../../table-component/table-data-items/rotate-arrow/rotate-arrow.component";
 import { RowData } from "../../../interface/row-data";
-import { EventService } from "../../../service/event.service";
-import { first } from "rxjs";
+import { EventService } from "../../../service/event/event.service";
+import {first, Subscription} from "rxjs";
 import { SortingType } from "../../../enum/sorting-type";
 
 @Component({
   selector: 'app-tableheaders',
   templateUrl: './leasecars.component.html',
   styleUrls: ['./leasecars.component.css'],
-  providers: [LeasecarTransformer, ContractTransformer]
+  providers: [LeasecarTransformer, ContractTransformer],
 })
-export class LeasecarsComponent implements OnInit {
+export class LeasecarsComponent implements OnInit, OnDestroy {
 
   LeaseCarTableHeader = LeasecarTableHeader;
-
-  LeasecarDummy = LeasecarDummy;
 
   rowData: RowData[] = [];
   filteredRowData: RowData[] = [];
@@ -35,22 +32,36 @@ export class LeasecarsComponent implements OnInit {
   @ViewChild(ToastComponent)
   toast: ToastComponent = new ToastComponent();
 
+  deleteSubscription: Subscription = new Subscription();
+  addSubscription: Subscription = new Subscription();
+  searchSubscription: Subscription = new Subscription();
+
   constructor(
     private _leaseCarService: LeasecarService,
     private _titleService: Title,
     private _eventService: EventService,
     private leaseCarTransformer: LeasecarTransformer,
   ) {}
+  ngOnDestroy(): void {
+    this.deleteSubscription.unsubscribe();
+    this.addSubscription.unsubscribe();
+    this.searchSubscription.unsubscribe();
+  }
 
   ngOnInit(): void {
-    this.fetchOrders();
+    this.fetchLeasecars();
     this._titleService.setTitle("Leaseauto's");
     this.sortEvent();
-    this._eventService.deleteEvent.subscribe(id => {
-      this.delete(id);
+    this.deleteSubscription = this._eventService.deleteEvent.subscribe(deleteEvent => {
+      if(deleteEvent.type == 'leasecars') {
+        this.delete(deleteEvent.id);
+      }
     })
-    this._eventService.searchEvent.subscribe(text => {
+    this.searchSubscription = this._eventService.searchEvent.subscribe(text => {
       this.filteredRowData = this.rowData.filter(row => row.tableData[1].value.toLowerCase().includes(text.toLowerCase()));
+    })
+    this.addSubscription = this._eventService.addEvent.subscribe(id => {
+      this.add(id);
     })
   }
 
@@ -70,11 +81,25 @@ export class LeasecarsComponent implements OnInit {
     })
   }
 
+  add(id: number): void {
+    this._leaseCarService.fetchLeasecar(id).then((get) => {
+      get.pipe(first()).subscribe(
+        (leaseCarDto: LeasecarDto) => {
+          let leasecar: Leasecar = this.leaseCarTransformer.toModel(leaseCarDto);
+          this.addRowData(leasecar);
+          this.toast.showToast('Leaseauto toegevoegd!', leaseCarDto.id, 'De leaseauto is toegevoegd', 'green');
+          // @ts-ignore
+          document.getElementById('open-add').click();
+        }
+      )
+    })
+  }
+
   delete(id: number): void {
     this._leaseCarService.deleteLeasecar(id).then((call) => {
       call.pipe(first()).subscribe(
         () => {
-          this.toast.showToast('Bestelling verwijderd!', id, 'De bestelling is verwijderd.', 'red');
+          this.toast.showToast('Leaseauto verwijderd!', id, 'De leaseauto is verwijderd.', 'red');
           this.deleteData(id);
         },
         (error: any) => { alert(error.statusText) },
@@ -98,7 +123,7 @@ export class LeasecarsComponent implements OnInit {
     this._eventService.emitRotate(id, expanded);
   }
 
-  fetchOrders(): void {
+  fetchLeasecars(): void {
     this._leaseCarService.fetchLeasecars().then(leaseCars =>
       leaseCars.pipe().subscribe(
         (leaseCarDtos: LeasecarDto[]) => this.convertDtos(leaseCarDtos),
@@ -113,10 +138,6 @@ export class LeasecarsComponent implements OnInit {
       this.addRowData(leaseCar);
     }
     this.filteredRowData = this.rowData;
-  }
-
-  addInputData(): void {
-
   }
 
   addRowData(leaseCar: Leasecar): void {
@@ -160,7 +181,7 @@ export class LeasecarsComponent implements OnInit {
       }
     }
 
-    rowData.tableData.push({ actions: { id: leaseCar['id'].value, apiURL: '/leasecars/' }, component: ActionsComponent});
+    rowData.tableData.push({ actions: { id: leaseCar['id'].value, apiURL: '/leasecars/', type: 'leasecars' }, component: ActionsComponent});
     rowData.tableData.push({ rotateArrow: { id: leaseCar['id'].toDisplay, class: 'trash-color pointer-hover rotate-to-0', title: 'open' }, component: RotateArrowComponent });
 
     this.rowData.push(rowData);

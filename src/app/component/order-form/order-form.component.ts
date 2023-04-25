@@ -1,30 +1,33 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Leasecar } from "../../interface/model/leasecar";
-import { LeasecarDummy } from "../../dummy/leasecar-dummy/leasecar-dummy";
-import { EngineType } from "../../type/engine-type/engine-type";
-import { ContractType } from "../../type/contract-type/contract-type";
-import { LeasecarService } from "../../service/leasecar/leasecar.service";
-import { Title } from "@angular/platform-browser";
-import { ActivatedRoute } from "@angular/router";
-import { first } from "rxjs";
-import { LeasecarDto } from "../../interface/dto/leasecar-dto";
-import { LeasecarTransformer } from "../../transformer/leasecar-transformer/leasecar-transformer";
-import { ContractTransformer } from "../../transformer/contract-transformer/contract-transformer";
-import { EventService } from "../../service/event/event.service";
-import { NgForm } from "@angular/forms";
+import {Component, ViewChild} from '@angular/core';
+import {OrderStatus} from "../../class/order-status/order-status";
+import {OrderDummy} from "../../dummy/order-dummy/order-dummy";
+import {NgForm} from "@angular/forms";
+import {Order} from "../../interface/model/order";
+import {Title} from "@angular/platform-browser";
+import {EventService} from "../../service/event/event.service";
+import {ActivatedRoute} from "@angular/router";
+import {OrderTransformer} from "../../transformer/order-transformer/order-transformer";
+import {OrderDto} from "../../interface/dto/order-dto";
+import {first} from "rxjs";
+import {OrderService} from "../../service/order/order.service";
+import {EngineType} from "../../type/engine-type/engine-type";
+import {ContractType} from "../../type/contract-type/contract-type";
+import {LeasecarTransformer} from "../../transformer/leasecar-transformer/leasecar-transformer";
+import {ContractTransformer} from "../../transformer/contract-transformer/contract-transformer";
 
 @Component({
-  selector: 'app-leasecar-form',
-  templateUrl: './leasecar-form.component.html',
-  styleUrls: ['./leasecar-form.component.css'],
-  providers: [LeasecarTransformer, ContractTransformer]
+  selector: 'app-order-form',
+  templateUrl: './order-form.component.html',
+  styleUrls: ['./order-form.component.css'],
+  providers: [OrderTransformer, LeasecarTransformer, ContractTransformer]
 })
-export class LeasecarFormComponent implements OnInit {
+export class OrderFormComponent {
 
-  leasecar: Leasecar = JSON.parse(JSON.stringify(LeasecarDummy));
+  order: Order = JSON.parse(JSON.stringify(OrderDummy));
 
   protected readonly EngineType = EngineType;
   protected readonly ContractType = ContractType;
+  protected readonly OrderStatus = OrderStatus;
 
   @ViewChild('leasecarForm') myForm: NgForm | undefined;
 
@@ -32,15 +35,15 @@ export class LeasecarFormComponent implements OnInit {
   action: string | null = null;
 
   buttonFont: string = "add_button";
-  buttonName: string = "Leaseauto toevoegen";
+  buttonName: string = "Bestelling toevoegen";
   buttonColorClass: string = "text-success";
 
   constructor(
-    private _leasecarService: LeasecarService,
+    private _orderService: OrderService,
     private _titleService: Title,
     private _eventService: EventService,
     private activatedRoute: ActivatedRoute,
-    private leasecarTransformer: LeasecarTransformer
+    private orderTransformer: OrderTransformer
   ) {}
 
   ngOnInit() {
@@ -48,7 +51,7 @@ export class LeasecarFormComponent implements OnInit {
     this.action = this.activatedRoute.snapshot.paramMap.get('action');
 
     if(id != null && this.action == 'edit') {
-      this.getLeasecar(id);
+      this.getOrder(id);
       this._titleService.setTitle('Leaseauto ' + id);
       this.buttonFont = 'settings';
       this.buttonName = 'Leaseauto wijzigen';
@@ -56,26 +59,26 @@ export class LeasecarFormComponent implements OnInit {
     }
   }
 
-  getLeasecar(id: string): void {
-    this._leasecarService.fetchLeasecar(+id).then((call) => {
-      call.pipe(first()).subscribe((leasecar: LeasecarDto) => {
-        this.leasecar = this.leasecarTransformer.toModel(leasecar);
+  getOrder(id: string): void {
+    this._orderService.fetchOrder(+id).then((call: any) => {
+      call.pipe(first()).subscribe((orderDto: OrderDto) => {
+        this.order = this.orderTransformer.toModel(orderDto);
       })
     })
   }
 
   submit(): void {
     this.busy = true;
-    let leasecarDto: LeasecarDto = this.leasecarTransformer.toDto(this.leasecar);
+    let orderDto: OrderDto = this.orderTransformer.toDto(this.order);
     if(this.action == 'edit') {
       this.rotateIcon();
       this.timer().then(()=> {
-        this.update(leasecarDto);
+        this.update(orderDto);
       })
     } else {
       this.loading();
       this.timer().then(()=> {
-        this.create(leasecarDto);
+        this.create(orderDto);
       })
     }
   }
@@ -111,11 +114,11 @@ export class LeasecarFormComponent implements OnInit {
     icon.classList.remove('rotate-icon');
   }
 
-  update(leasecarDto: LeasecarDto): void {
-    this._leasecarService.editLeasecar(leasecarDto).then((update) => {
+  update(orderDto: OrderDto): void {
+    this._orderService.editOrder(orderDto).then((update) => {
       update.pipe(first()).subscribe(
         () => {
-          this._eventService.emitUpdate(leasecarDto.id as number, 'leaseauto');
+          this._eventService.emitUpdate(orderDto.id as number, 'Bestelling');
         },
         (error: any) => {
           alert(error.statusText)
@@ -128,13 +131,13 @@ export class LeasecarFormComponent implements OnInit {
     })
   }
 
-  create(leasecarDto: LeasecarDto): void {
-    this._leasecarService.createLeasecar(leasecarDto).then((create) => {
+  create(orderDto: OrderDto): void {
+    this._orderService.createOrder(orderDto).then((create) => {
       create.pipe(first()).subscribe(
-        (leasecar: LeasecarDto) => {
-          this._eventService.emitAdd(leasecar.id as number);
+        (order: OrderDto) => {
+          this._eventService.emitAdd(order.id as number);
           this.myForm?.form.markAsPristine();
-          this.leasecar = JSON.parse(JSON.stringify(LeasecarDummy));
+          this.order = JSON.parse(JSON.stringify(OrderDummy));
         },
         (error: any) => {
           alert(error.statusText)

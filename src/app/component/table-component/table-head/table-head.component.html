@@ -1,0 +1,23 @@
+<tr class="table-header">
+  <th *ngFor="let header of headers; let i=index" scope="col" class="pointer-hover">
+    <div class="d-flex align-items-center" (click)="this.setSorting(header.key, i);">
+      <img *ngIf="header.key == 'id'"
+           alt="unknown"
+           ngSrc="/assets/image/tableheaders/counter.png"
+           height="35" width="35"
+           class="me-1 table-header-height">
+      <span *ngIf="header.key == 'id'" class="hidden">#</span>
+      {{ header.name }}
+      <mat-icon
+        id="sorting-{{ header.key }}"
+        title="{{ header.title }}"
+        aria-hidden="false"
+        class="ms-2 pointer-hover rotate-to-0 brick-red
+              {{ header.key == 'id' ? 'opacity-100' : 'opacity-25' }}"
+        aria-label="sort_by_alpha" fontIcon="arrow_drop_up">
+      </mat-icon>
+    </div>
+  </th>
+  <th scope="col">Actie</th>
+  <th scope="col"></th>
+</tr>

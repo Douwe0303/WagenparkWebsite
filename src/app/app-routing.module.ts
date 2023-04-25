@@ -4,7 +4,7 @@ import { OrdersComponent } from "./component/page/orders-page/orders.component";
 import { DashboardComponent } from "./component/page/dashboard-page/dashboard.component";
 import { LeasecarsComponent } from "./component/page/leasecars-page/leasecars.component";
 import { PagenotfoundComponent } from "./component/page/notfound-page/pagenotfound.component";
-import { ViewOrderComponent } from "./component/order-component/view-order/view-order.component";
+import { ActionPageComponent } from "./component/page/action-page/action-page.component";
 
 const routes: Routes = [
   {
@@ -16,13 +16,12 @@ const routes: Routes = [
     component: OrdersComponent,
   },
   {
-    path: 'orders/:id/:action',
-    title: 'Order',
-    component: ViewOrderComponent,
-  },
-  {
     path: 'leasecars',
     component: LeasecarsComponent,
+  },
+  {
+    path: ':title/:id/:action',
+    component: ActionPageComponent,
   },
   { path: '**', pathMatch: 'full',
     component: PagenotfoundComponent },

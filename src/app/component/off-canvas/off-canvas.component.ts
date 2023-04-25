@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-off-canvas',
@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./off-canvas.component.css']
 })
 export class OffCanvasComponent {
-
+ @Input() title: string = ""
 }

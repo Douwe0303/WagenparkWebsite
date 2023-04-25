@@ -53,5 +53,5 @@ export const OrderDummy: Order = {
       toDisplay: "",
       translation: "verwachte leverweek"
     },
-    leasecar: LeasecarDummy
+    leasecar: { ...LeasecarDummy }
 }

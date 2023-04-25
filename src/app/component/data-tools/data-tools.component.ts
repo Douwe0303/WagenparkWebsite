@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import {EventService} from "../../service/event.service";
+import {EventService} from "../../service/event/event.service";
 
 @Component({
   selector: 'app-data-tools',

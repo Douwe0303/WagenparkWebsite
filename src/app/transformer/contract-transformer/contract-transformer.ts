@@ -132,13 +132,14 @@ export class ContractTransformer implements Transformer<Contract, ContractDto> {
 
     let diff = endDate.getTime() - today.getTime();
     let days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    let hours = Math.floor(diff / (1000 * 60 * 60) - (days * 24));
 
     if(days == 1) {
-      return days + ' dag';
+      return days + ' dag en ' + hours + ' uur';
     } else if(days < 1) {
-      return 0 + ' dagen';
+      return 0 + ' dagen en ' + hours + ' uur';
     } else {
-      return days + ' dagen';
+      return days + ' dagen en ' + hours + ' uur';
     }
   }
 
