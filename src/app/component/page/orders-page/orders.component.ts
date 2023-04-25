@@ -11,12 +11,14 @@ import { ContractTransformer } from "../../../transformer/contract-transformer/c
 import { DatePipe } from "@angular/common";
 import { Title } from "@angular/platform-browser";
 import { OrderTableHeader } from "../../../class/order-table-header/order-table-header";
-import {RowData} from "../../../interface/row-data";
-import {EventService} from "../../../service/event/event.service";
-import {SortingType} from "../../../enum/sorting-type";
-import {TextNoWrapComponent} from "../../table-component/table-data-items/text-no-wrap/text-no-wrap.component";
-import {ActionsComponent} from "../../table-component/table-data-items/actions/actions.component";
-import {RotateArrowComponent} from "../../table-component/table-data-items/rotate-arrow/rotate-arrow.component";
+import { RowData } from "../../../interface/row-data";
+import { EventService } from "../../../service/event/event.service";
+import { SortingType } from "../../../enum/sorting-type";
+import { TextNoWrapComponent } from "../../table-component/table-data-items/text-no-wrap/text-no-wrap.component";
+import { ActionsComponent } from "../../table-component/table-data-items/actions/actions.component";
+import { RotateArrowComponent } from "../../table-component/table-data-items/rotate-arrow/rotate-arrow.component";
+import { OrderStatus } from "../../../class/order-status/order-status";
+import { DropdownComponent } from "../../table-component/table-data-items/dropdown/dropdown.component";
 
 @Component({
   selector: 'app-orders',
@@ -40,6 +42,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   deleteSubscription: Subscription = new Subscription();
   addSubscription: Subscription = new Subscription();
   searchSubscription: Subscription = new Subscription();
+  statusSubscription: Subscription = new Subscription();
 
   constructor(
     private _orderService: OrderService,
@@ -52,6 +55,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     this.deleteSubscription.unsubscribe();
     this.addSubscription.unsubscribe();
     this.searchSubscription.unsubscribe();
+    this.statusSubscription.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -68,6 +72,37 @@ export class OrdersComponent implements OnInit, OnDestroy {
     })
     this.addSubscription = this._eventService.addEvent.subscribe(id => {
       this.add(id);
+    })
+    this.statusSubscription = this._eventService.statusEvent.subscribe(status => {
+      this.updateStatus(status.status, status.id);
+    })
+  }
+
+  updateStatus(status: string, id: number): void {
+    let index = this.rowData.findIndex(data => data.id == id);
+    let order = this.rowData[index].data[0];
+    let old = { ...order};
+    order.leaseOrderStatus.value = status;
+    //@ts-ignore
+    order.leaseOrderStatus.toDisplay = OrderStatus[status.toLowerCase()].text;
+    let orderDto = this.orderTransformer.toDto(order);
+    this._orderService.editOrder(orderDto).then((update) => {
+      update.pipe(first()).subscribe(
+        () => {
+          this.toast.showToast('Bestelstatus gewijzigd!', id, 'De status van de bestelling is gewijzigd.', 'orange');
+          let rowData = this.rowData[index];
+          //@ts-ignore
+          rowData.tableData[4].value = OrderStatus[status.toLowerCase()].value;
+          //@ts-ignore
+          rowData.tableData[4].dropdown.text = OrderStatus[status.toLowerCase()].text;
+          //@ts-ignore
+          rowData.tableData[4].dropdown.color = OrderStatus[status.toLowerCase()].color;
+        },
+        (error: any) => {
+          this.rowData[index].data[0] = old;
+          alert(error);
+        }
+      )
     })
   }
 
@@ -149,7 +184,20 @@ export class OrdersComponent implements OnInit, OnDestroy {
           },
           component: TextNoWrapComponent
         })
-      } else {
+      }
+      else if(header.key == 'leaseOrderStatus') {
+        rowData.tableData.push({
+          value: order['leaseOrderStatus'].value,
+          dropdown: {
+            id: order['id'].value,
+            text: order['leaseOrderStatus'].status.text,
+            color: order['leaseOrderStatus'].status.color,
+            items: OrderStatus
+          },
+          component: DropdownComponent
+        })
+      }
+      else {
         rowData.tableData.push({
           //@ts-ignore
           value: order[header.key].value,
@@ -181,35 +229,4 @@ export class OrdersComponent implements OnInit, OnDestroy {
       )
     })
   }
-
-  // editStatus(id: number, status: any): void {
-  //   let index: number = this.orders.findIndex(order => order.id.value == id);
-  //   let order: Order = this.orders[index];
-  //
-  //   let oldStatus: string = order.leaseOrderStatus.status.code;
-  //   let oldData: any = order.leaseOrderStatus.status;
-  //
-  //   if(oldStatus == status.code) {
-  //     return;
-  //   }
-  //
-  //   order.leaseOrderStatus.value = status.code;
-  //   order.leaseOrderStatus.status = status;
-  //   order.leaseOrderStatus.toDisplay = status.text;
-  //
-  //   let orderDto: OrderDto = this.orderTransformer?.toDto(order);
-  //
-  //   this._orderService.editOrder(orderDto).then(r => r.pipe(first()).subscribe(
-  //     () => {
-  //       // @ts-ignore
-  //       this.toastOrder.showToast('Bestelstatus gewijzigd!', id, 'De status van de bestelling is gewijzigd.', 'orange');
-  //       },
-  //     (error: any) => {
-  //       order.leaseOrderStatus.value = oldData.code;
-  //       order.leaseOrderStatus.status = oldData;
-  //       alert(error.statusText);
-  //     }
-  //     )
-  //   );
-  // }
 }

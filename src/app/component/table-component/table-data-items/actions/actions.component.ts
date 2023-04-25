@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { TableDataComponent } from "../../../../interface/table-data";
-import {EventService} from "../../../../service/event/event.service";
+import { EventService } from "../../../../service/event/event.service";
 
 @Component({
   selector: 'app-actions',

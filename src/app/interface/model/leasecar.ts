@@ -3,6 +3,7 @@ import { Data } from "../data";
 
 export interface Leasecar {
   id: Data
+  leaseOrderId: Data
   licensePlate: Data
   brand: Data
   driver: Data

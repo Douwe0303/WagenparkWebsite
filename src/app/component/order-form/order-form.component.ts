@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, Injectable, ViewChild} from '@angular/core';
 import {OrderStatus} from "../../class/order-status/order-status";
 import {OrderDummy} from "../../dummy/order-dummy/order-dummy";
 import {NgForm} from "@angular/forms";
@@ -14,12 +14,35 @@ import {EngineType} from "../../type/engine-type/engine-type";
 import {ContractType} from "../../type/contract-type/contract-type";
 import {LeasecarTransformer} from "../../transformer/leasecar-transformer/leasecar-transformer";
 import {ContractTransformer} from "../../transformer/contract-transformer/contract-transformer";
+import {NgbDateParserFormatter, NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+
+@Injectable()
+export class CustomDateParserFormatter extends NgbDateParserFormatter {
+  readonly DELIMITER = '-';
+
+  parse(value: string): NgbDateStruct | null {
+    if (value) {
+      const date = value.split(this.DELIMITER);
+      return {
+        day: parseInt(date[0], 10),
+        month: parseInt(date[1], 10),
+        year: parseInt(date[2], 10),
+      };
+    }
+    return null;
+  }
+
+  format(date: NgbDateStruct | null): string {
+    return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : '';
+  }
+}
 
 @Component({
   selector: 'app-order-form',
   templateUrl: './order-form.component.html',
   styleUrls: ['./order-form.component.css'],
-  providers: [OrderTransformer, LeasecarTransformer, ContractTransformer]
+  providers: [OrderTransformer, LeasecarTransformer, ContractTransformer,
+    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}]
 })
 export class OrderFormComponent {
 
@@ -29,7 +52,7 @@ export class OrderFormComponent {
   protected readonly ContractType = ContractType;
   protected readonly OrderStatus = OrderStatus;
 
-  @ViewChild('leasecarForm') myForm: NgForm | undefined;
+  @ViewChild('addOrderForm') myForm: NgForm | undefined;
 
   busy: boolean = false;
   action: string | null = null;
@@ -52,9 +75,9 @@ export class OrderFormComponent {
 
     if(id != null && this.action == 'edit') {
       this.getOrder(id);
-      this._titleService.setTitle('Leaseauto ' + id);
+      this._titleService.setTitle('Bestelling ' + id);
       this.buttonFont = 'settings';
-      this.buttonName = 'Leaseauto wijzigen';
+      this.buttonName = 'Bestelling wijzigen';
       this.buttonColorClass = 'text-warning';
     }
   }

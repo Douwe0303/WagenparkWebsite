@@ -9,6 +9,13 @@ export const LeasecarDummy: Leasecar = {
       toDisplay: 0+'',
       translation: "id"
     },
+    leaseOrderId: {
+      value: 0,
+      type: 'number',
+      required: false,
+      toDisplay: 0+'',
+      translation: 'translationId'
+    },
     licensePlate: {
       value: '',
       type: 'text',

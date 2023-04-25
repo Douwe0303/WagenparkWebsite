@@ -52,7 +52,7 @@ export class OrderViewComponent {
       order.leasecar.contract
     ];
     this.hiddenProperties = [
-      'id', 'contract', 'leasecar'
+      'id', 'contract', 'leasecar', 'leaseOrderId'
     ];
     this.titles = [
       'Bestelling', 'Leaseauto', 'Contract'

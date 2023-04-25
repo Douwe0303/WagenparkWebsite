@@ -39,21 +39,7 @@ export class LeasecarViewComponent implements OnInit{
     this._leasecarService.fetchLeasecar(+id).then((read) => {
       read.pipe(first()).subscribe((leasecarDto: LeasecarDto) => {
         let leasecar = this.leasecarTransformer.toModel(leasecarDto);
-        this.setInputs(leasecar);
       })
     })
-  }
-
-  setInputs(leasecar: Leasecar): void {
-    this.items = [
-      leasecar,
-      leasecar.contract
-    ];
-    this.hiddenProperties = [
-      'id', 'contract'
-    ];
-    this.titles = [
-      'Leaseauto', 'Contract'
-    ];
   }
 }

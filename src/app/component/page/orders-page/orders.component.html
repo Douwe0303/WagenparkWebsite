@@ -11,7 +11,7 @@
   [headers]="OrderTableHeader"
   [rowData]="filteredRowData"
   [titles]="['Bestelling', 'Leaseauto', 'Contract']"
-  [hiddenProperties]="['id', 'leasecar', 'contract']"
+  [hiddenProperties]="['id', 'leasecar', 'contract', 'leaseOrderId']"
   [apiURL]="'/orders/'"
   [searchIndex]="2"
   (rowClickEvent)="rowClicked($event)"

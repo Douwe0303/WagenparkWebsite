@@ -41,6 +41,7 @@ import { ActionPageComponent } from './component/page/action-page/action-page.co
 import { LeasecarViewComponent } from './component/leasecar-view/leasecar-view.component';
 import { OrderFormComponent } from './component/order-form/order-form.component';
 import { OrderViewComponent } from './component/order-view/order-view.component';
+import { DropdownComponent } from './component/table-component/table-data-items/dropdown/dropdown.component';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import { OrderViewComponent } from './component/order-view/order-view.component'
     LeasecarViewComponent,
     OrderFormComponent,
     OrderViewComponent,
+    DropdownComponent,
   ],
   imports: [
     BrowserModule,

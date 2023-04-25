@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, Injectable, OnInit, ViewChild} from '@angular/core';
 import { Leasecar } from "../../interface/model/leasecar";
 import { LeasecarDummy } from "../../dummy/leasecar-dummy/leasecar-dummy";
 import { EngineType } from "../../type/engine-type/engine-type";
@@ -12,12 +12,35 @@ import { LeasecarTransformer } from "../../transformer/leasecar-transformer/leas
 import { ContractTransformer } from "../../transformer/contract-transformer/contract-transformer";
 import { EventService } from "../../service/event/event.service";
 import { NgForm } from "@angular/forms";
+import {NgbDateParserFormatter, NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+
+@Injectable()
+export class CustomDateParserFormatter extends NgbDateParserFormatter {
+  readonly DELIMITER = '-';
+
+  parse(value: string): NgbDateStruct | null {
+    if (value) {
+      const date = value.split(this.DELIMITER);
+      return {
+        day: parseInt(date[0], 10),
+        month: parseInt(date[1], 10),
+        year: parseInt(date[2], 10),
+      };
+    }
+    return null;
+  }
+
+  format(date: NgbDateStruct | null): string {
+    return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : '';
+  }
+}
 
 @Component({
   selector: 'app-leasecar-form',
   templateUrl: './leasecar-form.component.html',
   styleUrls: ['./leasecar-form.component.css'],
-  providers: [LeasecarTransformer, ContractTransformer]
+  providers: [LeasecarTransformer, ContractTransformer,
+    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}]
 })
 export class LeasecarFormComponent implements OnInit {
 
@@ -60,6 +83,7 @@ export class LeasecarFormComponent implements OnInit {
     this._leasecarService.fetchLeasecar(+id).then((call) => {
       call.pipe(first()).subscribe((leasecar: LeasecarDto) => {
         this.leasecar = this.leasecarTransformer.toModel(leasecar);
+        console.log(this.leasecar);
       })
     })
   }
@@ -67,6 +91,7 @@ export class LeasecarFormComponent implements OnInit {
   submit(): void {
     this.busy = true;
     let leasecarDto: LeasecarDto = this.leasecarTransformer.toDto(this.leasecar);
+    console.log(leasecarDto);
     if(this.action == 'edit') {
       this.rotateIcon();
       this.timer().then(()=> {

@@ -9,6 +9,10 @@
           <label for="driverInput">Bestuurder <span class="brick-red">*</span></label>
         </div>
         <div class="form-floating mb-3">
+          <input [(ngModel)]="leasecar.licensePlate.value" #licensePlate="ngModel" [class.is-invalid]="licensePlate.invalid" [class.is-valid]="licensePlate.valid && licensePlate.dirty" name="licensePlate" type="text" class="form-control" id="licensePlate" placeholder="Jane Doe">
+          <label for="licensePlate">Kenteken </label>
+        </div>
+        <div class="form-floating mb-3">
           <input [(ngModel)]="leasecar.brand.value" #carBrandInput="ngModel" [class.is-invalid]="carBrandInput.invalid" [class.is-valid]="carBrandInput.valid && carBrandInput.dirty" name="carbrand" type="text" class="form-control" id="carBrandInput" placeholder="Jane Doe">
           <label for="carBrandInput">Automerk</label>
         </div>

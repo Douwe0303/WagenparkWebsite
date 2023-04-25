@@ -16,6 +16,7 @@ export class LeasecarTransformer implements Transformer<Leasecar, LeasecarDto> {
     let contract: ContractDto = this.contractTransformer.toDto(leasecar.contract);
     return {
       id: leasecar.id.value as number,
+      leaseOrderId: leasecar.leaseOrderId.value as number,
       licensePlate: leasecar.licensePlate.value as string,
       brand: leasecar.brand.value as string,
       driver: leasecar.driver.value as string,
@@ -38,6 +39,13 @@ export class LeasecarTransformer implements Transformer<Leasecar, LeasecarDto> {
         required: true,
         toDisplay: leasecarDto.id+'',
         translation: "id"
+      },
+      leaseOrderId: {
+        value: leasecarDto.leaseOrderId,
+        type: 'number',
+        required: false,
+        toDisplay: leasecarDto.leaseOrderId+'',
+        translation: 'leaseOrderId'
       },
       licensePlate: {
         value: leasecarDto.licensePlate,

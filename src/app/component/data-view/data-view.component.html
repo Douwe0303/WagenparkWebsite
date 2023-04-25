@@ -2,7 +2,7 @@
   <a class="list-group-item list-group-item-action bg-dark fw-bold brick-red" aria-current="true">
     {{ this.title }}
   </a>
-  <div *ngFor="let data of this.item | keyvalue: asIsOrder">
+  <div *ngFor="let data of this.item | keyvalue: asIsOrder; let i=index">
     <a class="list-group-item list-group-item-action text-nowrap"
        *ngIf="!this.hiddenProperties.includes(data.key)"
        [innerHTML]='"<b>" + data.value["translation"] + ": </b>" + data.value["toDisplay"]'>

@@ -10,7 +10,7 @@
 <app-table
   [headers]="LeaseCarTableHeader"
   [titles]="['Leaseauto', 'Contract']"
-  [hiddenProperties]="['id', 'contract']"
+  [hiddenProperties]="['id', 'contract', 'leaseOrderId']"
   [apiURL]="'/leasecars/'"
   [searchIndex]="1"
   [rowData]="filteredRowData"

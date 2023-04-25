@@ -24,6 +24,13 @@ export class EventService {
   private addSource = new Subject<number>();
   addEvent = this.addSource.asObservable();
 
+  private statusSource = new Subject<{ status: string, id: number }>();
+  statusEvent = this.statusSource.asObservable();
+
+  emitStatus(id: number, status: string) {
+    this.statusSource.next({status: status, id: id});
+  }
+
   emitDelete(id: number, type: string) {
     this.deleteSource.next({id: id, type: type});
   }
