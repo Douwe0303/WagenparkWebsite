@@ -32,11 +32,23 @@
             #carEngineInput="ngModel"
             [class.is-invalid]="carEngineInput.invalid"
             [class.is-valid]="carEngineInput.valid && carEngineInput.dirty"
-            name="carEngine" type="text" class="form-control" id="carEngineInput" placeholder="Jane Doe">
+            name="carEngine" class="form-control" id="carEngineInput">
             <option value="" disabled>Selecteer motor...</option>
             <option *ngFor="let motor of EngineType | alphabetical" value="{{ motor.code }}">{{ motor.text }}</option>
           </select>
           <label for="carEngineInput">Type motor</label>
+        </div>
+        <div class="form-floating mb-3">
+          <select
+            [(ngModel)]="leasecar.tires.value"
+            #tires="ngModel"
+            [class.is-invalid]="tires.invalid"
+            [class.is-valid]="tires.valid && tires.dirty"
+            name="tires" class="form-control" id="tires">
+            <option value="" disabled>Selecteer motor...</option>
+            <option *ngFor="let tire of TireType | alphabetical" value="{{ tire.code }}">{{ tire.text }}</option>
+          </select>
+          <label for="tires">Type band</label>
         </div>
         <div class="form-floating mb-3">
           <input
@@ -74,7 +86,7 @@
                 #contractTypeInput="ngModel"
                 [class.is-invalid]="contractTypeInput.invalid && contractTypeInput.dirty"
                 [class.is-valid]="contractTypeInput.valid && contractTypeInput.dirty"
-                name="contractType" type="text" class="form-control" id="contractTypeInput" placeholder="A1">
+                name="contractType" class="form-control" id="contractTypeInput">
                 <option value="" disabled>Selecteer regeling...</option>
                 <option *ngFor="let type of ContractType | alphabetical" value="{{ type.text }}">{{ type.text }}</option>
               </select>

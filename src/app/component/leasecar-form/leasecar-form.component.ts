@@ -13,6 +13,7 @@ import { ContractTransformer } from "../../transformer/contract-transformer/cont
 import { EventService } from "../../service/event/event.service";
 import { NgForm } from "@angular/forms";
 import {NgbDateParserFormatter, NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+import {TireType} from "../../type/tire-type/tire-type";
 
 @Injectable()
 export class CustomDateParserFormatter extends NgbDateParserFormatter {
@@ -48,6 +49,7 @@ export class LeasecarFormComponent implements OnInit {
 
   protected readonly EngineType = EngineType;
   protected readonly ContractType = ContractType;
+  protected readonly TireType = TireType;
 
   @ViewChild('leasecarForm') myForm: NgForm | undefined;
 

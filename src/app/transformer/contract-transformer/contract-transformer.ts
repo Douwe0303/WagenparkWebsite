@@ -28,7 +28,7 @@ export class ContractTransformer implements Transformer<Contract, ContractDto> {
         value: dto.id,
         type: 'number',
         required: true,
-        toDisplay: dto.id+'',
+        toDisplay: dto.id == undefined ? '' : dto.id+'',
         translation: "id"
       },
       contractType: {

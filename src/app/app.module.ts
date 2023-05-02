@@ -11,12 +11,9 @@ import { LeasecarsComponent } from './component/page/leasecars-page/leasecars.co
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from "@angular/material/icon";
 import { HttpClientModule } from "@angular/common/http";
-import { AddOrderComponent } from './component/order-component/add-order/add-order.component';
 import { DataToolsComponent } from './component/data-tools/data-tools.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { EditOrderComponent } from './component/order-component/edit-order/edit-order.component';
 import { ToastComponent } from './component/toast/toast.component';
-import { ViewOrderComponent } from './component/order-component/view-order/view-order.component';
 import { PagenotfoundComponent } from './component/page/notfound-page/pagenotfound.component';
 import { DataViewComponent } from './component/data-view/data-view.component';
 import { OffCanvasComponent } from './component/off-canvas/off-canvas.component';
@@ -50,11 +47,8 @@ import { DropdownComponent } from './component/table-component/table-data-items/
     DashboardComponent,
     NavbarComponent,
     LeasecarsComponent,
-    AddOrderComponent,
     DataToolsComponent,
-    EditOrderComponent,
     ToastComponent,
-    ViewOrderComponent,
     PagenotfoundComponent,
     DataViewComponent,
     OffCanvasComponent,

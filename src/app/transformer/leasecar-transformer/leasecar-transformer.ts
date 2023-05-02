@@ -6,6 +6,7 @@ import { ContractTransformer } from "../contract-transformer/contract-transforme
 import { ContractDto } from "../../interface/dto/contract-dto";
 import { Contract } from "../../interface/model/contract";
 import { EngineType } from "../../type/engine-type/engine-type";
+import { TireType } from "../../type/tire-type/tire-type";
 
 @Injectable()
 export class LeasecarTransformer implements Transformer<Leasecar, LeasecarDto> {
@@ -23,6 +24,7 @@ export class LeasecarTransformer implements Transformer<Leasecar, LeasecarDto> {
       model: leasecar.model.value as string,
       extra: leasecar.extra.value as string,
       engine: leasecar.engine.value as string,
+      tires: leasecar.tires.value as string,
       kilometers: leasecar.kilometers.value as number,
       price: leasecar.price.value as number,
       particularities: leasecar.particularities.value as string,
@@ -49,8 +51,8 @@ export class LeasecarTransformer implements Transformer<Leasecar, LeasecarDto> {
       },
       licensePlate: {
         value: leasecarDto.licensePlate,
-        type: 'string',
-        required: true,
+        type: 'text',
+        required: false,
         toDisplay: leasecarDto.licensePlate+'',
         translation: "Kenteken"
       },
@@ -89,6 +91,14 @@ export class LeasecarTransformer implements Transformer<Leasecar, LeasecarDto> {
         //@ts-ignore
         toDisplay: EngineType[leasecarDto.engine.toLowerCase()].text,
         translation: "Type motor"
+      },
+      tires: {
+        value: leasecarDto.tires,
+        type: 'text',
+        required: false,
+        //@ts-ignore
+        toDisplay: TireType[leasecarDto.tires?.toLowerCase()].text,
+        translation: "Type band"
       },
       kilometers: {
         value: leasecarDto.kilometers,

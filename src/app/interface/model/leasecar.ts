@@ -10,6 +10,7 @@ export interface Leasecar {
   model: Data
   extra: Data
   engine: Data
+  tires: Data
   kilometers: Data
   price: Data
   particularities: Data

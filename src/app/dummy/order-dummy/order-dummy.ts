@@ -1,57 +1,59 @@
 import { Order } from "../../interface/model/order";
-import { OrderStatus } from "../../class/order-status/order-status";
 import { LeasecarDummy } from "../leasecar-dummy/leasecar-dummy";
+import {OrderStatus} from "../../class/order-status/order-status";
 
 export const OrderDummy: Order = {
     id: {
-      value: 0,
+      value: undefined,
       type: 'number',
       required: true,
       toDisplay: "",
       translation: "id"
     },
     supplier: {
-      value: "",
-      type: 'string',
+      value: "LeasePlan",
+      type: 'text',
       required: true,
-      toDisplay: "",
-      translation: "leverancier"
+      toDisplay: "LeasePlan",
+      translation: "Leverancier"
     },
     orderer: {
       value: "",
-      type: 'string',
+      type: 'text',
       required: true,
       toDisplay: "",
-      translation: "besteller"
+      translation: "Besteller"
     },
     leaseOrderStatus: {
-      value: "",
-      toDisplay: "",
-      type: 'string',
+      value: "ORDERED",
+      toDisplay: "Besteld",
+      type: 'text',
       required: true,
-      // data: OrderStatus.unknown,
-      translation: "status",
+      status: OrderStatus.ordered,
+      translation: "Status",
     },
     orderDate: {
       value: "",
-      type: 'string',
+      type: 'date',
       required: true,
+      date: null,
       toDisplay: "",
-      translation: "besteldatum"
+      translation: "Besteldatum"
     },
     deliveryDate: {
       value: "",
-      type: 'string',
+      type: 'date',
       required: true,
+      date: null,
       toDisplay: "",
-      translation: "leverdatum"
+      translation: "Leverdatum"
     },
     weekOfDelivery: {
       value: 0,
-      type: 'string',
-      required: true,
-      toDisplay: "",
-      translation: "verwachte leverweek"
+      type: 'number',
+      required: false,
+      toDisplay: "0",
+      translation: "Verwachte leverweek"
     },
     leasecar: { ...LeasecarDummy }
 }

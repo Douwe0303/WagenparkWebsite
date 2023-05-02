@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {Title} from "@angular/platform-browser";
 import {first} from "rxjs";
@@ -15,7 +15,7 @@ import {ContractTransformer} from "../../transformer/contract-transformer/contra
   styleUrls: ['./order-view.component.css'],
   providers: [OrderTransformer, LeasecarTransformer, ContractTransformer]
 })
-export class OrderViewComponent {
+export class OrderViewComponent implements OnInit {
   @Input() items: any[] = [];
   @Input() hiddenProperties: string[] = [];
   @Input() titles: string[] = [];

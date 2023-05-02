@@ -3,7 +3,7 @@
     <caption></caption>
     <thead app-table-head
            [headers]="headers"
-    ></thead>
+    ><th *ngIf=false></th></thead>
     <tbody app-table-body
            (rowClickEvent)="rowClickEvent.emit($event)"
            [rowData]="rowData"

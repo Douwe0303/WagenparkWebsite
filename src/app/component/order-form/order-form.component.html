@@ -9,7 +9,7 @@
           <label for="ordererInput">Besteller <span class="brick-red">*</span></label>
         </div>
         <div class="form-floating mb-3">
-          <input [(ngModel)]="order.supplier.value" #supplierInput="ngModel" [class.is-invalid]="supplierInput.invalid" [class.is-valid]="supplierInput.valid && supplierInput.dirty" name="supplier" type="text" class="form-control" id="supplierInput" placeholder="Jane Doe" required>
+          <input (click)="supplierInput.control.markAsDirty()" [(ngModel)]="order.supplier.value" #supplierInput="ngModel" [class.is-invalid]="supplierInput.invalid" [class.is-valid]="supplierInput.valid && supplierInput.dirty" name="supplier" type="text" class="form-control" id="supplierInput" placeholder="Jane Doe" required>
           <label for="supplierInput">Leverancier <span class="brick-red">*</span></label>
         </div>
         <div class="input-group mb-3">
@@ -58,7 +58,7 @@
           <label class="form-label" for="expectedWeekInput">Verwachte week van levering</label>
         </div>
         <div class="form-floating mb-3">
-          <select [(ngModel)]="order.leaseOrderStatus.value" #statusInput="ngModel" [class.is-valid]="statusInput.valid && statusInput.dirty" [class.is-invalid]="statusInput.invalid" name="status" class="form-select" id="statusSelect" aria-label="Status selecteren" required>
+          <select (click)="statusInput.control.markAsDirty()" [(ngModel)]="order.leaseOrderStatus.value" #statusInput="ngModel" [class.is-valid]="statusInput.valid && statusInput.dirty" [class.is-invalid]="statusInput.invalid" name="status" class="form-select" id="statusSelect" aria-label="Status selecteren" required>
             <option value="" disabled>Selecteer status...</option>
             <option *ngFor="let orderStatus of OrderStatus | keyvalue" value="{{ orderStatus.value.code }}">{{ orderStatus.value.text }}</option>
           </select>
@@ -71,6 +71,10 @@
             <div class="form-floating mb-3">
               <input [(ngModel)]="order.leasecar.driver.value" #driverInput="ngModel" [class.is-invalid]="driverInput.invalid" [class.is-valid]="driverInput.valid && driverInput.dirty" name="driver" type="text" class="form-control" id="driverInput" placeholder="Jane Doe" required>
               <label for="driverInput">Bestuurder <span class="brick-red">*</span></label>
+            </div>
+            <div class="form-floating mb-3">
+              <input [(ngModel)]="order.leasecar.licensePlate.value" #licensePlate="ngModel" [class.is-invalid]="licensePlate.invalid" [class.is-valid]="licensePlate.valid && licensePlate.dirty" name="licensePlate" type="text" class="form-control" id="licensePlate" placeholder="Jane Doe">
+              <label for="licensePlate">Kenteken </label>
             </div>
             <div class="form-floating mb-3">
               <input [(ngModel)]="order.leasecar.brand.value" #carBrandInput="ngModel" [class.is-invalid]="carBrandInput.invalid" [class.is-valid]="carBrandInput.valid && carBrandInput.dirty" name="carbrand" type="text" class="form-control" id="carBrandInput" placeholder="Jane Doe">
@@ -87,11 +91,24 @@
           </div>
           <div class="col-12 col-md-6 col-xxl-6">
             <div class="form-floating mb-3">
-              <select [(ngModel)]="order.leasecar.engine.value" #carEngineInput="ngModel" [class.is-invalid]="carEngineInput.invalid" [class.is-valid]="carEngineInput.valid && carEngineInput.dirty" name="carEngine" type="text" class="form-control" id="carEngineInput" placeholder="Jane Doe">
+              <select (click)="carEngineInput.control.markAsDirty()" [(ngModel)]="order.leasecar.engine.value" #carEngineInput="ngModel" [class.is-invalid]="carEngineInput.invalid" [class.is-valid]="carEngineInput.valid && carEngineInput.dirty" name="carEngine" class="form-control" id="carEngineInput">
                 <option value="" disabled>Selecteer motor...</option>
                 <option *ngFor="let motor of EngineType | alphabetical" value="{{ motor.code }}">{{ motor.text }}</option>
               </select>
               <label for="statusSelect">Type motor</label>
+            </div>
+            <div class="form-floating mb-3">
+              <select
+                [(ngModel)]="order.leasecar.tires.value"
+                (click)="tires.control.markAsDirty()"
+                #tires="ngModel"
+                [class.is-invalid]="tires.invalid"
+                [class.is-valid]="tires.valid && tires.dirty"
+                name="tires" class="form-control" id="tires">
+                <option value="" disabled>Selecteer band...</option>
+                <option *ngFor="let tire of TireType | alphabetical" value="{{ tire.code }}">{{ tire.text }}</option>
+              </select>
+              <label for="tires">Type band</label>
             </div>
             <div class="form-floating mb-3">
               <input [(ngModel)]="order.leasecar.kilometers.value" #carKilometersInput="ngModel" [class.is-invalid]="carKilometersInput.invalid" [class.is-valid]="carKilometersInput.valid && carKilometersInput.dirty" name="carKilometers" type="text" class="form-control" id="carKilometersInput" placeholder="Jane Doe">
@@ -112,7 +129,7 @@
         <div class="row">
           <div class="col-xxl-6">
             <div class="form-floating mb-3">
-              <select [(ngModel)]="order.leasecar.contract.contractType.value" #contractTypeInput="ngModel" [class.is-invalid]="contractTypeInput.invalid && contractTypeInput.dirty" [class.is-valid]="contractTypeInput.valid && contractTypeInput.dirty" name="contractType" type="text" class="form-control" id="contractTypeInput" placeholder="A1">
+              <select (click)="contractTypeInput.control.markAsDirty()" [(ngModel)]="order.leasecar.contract.contractType.value" #contractTypeInput="ngModel" [class.is-invalid]="contractTypeInput.invalid && contractTypeInput.dirty" [class.is-valid]="contractTypeInput.valid && contractTypeInput.dirty" name="contractType" class="form-control" id="contractTypeInput">
                 <option value="" disabled>Selecteer regeling...</option>
                 <option *ngFor="let type of ContractType | alphabetical" value="{{ type.code }}">{{ type.text }}</option>
               </select>
@@ -121,7 +138,7 @@
           </div>
           <div class="col-xxl-6">
             <div class="form-floating mb-3">
-              <select [(ngModel)]="order.leasecar.contract.signed.value" #signedInput="ngModel" [class.is-valid]="signedInput.valid && signedInput.dirty" [class.is-invalid]="signedInput.invalid" name="signed" class="form-select" id="signedSelect" aria-label="Ondertekend selecteren" required>
+              <select (click)="signedInput.control.markAsDirty()" [(ngModel)]="order.leasecar.contract.signed.value" #signedInput="ngModel" [class.is-valid]="signedInput.valid && signedInput.dirty" [class.is-invalid]="signedInput.invalid" name="signed" class="form-select" id="signedSelect" aria-label="Ondertekend selecteren" required>
                 <option value="" disabled>Selecteer ondertekening...</option>
                 <option value="true">Ja</option>
                 <option value="false">Nee</option>

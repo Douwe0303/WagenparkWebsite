@@ -9,6 +9,7 @@ export interface LeasecarDto {
   model?: string;
   extra?: string;
   engine?: string;
+  tires?: string;
   kilometers?: number;
   price?: number;
   particularities?: string;

@@ -2,24 +2,24 @@ import { Contract } from "../../interface/model/contract";
 
 export const ContractDummy: Contract = {
   id: {
-    value: 0,
+    value: undefined,
     type: 'number',
     required: true,
-    toDisplay: 0+'',
+    toDisplay: '',
     translation: "id"
   },
   contractType: {
     value: "A",
     type: 'text',
     required: false,
-    toDisplay: "",
+    toDisplay: "A",
     translation: "Regeling"
   },
   signed: {
     value: false,
-    type: 'boolean',
+    type: 'text',
     required: false,
-    toDisplay: "",
+    toDisplay: "Nee",
     translation: "Ondertekend"
   },
   duration: {
@@ -33,6 +33,7 @@ export const ContractDummy: Contract = {
     value: "",
     type: 'date',
     required: false,
+    date: null,
     toDisplay: "",
     translation: "Startdatum contract"
   },
@@ -40,12 +41,13 @@ export const ContractDummy: Contract = {
     value: "",
     type: 'date',
     required: false,
+    date: null,
     toDisplay: "",
     translation: "Einddatum contract"
   },
   remainingTime: {
     value: "",
-    type: 'number',
+    type: 'text',
     required: false,
     toDisplay: "",
     translation: "Resterende tijd"
@@ -54,14 +56,14 @@ export const ContractDummy: Contract = {
     value: 0,
     type: 'number',
     required: false,
-    toDisplay: 0+'',
+    toDisplay: 0+'%',
     translation: "Fiscale bijtelling"
   },
   contribution: {
     value: 0,
     type: 'number',
     required: false,
-    toDisplay: "",
+    toDisplay: 0+"%",
     translation: "Eigen bijdrage"
   }
 }

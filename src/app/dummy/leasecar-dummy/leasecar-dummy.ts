@@ -3,18 +3,18 @@ import { ContractDummy } from "../contract-dummy/contract-dummy";
 
 export const LeasecarDummy: Leasecar = {
     id: {
-      value: 0,
+      value: undefined,
       type: 'number',
       required: true,
-      toDisplay: 0+'',
+      toDisplay: undefined+'',
       translation: "id"
     },
     leaseOrderId: {
-      value: 0,
+      value: undefined,
       type: 'number',
       required: false,
-      toDisplay: 0+'',
-      translation: 'translationId'
+      toDisplay: undefined+'',
+      translation: 'leaseOrderId'
     },
     licensePlate: {
       value: '',
@@ -58,6 +58,13 @@ export const LeasecarDummy: Leasecar = {
       toDisplay: "Onbekend",
       translation: "Type motor"
     },
+    tires: {
+      value: "UNKNOWN",
+      type: 'text',
+      required: false,
+      toDisplay: 'Onbekend',
+      translation: "Type band"
+    },
     kilometers: {
       value: 0,
       type: 'number',
@@ -69,14 +76,14 @@ export const LeasecarDummy: Leasecar = {
       value: 0,
       type: 'number',
       required: false,
-      toDisplay: 0+'',
+      toDisplay: '€'+0,
       translation: "Fiscale waarde"
     },
     particularities: {
       value: "",
       type: 'text',
       required: false,
-      toDisplay: 0+'',
+      toDisplay: '',
       translation: "Bijzonderheden"
     },
     contract: ContractDummy

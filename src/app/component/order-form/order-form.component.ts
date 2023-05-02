@@ -1,4 +1,4 @@
-import {Component, Injectable, ViewChild} from '@angular/core';
+import {Component, Injectable, OnInit, ViewChild} from '@angular/core';
 import {OrderStatus} from "../../class/order-status/order-status";
 import {OrderDummy} from "../../dummy/order-dummy/order-dummy";
 import {NgForm} from "@angular/forms";
@@ -15,6 +15,7 @@ import {ContractType} from "../../type/contract-type/contract-type";
 import {LeasecarTransformer} from "../../transformer/leasecar-transformer/leasecar-transformer";
 import {ContractTransformer} from "../../transformer/contract-transformer/contract-transformer";
 import {NgbDateParserFormatter, NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+import {TireType} from "../../type/tire-type/tire-type";
 
 @Injectable()
 export class CustomDateParserFormatter extends NgbDateParserFormatter {
@@ -44,12 +45,13 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   providers: [OrderTransformer, LeasecarTransformer, ContractTransformer,
     {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}]
 })
-export class OrderFormComponent {
+export class OrderFormComponent implements OnInit {
 
   order: Order = JSON.parse(JSON.stringify(OrderDummy));
 
   protected readonly EngineType = EngineType;
   protected readonly ContractType = ContractType;
+  protected readonly TireType = TireType;
   protected readonly OrderStatus = OrderStatus;
 
   @ViewChild('addOrderForm') myForm: NgForm | undefined;

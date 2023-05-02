@@ -13,8 +13,8 @@ import { LicensePlateComponent } from "../../table-component/table-data-items/li
 import { RotateArrowComponent } from "../../table-component/table-data-items/rotate-arrow/rotate-arrow.component";
 import { RowData } from "../../../interface/row-data";
 import { EventService } from "../../../service/event/event.service";
-import {first, Subscription} from "rxjs";
-import { SortingType } from "../../../enum/sorting-type";
+import { first, Subscription } from "rxjs";
+import { SortService } from "../../../service/sort/sort.service";
 
 @Component({
   selector: 'app-tableheaders',
@@ -40,6 +40,7 @@ export class LeasecarsComponent implements OnInit, OnDestroy {
     private _leaseCarService: LeasecarService,
     private _titleService: Title,
     private _eventService: EventService,
+    private _sortService: SortService,
     private leaseCarTransformer: LeasecarTransformer,
   ) {}
   ngOnDestroy(): void {
@@ -67,17 +68,7 @@ export class LeasecarsComponent implements OnInit, OnDestroy {
 
   sortEvent(): void {
     this._eventService.sortingEvent.subscribe(data => {
-      this.filteredRowData = this.filteredRowData.sort((a: any, b: any) => {
-        const valueA = a.tableData[data.index].value;
-        const valueB = b.tableData[data.index].value;
-        if (typeof valueA === 'number' && typeof valueB === 'number') {
-          return data.sorting == SortingType.ASC ? valueA - valueB : valueB - valueA;
-        } else {
-          const stringA = valueA.toString();
-          const stringB = valueB.toString();
-          return data.sorting == SortingType.ASC ? stringA.localeCompare(stringB) : stringB.localeCompare(stringA);
-        }
-      })
+      this._sortService.sortRowData(data, this.rowData);
     })
   }
 

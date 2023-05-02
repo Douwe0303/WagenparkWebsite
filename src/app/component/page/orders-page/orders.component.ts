@@ -1,6 +1,6 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { OrderService } from "../../../service/order/order.service";
-import {first, Subscription} from "rxjs";
+import { first, Subscription } from "rxjs";
 import { OrderDto } from "../../../interface/dto/order-dto";
 import { NgbDropdown} from "@ng-bootstrap/ng-bootstrap";
 import { ToastComponent } from "../../toast/toast.component";
@@ -13,12 +13,12 @@ import { Title } from "@angular/platform-browser";
 import { OrderTableHeader } from "../../../class/order-table-header/order-table-header";
 import { RowData } from "../../../interface/row-data";
 import { EventService } from "../../../service/event/event.service";
-import { SortingType } from "../../../enum/sorting-type";
 import { TextNoWrapComponent } from "../../table-component/table-data-items/text-no-wrap/text-no-wrap.component";
 import { ActionsComponent } from "../../table-component/table-data-items/actions/actions.component";
 import { RotateArrowComponent } from "../../table-component/table-data-items/rotate-arrow/rotate-arrow.component";
 import { OrderStatus } from "../../../class/order-status/order-status";
 import { DropdownComponent } from "../../table-component/table-data-items/dropdown/dropdown.component";
+import { SortService } from "../../../service/sort/sort.service";
 
 @Component({
   selector: 'app-orders',
@@ -47,6 +47,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
   constructor(
     private _orderService: OrderService,
     private _eventService: EventService,
+    private _sortService: SortService,
     private orderTransformer: OrderTransformer,
     private _titleService: Title,
   ) {}
@@ -136,17 +137,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
 
   sortEvent(): void {
     this._eventService.sortingEvent.subscribe(data => {
-      this.filteredRowData = this.filteredRowData.sort((a: any, b: any) => {
-        const valueA = a.tableData[data.index].value;
-        const valueB = b.tableData[data.index].value;
-        if (typeof valueA === 'number' && typeof valueB === 'number') {
-          return data.sorting == SortingType.ASC ? valueA - valueB : valueB - valueA;
-        } else {
-          const stringA = valueA.toString();
-          const stringB = valueB.toString();
-          return data.sorting == SortingType.ASC ? stringA.localeCompare(stringB) : stringB.localeCompare(stringA);
-        }
-      })
+      this.filteredRowData = this._sortService.sortRowData(data, this.filteredRowData );
     })
   }
 

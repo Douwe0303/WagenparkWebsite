@@ -23,7 +23,7 @@ export class OrderTransformer implements Transformer<Order, OrderDto> {
       id: {
         value: orderDto.id,
         type: 'number',
-        toDisplay: orderDto.id+'',
+        toDisplay: orderDto.id == undefined ? '' : orderDto.id+'',
         required: true,
         translation: "id"
       },
